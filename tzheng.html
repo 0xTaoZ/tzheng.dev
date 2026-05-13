@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haitao Zheng | Cyber Security</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 苹果系统级排版与字体 (Apple Typography) */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000000;
+            color: #f5f5f7;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* 磨砂玻璃导航栏 (Glassmorphism Navbar) */
+        .glass-nav {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* 高级深色卡片 (Premium Dark Cards) */
+        .pro-card {
+            background-color: #111112;
+            border: 1px solid #2d2d2f;
+            border-radius: 24px;
+            transition: all 0.4s ease;
+        }
+        .pro-card:hover {
+            border-color: #555558;
+            background-color: #1c1c1e;
+        }
+
+        /* 细线条分隔符 (Subtle Dividers) */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        }
+
+        /* 滚动浮现动画 (Scroll Reveal Animation) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px); 
+            transition: opacity 1s cubic-bezier(0.25, 0.1, 0.25, 1), 
+                        transform 1s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 地球背景图遮罩 */
+        .hero-bg {
+            background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=3272&auto=format&fit=crop'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            /* 加深渐变，确保文字清晰 */
+            background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, #000000 100%);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-gray-700 selection:text-white">
+
+    <!-- 导航栏 (Navigation Bar) -->
+    <nav class="fixed top-0 w-full glass-nav z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between text-sm font-medium text-gray-300">
+            <a href="#" class="text-white tracking-widest font-semibold">TAO ZHENG</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#education" class="hover:text-white transition">Education</a>
+                <a href="#about" class="hover:text-white transition">About</a>
+                <a href="#toolkit" class="hover:text-white transition">Toolkit</a>
+            </div>
+            <div class="flex space-x-4">
+                <a href="https://github.com/0xTaoZ" target="_blank" class="hover:text-white transition border border-gray-600 rounded-full px-4 py-1.5 hover:bg-white hover:text-black">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 首屏焦点区 (Hero Section) - 带有头像 -->
+    <section class="hero-bg min-h-screen flex items-center justify-center pt-20 px-6 md:px-12 lg:px-20">
+        <div class="hero-overlay z-0"></div>
+        <div class="relative z-10 w-full max-w-7xl flex flex-col-reverse lg:flex-row items-center justify-between gap-12 lg:gap-8 reveal">
+            
+            <!-- 左侧：文字信息 -->
+            <div class="w-full lg:w-3/5 text-center lg:text-left">
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-2 text-white">HAITAO ZHENG <br><span class="text-3xl md:text-5xl lg:text-6xl text-gray-400 font-light">(TAO)</span></h1>
+                <p class="text-lg md:text-2xl text-gray-300 font-light mb-8 tracking-wide mt-4">
+                    Cyber Security & Privacy <br class="hidden lg:block">
+                    <span class="text-gray-600 hidden lg:inline">|</span> 
+                    <span class="lg:hidden text-gray-600"> | </span> 
+                    Systems & Infrastructure Engineering
+                </p>
+                <div class="flex flex-wrap justify-center lg:justify-start gap-4 mt-8">
+                    <a href="mailto:h@tzheng.dev" class="px-6 py-3 rounded-full font-medium text-sm border border-gray-500 text-white hover:bg-white hover:text-black transition duration-300">
+                        Email: h@tzheng.dev
+                    </a>
+                    <a href="https://tzheng.dev" class="px-6 py-3 rounded-full font-medium text-sm border border-gray-500 text-white hover:bg-white hover:text-black transition duration-300">
+                        tzheng.dev
+                    </a>
+                    <a href="https://github.com/0xTaoZ" target="_blank" class="px-6 py-3 rounded-full font-medium text-sm border border-gray-500 text-white hover:bg-white hover:text-black transition duration-300">
+                        GitHub: 0xTaoZ
+                    </a>
+                </div>
+            </div>
+
+            <!-- 右侧：个人头像 -->
+            <!-- 这里的 src="./IMG_1419.jpg" 就是指向当前文件夹下的图片文件 -->
+            <div class="w-full lg:w-2/5 flex justify-center lg:justify-end">
+                <img src="./IMG_1419.jpg" alt="Haitao Zheng" class="w-64 md:w-80 lg:w-[400px] object-cover rounded-2xl shadow-[0_0_40px_rgba(255,255,255,0.05)] border border-gray-800 hover:border-gray-600 transition duration-500">
+            </div>
+
+        </div>
+        
+        <!-- 向下滚动提示 -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce opacity-50 z-10 hidden md:block">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
+    </section>
+
+    <!-- 教育经历 (Education Section) -->
+    <section id="education" class="py-32 px-6 max-w-7xl mx-auto border-t border-gray-900">
+        <div class="mb-20 text-center reveal">
+            <h2 class="text-5xl md:text-6xl font-bold text-white mb-4">Education.</h2>
+            <p class="text-xl text-gray-400">A rigorous foundation in engineering and privacy.</p>
+        </div>
+        
+        <div class="flex flex-col gap-12">
+            <!-- H-BRS -->
+            <div class="pro-card p-10 md:p-14 reveal">
+                <div class="flex flex-col md:flex-row justify-between mb-6">
+                    <h3 class="text-2xl md:text-3xl font-bold text-white">Hochschule Bonn-Rhein-Sieg (H-BRS) <span class="text-gray-500 font-normal">| Germany</span></h3>
+                    <span class="text-gray-400 font-mono mt-2 md:mt-0">Oct 2025 – Present</span>
+                </div>
+                <h4 class="text-xl text-blue-400 mb-6 font-semibold">B.Sc. Cyber Security & Privacy</h4>
+                <div class="space-y-4 text-gray-300 leading-relaxed text-lg">
+                    <p><strong class="text-white">Academic Focus:</strong> Building strong foundations in Java Programming, Networking Protocols, Database Systems (SQL), and Analog Electronic Technology.</p>
+                    <p><strong class="text-white">Privacy Engineering:</strong> Specialized study of the General Data Protection Regulation (GDPR) and European privacy-by-design standards.</p>
+                </div>
+            </div>
+
+            <!-- FHM -->
+            <div class="pro-card p-10 md:p-14 reveal">
+                <div class="flex flex-col md:flex-row justify-between mb-6">
+                    <h3 class="text-2xl md:text-3xl font-bold text-white">Fachhochschule des Mittelstands (FHM) <span class="text-gray-500 font-normal">| Bielefeld, Germany</span></h3>
+                    <span class="text-gray-400 font-mono mt-2 md:mt-0">Dec 2024 – June 2025</span>
+                </div>
+                <h4 class="text-xl text-blue-400 mb-6 font-semibold">Accelerated University Transition & FSP</h4>
+                <div class="space-y-4 text-gray-300 leading-relaxed text-lg">
+                    <p><strong class="text-white">Academic Acceleration:</strong> Successfully completed the German university preparatory pathway (Feststellungsprüfung / FSP) — the national Abitur-equivalent — within a single high-intensity semester.</p>
+                    <p><strong class="text-white">Language Achievement:</strong> Attained certified German C1 Proficiency within the same 6-month timeframe of academic immersion.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Harvard CS50x -->
+                <div class="pro-card p-10 reveal">
+                    <h3 class="text-2xl font-bold text-white mb-2">Harvard University <span class="text-gray-500 font-normal">| CS50x</span></h3>
+                    <h4 class="text-lg text-blue-400 mb-4 font-semibold">Computer Science Foundations <span class="text-gray-500 text-sm font-mono block mt-1">Certified Completion — 2024</span></h4>
+                    <p class="text-gray-300 leading-relaxed"><strong class="text-white">Engineering Depth:</strong> Focused on algorithms, data structures, and foundational memory management in C through Harvard’s CS50x curriculum.</p>
+                </div>
+
+                <!-- Xiamen Jimei -->
+                <div class="pro-card p-10 reveal">
+                    <h3 class="text-2xl font-bold text-white mb-2">Xiamen Jimei Middle School <span class="text-gray-500 font-normal">| China</span></h3>
+                    <h4 class="text-lg text-blue-400 mb-4 font-semibold">High School Diploma <span class="text-gray-500 text-sm block mt-1">Nationally Recognized Provincial Key High School | Sept 2021 – June 2024</span></h4>
+                    <div class="space-y-3 text-gray-300 leading-relaxed">
+                        <p><strong class="text-white">Academic Background:</strong> Completed a rigorous science-focused academic track at an elite institution with a century-long heritage.</p>
+                        <p><strong class="text-white">Gaokao Achievement:</strong> Achieved high-ranking results in the National Higher Education Entrance Examination (Gaokao), qualifying for admission to top-tier undergraduate programs in China.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider max-w-5xl mx-auto"></div>
+
+    <!-- 语言与兴趣 (Languages & Interests) -->
+    <section id="about" class="py-32 px-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            
+            <!-- Languages -->
+            <div class="reveal">
+                <h2 class="text-4xl font-bold text-white mb-8">Languages.</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="bg-[#111112] p-6 rounded-2xl border border-gray-800">
+                        <h4 class="text-xl font-semibold text-white">English</h4>
+                        <p class="text-gray-500 mt-1">C2 Professional Proficiency.</p>
+                    </div>
+                    <div class="bg-[#111112] p-6 rounded-2xl border border-gray-800">
+                        <h4 class="text-xl font-semibold text-white">German</h4>
+                        <p class="text-gray-500 mt-1">C1 Advanced Academic Proficiency.</p>
+                    </div>
+                    <div class="bg-[#111112] p-6 rounded-2xl border border-gray-800">
+                        <h4 class="text-xl font-semibold text-white">Mandarin Chinese</h4>
+                        <p class="text-gray-500 mt-1">Native.</p>
+                    </div>
+                    <div class="bg-[#111112] p-6 rounded-2xl border border-gray-800">
+                        <h4 class="text-xl font-semibold text-white">Hokkien</h4>
+                        <p class="text-gray-500 mt-1">Fluent.</p>
+                    </div>
+                    <div class="bg-[#111112] p-6 rounded-2xl border border-gray-800 sm:col-span-2">
+                        <h4 class="text-xl font-semibold text-white">Japanese</h4>
+                        <p class="text-gray-500 mt-1">A2 Elementary.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personal Interests -->
+            <div class="reveal">
+                <h2 class="text-4xl font-bold text-white mb-8">Personal Interests.</h2>
+                <div class="space-y-6">
+                    <div class="pro-card p-8">
+                        <h4 class="text-xl font-semibold text-white mb-2">Photography</h4>
+                        <p class="text-gray-400 leading-relaxed text-sm">Dedicated enthusiast using a Nikon D750. Focused on Portrait, Humanistic, and Landscape photography with a strong interest in composition and lighting.</p>
+                    </div>
+                    <div class="pro-card p-8">
+                        <h4 class="text-xl font-semibold text-white mb-2">Athletics & Fitness</h4>
+                        <p class="text-gray-400 leading-relaxed text-sm">Passionate about Football, Skateboarding, Basketball, Badminton, and Volleyball. Dedicated to maintaining physical conditioning through consistent Strength Training.</p>
+                    </div>
+                    <div class="pro-card p-8">
+                        <h4 class="text-xl font-semibold text-white mb-2">Cycling</h4>
+                        <p class="text-gray-400 leading-relaxed text-sm">Enthusiast for recreational and off-road cycling.</p>
+                    </div>
+                    <div class="pro-card p-8">
+                        <h4 class="text-xl font-semibold text-white mb-2">Global Insight</h4>
+                        <p class="text-gray-400 leading-relaxed text-sm">Interested in Geopolitics, Financial Investment, and global market trends.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="divider max-w-5xl mx-auto"></div>
+
+    <!-- 技术栈 (Technical Toolkit Section) -->
+    <section id="toolkit" class="py-32 px-6 max-w-7xl mx-auto">
+        <div class="mb-16 text-center reveal">
+            <h2 class="text-5xl font-bold text-white mb-4">Technical Toolkit.</h2>
+            <p class="text-xl text-gray-400">Engineering robust and secure environments.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="pro-card p-10 reveal">
+                <h3 class="text-xl font-bold text-white mb-4">Systems & Infrastructure</h3>
+                <p class="text-gray-400 leading-relaxed">Hands-on knowledge of Linux environments, networking fundamentals, and secure VPN tunneling.</p>
+            </div>
+            <div class="pro-card p-10 reveal">
+                <h3 class="text-xl font-bold text-white mb-4">Cloud Research</h3>
+                <p class="text-gray-400 leading-relaxed">Currently researching Cloud Infrastructure and server hardening to optimize infrastructure resilience.</p>
+            </div>
+            <div class="pro-card p-10 reveal">
+                <h3 class="text-xl font-bold text-white mb-4">Deployment</h3>
+                <p class="text-gray-400 leading-relaxed">Expanding expertise in Cloudflare-based deployment workflows and edge infrastructure.</p>
+            </div>
+            <div class="pro-card p-10 reveal">
+                <h3 class="text-xl font-bold text-white mb-4">Development</h3>
+                <p class="text-gray-400 leading-relaxed">Building competencies across Java, Python, C, and SQL with a focus on security-conscious programming.</p>
+            </div>
+            <div class="pro-card p-10 md:col-span-2 reveal text-center md:text-left">
+                <h3 class="text-xl font-bold text-white mb-4">AI-Enhanced Workflows</h3>
+                <p class="text-gray-400 leading-relaxed">Leveraging LLM-assisted engineering and modern AI tooling to enhance development productivity and technical research.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer 版权信息 -->
+    <footer class="border-t border-gray-900 py-16 mt-10 text-center reveal">
+        <h2 class="text-2xl font-bold text-white mb-8">Engineering the Future.</h2>
+        <p class="text-sm text-gray-500 font-mono">© 2026 Haitao Zheng. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript 动画激活 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.12 
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const revealElements = document.querySelectorAll('.reveal');
+            revealElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
