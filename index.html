@@ -391,233 +391,865 @@
                 transition-duration: 0.01ms !important;
             }
         }
+    
+
+/* Final polish: original space identity + restrained Apple-grade cyber interactions */
+html { scroll-padding-top: 5rem; }
+:root {
+    --terminal-green: #39ff88;
+    --terminal-dim: rgba(57, 255, 136, 0.50);
+    --terminal-bg: rgba(0, 0, 0, 0.94);
+}
+
+.desktop-only { display: none; }
+@media (min-width: 1024px) { .desktop-only { display: block; } }
+
+.mobile-menu-button {
+    display: inline-flex;
+    width: 2.5rem;
+    height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    background: rgba(15, 23, 42, 0.48);
+    color: #f8fafc;
+}
+@media (min-width: 1024px) { .mobile-menu-button { display: none; } }
+
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 4rem;
+    left: 1rem;
+    right: 1rem;
+    z-index: 60;
+    border: 1px solid rgba(125, 211, 252, 0.18);
+    border-radius: 1.4rem;
+    background: rgba(2, 5, 10, 0.86);
+    backdrop-filter: blur(28px) saturate(170%);
+    -webkit-backdrop-filter: blur(28px) saturate(170%);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.55);
+    overflow: hidden;
+}
+.mobile-menu.open { display: block; }
+.mobile-menu a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.1rem;
+    color: #dbeafe;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.10);
+    font-size: 0.92rem;
+}
+.mobile-menu a:last-child { border-bottom: none; }
+
+.hero-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(circle at 28% 22%, rgba(125, 211, 252, 0.25), transparent 18rem),
+        radial-gradient(circle at 80% 35%, rgba(167, 139, 250, 0.18), transparent 22rem),
+        radial-gradient(circle at 50% 78%, rgba(52, 211, 153, 0.12), transparent 28rem);
+    opacity: 0.75;
+}
+
+.hero-shell {
+    min-height: 100vh;
+    padding-top: 5rem;
+    padding-bottom: 3rem;
+}
+
+.mission-layout {
+    width: 100%;
+    max-width: 100rem;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+@media (min-width: 1024px) {
+    .mission-layout {
+        grid-template-columns: minmax(0, 1.08fr) minmax(420px, 0.92fr);
+        align-items: center;
+        gap: 3.5rem;
+        padding-left: 4rem;
+        padding-right: 2rem;
+    }
+}
+
+.hero-title {
+    font-size: clamp(3rem, 8vw, 6.25rem);
+    line-height: 0.96;
+    letter-spacing: -0.065em;
+}
+
+.hero-subtitle {
+    font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+}
+
+.mission-actions .primary-action {
+    background: rgba(255,255,255,0.96);
+    color: #020305;
+    box-shadow: 0 16px 50px rgba(255,255,255,0.10), 0 0 0 1px rgba(255,255,255,0.22) inset;
+}
+.mission-actions .secondary-action {
+    border: 1px solid rgba(226, 232, 240, 0.32);
+    color: #f8fafc;
+    background: rgba(2, 6, 23, 0.32);
+}
+.mission-actions a { transition: transform .45s cubic-bezier(.16,1,.3,1), background .35s ease, color .35s ease; }
+.mission-actions a:hover { transform: translateY(-2px) scale(1.02); }
+
+.terminal-crt {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.35rem;
+    border: 1px solid rgba(57, 255, 136, 0.20);
+    background:
+        radial-gradient(circle at 18% 0%, rgba(57,255,136,0.055), transparent 18rem),
+        linear-gradient(145deg, rgba(0, 0, 0, 0.985), var(--terminal-bg));
+    box-shadow:
+        0 30px 90px rgba(0,0,0,0.62),
+        0 0 0 1px rgba(116,255,154,0.06) inset,
+        0 0 30px rgba(57,255,136,0.06);
+}
+.terminal-crt::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(rgba(255,255,255,0.025) 50%, rgba(0,0,0,0.12) 50%),
+        linear-gradient(90deg, rgba(255,0,0,0.025), rgba(0,255,0,0.018), rgba(0,0,255,0.025));
+    background-size: 100% 4px, 6px 100%;
+    mix-blend-mode: screen;
+    opacity: .45;
+}
+.terminal-crt::after {
+    content: "";
+    position: absolute;
+    left: -20%;
+    right: -20%;
+    top: -35%;
+    height: 35%;
+    pointer-events: none;
+    background: linear-gradient(to bottom, transparent, rgba(57,255,136,0.075), transparent);
+    animation: crtSweep 7.5s linear infinite;
+}
+@keyframes crtSweep { 0% { transform: translateY(-40%); } 55%, 100% { transform: translateY(420%); } }
+
+.terminal-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid rgba(116,255,154,0.12);
+    color: rgba(209,250,229,.78);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+.terminal-dots { display: flex; gap: .45rem; }
+.terminal-dots span { width: .55rem; height: .55rem; border-radius: 99px; background: rgba(57,255,136,.42); box-shadow: 0 0 14px rgba(57,255,136,.26); }
+.terminal-body { padding: 1.05rem 1.15rem 1.2rem; min-height: 15rem; }
+.terminal-output {
+    white-space: pre-wrap;
+    color: var(--terminal-green);
+    text-shadow: 0 0 10px rgba(57,255,136,0.34);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: clamp(0.78rem, 1.8vw, 0.92rem);
+    line-height: 1.78;
+}
+.terminal-output .dim { color: var(--terminal-dim); }
+.terminal-cursor { display: inline-block; width: .55em; height: 1em; background: var(--terminal-green); margin-left: .18em; transform: translateY(.17em); animation: blink 1s steps(1) infinite; box-shadow: 0 0 10px rgba(57,255,136,.55); }
+@keyframes blink { 50% { opacity: 0; } }
+
+.hero-feature-strip {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: .75rem;
+    margin-top: 1.25rem;
+}
+@media (min-width: 640px) { .hero-feature-strip { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+.hero-mini-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid rgba(125, 211, 252, 0.16);
+    background: rgba(2, 6, 14, 0.48);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    padding: .9rem;
+    transition: transform .45s cubic-bezier(.16,1,.3,1), border-color .35s ease, background .35s ease;
+}
+.hero-mini-card:hover { transform: translateY(-3px); border-color: rgba(116,255,154,.30); background: rgba(2, 6, 14, 0.66); }
+.hero-mini-card .num { color: #7dd3fc; font-family: ui-monospace, monospace; font-size: .68rem; }
+.hero-mini-card .title { color: #fff; font-size: .9rem; margin-top: .15rem; font-weight: 650; letter-spacing: -.02em; }
+.hero-mini-card .meta { color: #94a3b8; font-size: .72rem; margin-top: .2rem; }
+
+.portrait-stage {
+    position: relative;
+    min-height: 26rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+@media (min-width: 1024px) { .portrait-stage { min-height: 42rem; justify-content: flex-end; } }
+.portrait-orbit {
+    position: absolute;
+    width: min(78vw, 34rem);
+    aspect-ratio: 1;
+    border-radius: 999px;
+    border: 1px solid rgba(125,211,252,.14);
+    background: radial-gradient(circle at 50% 50%, rgba(125,211,252,.06), transparent 60%);
+    box-shadow: 0 0 90px rgba(125,211,252,.08) inset;
+    animation: orbitBreath 6s ease-in-out infinite;
+}
+.portrait-orbit::before, .portrait-orbit::after {
+    content: "";
+    position: absolute;
+    inset: 9%;
+    border-radius: inherit;
+    border: 1px solid rgba(167,139,250,.12);
+    transform: rotate(-18deg) scaleY(.86);
+}
+.portrait-orbit::after { inset: 17%; border-color: rgba(52,211,153,.13); transform: rotate(27deg) scaleY(.82); }
+@keyframes orbitBreath { 0%,100%{ transform: scale(.98); opacity:.55;} 50%{ transform: scale(1.03); opacity:.95;} }
+
+.portrait-card {
+    position: relative;
+    width: min(80vw, 34rem);
+    border-radius: 2rem;
+    overflow: visible;
+}
+.portrait-card img {
+    width: 100%;
+    filter: saturate(1.02) contrast(1.03);
+    transform: translateZ(0);
+}
+.portrait-caption {
+    position: absolute;
+    left: clamp(-.25rem, -2vw, -1.5rem);
+    bottom: 2.4rem;
+    width: min(23rem, 92vw);
+    border: 1px solid rgba(148,163,184,.18);
+    border-radius: 1.25rem;
+    background: rgba(2, 6, 14, .62);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    padding: 1.1rem;
+    box-shadow: 0 22px 70px rgba(0,0,0,.52);
+}
+@media (max-width: 768px) {
+    .portrait-stage { order: -1; min-height: 20rem; margin-top: .4rem; }
+    .portrait-card { width: min(76vw, 20rem); }
+    .portrait-caption { display: none; }
+    .avatar-mask {
+        -webkit-mask-image: radial-gradient(ellipse at 55% 48%, black 42%, transparent 78%);
+        mask-image: radial-gradient(ellipse at 55% 48%, black 42%, transparent 78%);
+    }
+}
+
+.project-deck {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1rem;
+}
+.project-case {
+    grid-column: span 12;
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.35rem;
+    border: 1px solid rgba(148,163,184,.16);
+    background: linear-gradient(145deg, rgba(16,24,39,.72), rgba(2,6,14,.66));
+    backdrop-filter: blur(22px) saturate(145%);
+    -webkit-backdrop-filter: blur(22px) saturate(145%);
+    transition: transform .65s cubic-bezier(.16,1,.3,1), border-color .45s ease, box-shadow .65s cubic-bezier(.16,1,.3,1), background .45s ease;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+@media (min-width: 1024px) {
+    .project-case.featured { grid-column: span 7; }
+    .project-case:not(.featured) { grid-column: span 5; }
+}
+.project-case::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 0%), rgba(125,211,252,.18), transparent 20rem);
+    opacity: 0;
+    transition: opacity .35s ease;
+}
+.project-case:hover { border-color: rgba(125,211,252,.30); box-shadow: 0 30px 90px rgba(0,0,0,.46), 0 0 0 1px rgba(125,211,252,.05) inset; }
+.project-case:hover::before { opacity: 1; }
+.case-inner { position: relative; z-index: 1; padding: 1.6rem; }
+@media (min-width: 768px) { .case-inner { padding: 2.3rem; } }
+.case-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    margin-top: 1.2rem;
+    color: #bae6fd;
+    font-size: .85rem;
+    font-weight: 600;
+}
+.case-link:hover { color: white; }
+.case-meta-grid {
+    display: grid;
+    gap: .75rem;
+    margin-top: 1.3rem;
+}
+@media (min-width: 640px) { .case-meta-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+.case-fact {
+    border: 1px solid rgba(148,163,184,.13);
+    border-radius: .9rem;
+    background: rgba(2,6,14,.32);
+    padding: .85rem;
+}
+.case-fact b { display: block; color:#f8fafc; font-size:.76rem; margin-bottom:.25rem; font-family: ui-monospace, monospace; }
+.case-fact span { color:#94a3b8; font-size:.82rem; line-height:1.5; }
+
+@media (max-width: 767px) {
+    .project-deck {
+        display: flex;
+        gap: 1rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 1rem;
+        margin-left: -1.5rem;
+        margin-right: -1.5rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        -webkit-overflow-scrolling: touch;
+    }
+    .project-deck::-webkit-scrollbar { display: none; }
+    .project-case {
+        min-width: 86%;
+        scroll-snap-align: center;
+    }
+}
+
+.notes-grid-final {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+@media (min-width: 1024px) { .notes-grid-final { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+.note-link-card {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    min-height: 100%;
+    border-radius: 1.2rem;
+    border: 1px solid rgba(148,163,184,.16);
+    background: linear-gradient(145deg, rgba(15,23,42,.70), rgba(2,6,14,.58));
+    padding: 1.6rem;
+    transition: transform .55s cubic-bezier(.16,1,.3,1), border-color .35s ease, background .35s ease;
+}
+.note-link-card:hover { transform: translateY(-5px); border-color: rgba(116,255,154,.22); background: linear-gradient(145deg, rgba(18,27,43,.82), rgba(2,6,14,.68)); }
+.note-link-card::after { content:""; position:absolute; left:1.5rem; right:1.5rem; bottom:0; height:1px; background:linear-gradient(90deg, transparent, rgba(116,255,154,.45), transparent); }
+.read-more { color:#bae6fd; font-size:.84rem; margin-top:1.2rem; display:inline-flex; gap:.4rem; align-items:center; }
+
+.command-palette {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    background: rgba(0,0,0,.42);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    place-items: start center;
+    padding-top: min(18vh, 9rem);
+}
+.command-palette.open { display: grid; }
+.command-box {
+    width: min(92vw, 38rem);
+    border: 1px solid rgba(125,211,252,.18);
+    border-radius: 1.4rem;
+    overflow: hidden;
+    background: rgba(2,6,14,.90);
+    box-shadow: 0 40px 120px rgba(0,0,0,.65);
+}
+.command-box input {
+    width: 100%;
+    background: rgba(255,255,255,.03);
+    color: white;
+    padding: 1rem 1.1rem;
+    outline: none;
+    font-family: ui-monospace, monospace;
+    border-bottom: 1px solid rgba(148,163,184,.12);
+}
+.command-box a {
+    display: flex;
+    justify-content: space-between;
+    padding: .95rem 1.1rem;
+    color:#dbeafe;
+    border-bottom: 1px solid rgba(148,163,184,.08);
+}
+.command-box a:hover { background: rgba(125,211,252,.08); color:white; }
+
+@media (max-width: 768px) {
+    body {
+        background:
+            radial-gradient(circle at 50% 3%, rgba(56, 189, 248, 0.16), transparent 19rem),
+            radial-gradient(circle at 90% 20%, rgba(167, 139, 250, 0.11), transparent 16rem),
+            var(--bg);
+    }
+    body::before { background-size: 42px 42px; opacity: .75; }
+    .ambient-canvas { opacity: .20; }
+    .hero-bg { background-attachment: scroll; background-position: center top; }
+    .hero-overlay { background: linear-gradient(to bottom, rgba(0,0,0,.22), rgba(0,0,0,.78) 70%, var(--bg)); }
+    .hero-shell { min-height: auto; padding-top: 4.8rem; }
+    .proof-grid { margin-top: 1rem; }
+    section { scroll-margin-top: 4.5rem; }
+    .pro-card:hover, .project-case:hover, .note-link-card:hover { transform: none; }
+}
+
+
+/* Micro-polish v2.1: calmer premium motion, mobile card deck, and subtle depth */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    z-index: 90;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(57,255,136,.1), rgba(125,211,252,.92), rgba(57,255,136,.72));
+    box-shadow: 0 0 18px rgba(57,255,136,.25);
+}
+
+.primary-action, .secondary-action, .hero-mini-card, .case-link, .note-link-card, .mobile-menu-button, #command-open {
+    will-change: transform;
+}
+
+@media (pointer: fine) and (min-width: 1024px) {
+    .hero-mini-card, .primary-action, .secondary-action, .case-link, .note-link-card {
+        transition: transform .55s cubic-bezier(.16,1,.3,1), border-color .35s ease, background .35s ease, color .35s ease, box-shadow .55s cubic-bezier(.16,1,.3,1);
+    }
+    .hero-mini-card:hover, .note-link-card:hover {
+        box-shadow: 0 22px 65px rgba(0,0,0,.36), 0 0 0 1px rgba(125,211,252,.05) inset;
+    }
+}
+
+.project-case::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+        linear-gradient(135deg, rgba(255,255,255,.08), transparent 28%, transparent 72%, rgba(125,211,252,.055)),
+        radial-gradient(circle at var(--mx, 50%) var(--my, 0%), rgba(57,255,136,.075), transparent 16rem);
+    opacity: .42;
+    transition: opacity .45s ease;
+}
+.project-case:hover::after { opacity: .85; }
+.project-case .case-inner { transform: translateZ(26px); }
+
+.project-dots {
+    display: none;
+    justify-content: center;
+    gap: .45rem;
+    margin-top: .9rem;
+}
+.project-dots button {
+    width: .45rem;
+    height: .45rem;
+    border-radius: 999px;
+    background: rgba(148,163,184,.32);
+    transition: width .35s cubic-bezier(.16,1,.3,1), background .35s ease, box-shadow .35s ease;
+}
+.project-dots button.active {
+    width: 1.6rem;
+    background: rgba(57,255,136,.88);
+    box-shadow: 0 0 18px rgba(57,255,136,.32);
+}
+
+@media (max-width: 767px) {
+    .project-dots { display: flex; }
+    .project-case {
+        min-width: 84%;
+        transform: scale(.94);
+        opacity: .72;
+        transition: transform .45s cubic-bezier(.16,1,.3,1), opacity .45s ease, border-color .35s ease, box-shadow .45s ease;
+    }
+    .project-case.is-active {
+        transform: scale(1);
+        opacity: 1;
+        border-color: rgba(125,211,252,.25);
+        box-shadow: 0 24px 70px rgba(0,0,0,.44);
+    }
+    .project-case .case-inner { transform: none; }
+    .project-deck {
+        mask-image: linear-gradient(90deg, transparent 0, black 1.5rem, black calc(100% - 1.5rem), transparent 100%);
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, black 1.5rem, black calc(100% - 1.5rem), transparent 100%);
+    }
+    .terminal-crt {
+        border-radius: 1.05rem;
+        box-shadow: 0 22px 60px rgba(0,0,0,.52), 0 0 28px rgba(57,255,136,.05);
+    }
+    .terminal-body { min-height: 13.2rem; }
+    .hero-feature-strip {
+        grid-template-columns: 1fr;
+    }
+    .hero-mini-card {
+        padding: .82rem .9rem;
+    }
+    .mission-actions a {
+        min-width: min(100%, 10rem);
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title { font-size: clamp(2.55rem, 15vw, 4.1rem); }
+    .hero-subtitle { font-size: .98rem; }
+    .portrait-stage { min-height: 17rem; }
+    .portrait-card { width: min(72vw, 18rem); }
+    .terminal-output { font-size: .76rem; line-height: 1.7; }
+    .project-case { min-width: 88%; }
+}
+
+.hero-bg {
+    background-position: center center;
+}
+@media (max-width: 768px) {
+    .hero-bg {
+        background-size: cover;
+        background-position: 50% 0%;
+    }
+    .hero-bg::before { opacity: .52; }
+}
+
+    
+
+/* Final micro update: unified premium card motion and single-file note reader */
+.pro-card, .project-case, .note-link-card, .portrait-card {
+    transform-style: preserve-3d;
+}
+.pro-card {
+    position: relative;
+    overflow: hidden;
+}
+.pro-card::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+        linear-gradient(135deg, rgba(255,255,255,.055), transparent 32%, transparent 72%, rgba(125,211,252,.045)),
+        radial-gradient(circle at var(--mx, 50%) var(--my, 0%), rgba(125,211,252,.075), transparent 15rem);
+    opacity: .38;
+    transition: opacity .45s ease;
+}
+.pro-card:hover::after { opacity: .78; }
+.pro-card > * { position: relative; z-index: 1; }
+@media (pointer: fine) and (min-width: 1024px) {
+    .pro-card:hover {
+        transform: translateY(-8px) scale(1.008);
+        box-shadow: 0 32px 90px rgba(0,0,0,.50), 0 0 0 1px rgba(125,211,252,.07) inset;
+    }
+    .timeline-card:hover, #toolkit .pro-card:hover, #about .pro-card:hover {
+        border-color: rgba(125,211,252,.30);
+    }
+}
+.note-reader {
+    position: fixed;
+    inset: 0;
+    z-index: 95;
+    display: none;
+    overflow-y: auto;
+    background:
+        radial-gradient(circle at 20% 0%, rgba(125,211,252,.12), transparent 28rem),
+        radial-gradient(circle at 90% 10%, rgba(52,211,153,.08), transparent 24rem),
+        rgba(1,3,7,.92);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+.note-reader.open { display: block; }
+.note-reader-shell {
+    width: min(92vw, 860px);
+    margin: 6.5rem auto 4rem;
+    border: 1px solid rgba(148,163,184,.18);
+    border-radius: 28px;
+    background: linear-gradient(145deg, rgba(12,16,24,.92), rgba(3,7,14,.88));
+    box-shadow: 0 50px 150px rgba(0,0,0,.72);
+    overflow: hidden;
+}
+.note-reader-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.35rem;
+    border-bottom: 1px solid rgba(148,163,184,.13);
+    background: rgba(255,255,255,.025);
+}
+.note-reader-kicker {
+    color: #74ff9a;
+    font: 700 .72rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+}
+.note-reader-close {
+    width: 2.25rem;
+    height: 2.25rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    border: 1px solid rgba(148,163,184,.18);
+    color: #e5e7eb;
+    background: rgba(255,255,255,.035);
+    transition: transform .25s ease, background .25s ease;
+}
+.note-reader-close:hover { transform: scale(1.06); background: rgba(255,255,255,.075); }
+.note-reader-body { padding: clamp(1.5rem, 4vw, 3.2rem); }
+.note-reader-body h1 {
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    line-height: .98;
+    letter-spacing: -.05em;
+    color: white;
+    margin-bottom: 1rem;
+}
+.note-reader-meta {
+    color: #94a3b8;
+    font: .82rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    margin-bottom: 2rem;
+}
+.note-reader-body p {
+    color: #cbd5e1;
+    line-height: 1.85;
+    font-size: 1.02rem;
+    margin: 1.1rem 0;
+}
+.note-reader-body h2 {
+    color: #e0f2fe;
+    font-size: 1.25rem;
+    margin-top: 2rem;
+    margin-bottom: .8rem;
+}
+.note-reader-body code {
+    color: #74ff9a;
+    background: rgba(116,255,154,.08);
+    border: 1px solid rgba(116,255,154,.13);
+    border-radius: .45rem;
+    padding: .12rem .35rem;
+}
+@media (max-width: 768px) {
+    .note-reader-shell { margin-top: 4.5rem; border-radius: 22px; }
+    .note-reader-body p { font-size: .98rem; }
+}
+
     </style>
 </head>
 <body class="antialiased selection:bg-blue-600 selection:text-white">
     <canvas id="ambient-grid" class="ambient-canvas" aria-hidden="true"></canvas>
+    <div id="scroll-progress" class="scroll-progress" aria-hidden="true"></div>
 
-    <!-- 导航栏 -->
-    <nav class="fixed top-0 w-full glass-nav z-50 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between text-sm font-medium text-gray-300">
-            <a href="#" class="text-white tracking-widest font-semibold hover:opacity-70 transition duration-300 flex items-center gap-3"><span class="nav-dot"></span>HAITAO ZHENG</a>
-            <div class="hidden lg:flex space-x-8">
-                <a href="#projects" class="hover:text-white transition duration-300">Projects</a>
-                <a href="#education" class="hover:text-white transition duration-300">Education</a>
-                <a href="#toolkit" class="hover:text-white transition duration-300">Toolkit</a>
-                <a href="#notes" class="hover:text-white transition duration-300">Notes</a>
-                <a href="#about" class="hover:text-white transition duration-300">About</a>
+    
+<!-- 导航栏 -->
+<nav class="fixed top-0 w-full glass-nav z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-5 md:px-6 h-14 flex items-center justify-between text-sm font-medium text-gray-300">
+        <a href="#" class="text-white tracking-widest font-semibold hover:opacity-70 transition duration-300 flex items-center gap-3"><span class="nav-dot"></span>HAITAO ZHENG</a>
+        <div class="hidden lg:flex space-x-8">
+            <a href="#projects" class="hover:text-white transition duration-300">Projects</a>
+            <a href="#education" class="hover:text-white transition duration-300">Education</a>
+            <a href="#toolkit" class="hover:text-white transition duration-300">Toolkit</a>
+            <a href="#notes" class="hover:text-white transition duration-300">Notes</a>
+            <a href="#about" class="hover:text-white transition duration-300">About</a>
+        </div>
+        <div class="flex items-center gap-3">
+            <button id="command-open" class="hidden md:inline-flex items-center rounded-full border border-gray-700 px-3 py-1.5 text-xs font-mono text-gray-300 hover:text-white hover:border-sky-300/40 transition" aria-label="Open command palette">⌘K</button>
+            <a href="https://github.com/0xTaoZ" target="_blank" class="hidden sm:flex hover:text-white transition duration-300 border border-gray-600 rounded-full px-4 py-1.5 hover:bg-white hover:text-black items-center">
+                <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path></svg>
+                GitHub
+            </a>
+            <button id="mobile-menu-button" class="mobile-menu-button" aria-label="Open mobile navigation">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16"></path></svg>
+            </button>
+        </div>
+    </div>
+</nav>
+<div id="mobile-menu" class="mobile-menu" aria-hidden="true">
+    <a href="#projects">Projects <span>↘</span></a>
+    <a href="#education">Education <span>↘</span></a>
+    <a href="#toolkit">Toolkit <span>↘</span></a>
+    <a href="#notes">Notes <span>↘</span></a>
+    <a href="#about">About <span>↘</span></a>
+    <a href="https://github.com/0xTaoZ" target="_blank">GitHub <span>↗</span></a>
+</div>
+
+<!-- 首屏焦点区：保留原版宇宙背景 + 低调黑客终端 -->
+<section class="hero-bg hero-shell flex items-center justify-center overflow-hidden">
+    <div class="hero-overlay z-0"></div>
+    <div class="mission-layout relative z-10">
+        <div class="reveal">
+            <div class="mb-6 flex justify-center lg:justify-start">
+                <div class="eyebrow"><span class="nav-dot"></span>blue-team / cloud-security / systems</div>
             </div>
-            <div class="flex space-x-4">
-                <a href="https://github.com/0xTaoZ" target="_blank" class="hover:text-white transition duration-300 border border-gray-600 rounded-full px-4 py-1.5 hover:bg-white hover:text-black flex items-center">
-                    <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path></svg>
-                    GitHub
+            <h1 class="hero-title font-bold text-white drop-shadow-2xl text-center lg:text-left">
+                HAITAO ZHENG <br>
+                <span class="text-[0.55em] text-gray-300 font-light tracking-tight">(TAO)</span>
+            </h1>
+            <p class="hero-subtitle text-gray-200 font-medium tracking-wide mt-6 drop-shadow-lg text-center lg:text-left max-w-3xl">
+                Cyber Security & Privacy <span class="text-gray-500">|</span> Systems & Infrastructure Engineering
+            </p>
+
+            <div class="terminal-crt mt-8 max-w-3xl mx-auto lg:mx-0" aria-label="terminal intro">
+                <div class="terminal-topbar">
+                    <div class="terminal-dots"><span></span><span></span><span></span></div>
+                    <span>local / portfolio console</span>
+                </div>
+                <div class="terminal-body">
+                    <div id="terminal-output" class="terminal-output"></div><span class="terminal-cursor"></span>
+                </div>
+            </div>
+
+            <div class="hero-feature-strip max-w-3xl mx-auto lg:mx-0">
+                <a href="#projects" class="hero-mini-card">
+                    <p class="num">01 / featured</p>
+                    <p class="title">cloudtrail-quickscan</p>
+                    <p class="meta">AWS logs · detection checks</p>
+                </a>
+                <a href="#projects" class="hero-mini-card">
+                    <p class="num">02 / open source</p>
+                    <p class="title">cfn-lint contribution</p>
+                    <p class="meta">CloudFormation · PR</p>
+                </a>
+                <a href="#notes" class="hero-mini-card">
+                    <p class="num">03 / notes</p>
+                    <p class="title">Security Lab Notes</p>
+                    <p class="meta">writeups · learning log</p>
                 </a>
             </div>
-        </div>
-    </nav>
 
-    <!-- 首屏焦点区 -->
-    <section class="hero-bg min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-        <div class="hero-overlay z-0"></div>
-        <div class="relative z-10 w-full max-w-[100rem] mx-auto flex flex-col-reverse lg:flex-row items-center justify-between gap-12 lg:gap-0 pl-6 lg:pl-12 pr-0">
-            
-            <div class="w-full lg:w-[55%] text-center lg:text-left reveal lg:pl-8 pr-6 lg:pr-0">
-                <div class="mb-6 flex justify-center lg:justify-start">
-                    <div class="eyebrow"><span class="nav-dot"></span>blue-team / cloud-security / systems</div>
-                </div>
-                <h1 class="text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight mb-2 text-white leading-tight drop-shadow-2xl">
-                    HAITAO ZHENG <br>
-                    <span class="text-3xl md:text-5xl lg:text-6xl text-gray-300 font-light">(TAO)</span>
-                </h1>
-                <p class="text-lg md:text-2xl text-gray-200 font-medium mb-8 tracking-wide mt-4 drop-shadow-lg">
-                    Cyber Security & Privacy <br class="hidden lg:block">
-                    <span class="text-gray-400 hidden lg:inline">|</span> 
-                    <span class="lg:hidden text-gray-400"> | </span> 
-                    Systems & Infrastructure Engineering
-                </p>
-                
-                <div class="flex flex-wrap justify-center lg:justify-start gap-4 mt-10">
-                    <a href="mailto:h@tzheng.dev" class="px-7 py-3.5 rounded-full font-medium text-sm border border-gray-300 text-white hover:bg-white hover:text-black hover:scale-105 transition-all duration-500 shadow-lg flex items-center">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                        h@tzheng.dev
-                    </a>
-                    <a href="https://tzheng.dev" class="px-7 py-3.5 rounded-full font-medium text-sm border border-gray-300 text-white hover:bg-white hover:text-black hover:scale-105 transition-all duration-500 shadow-lg flex items-center">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
-                        tzheng.dev
-                    </a>
-                    <a href="https://github.com/0xTaoZ" target="_blank" class="px-7 py-3.5 rounded-full font-medium text-sm border border-gray-300 text-white hover:bg-white hover:text-black hover:scale-105 transition-all duration-500 shadow-lg flex items-center">
-                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path></svg>
-                        0xTaoZ
-                    </a>
-                </div>
-
-                <div class="proof-grid mt-10 text-left">
-                    <div class="proof-card">
-                        <p class="proof-number">02</p>
-                        <p class="proof-label">security tools shipped</p>
-                    </div>
-                    <div class="proof-card">
-                        <p class="proof-number">01</p>
-                        <p class="proof-label">upstream PR in review</p>
-                    </div>
-                    <div class="proof-card">
-                        <p class="proof-number">CSP</p>
-                        <p class="proof-label">cyber security & privacy track</p>
-                    </div>
-                </div>
+            <div class="mission-actions flex flex-wrap justify-center lg:justify-start gap-4 mt-8">
+                <a href="#projects" class="primary-action px-7 py-3.5 rounded-full font-semibold text-sm flex items-center">View Projects</a>
+                <a href="mailto:h@tzheng.dev" class="secondary-action px-7 py-3.5 rounded-full font-medium text-sm flex items-center">h@tzheng.dev</a>
+                <a href="https://github.com/0xTaoZ" target="_blank" class="secondary-action px-7 py-3.5 rounded-full font-medium text-sm flex items-center">GitHub</a>
             </div>
-            
-            <div class="w-full lg:w-[45%] flex justify-end reveal delay-200">
-                <div class="relative w-full max-w-[320px] md:max-w-[420px] lg:max-w-[600px] flex justify-end">
-                    <div class="absolute -inset-2 bg-gradient-to-br from-blue-900/30 to-gray-800/30 rounded-full blur-3xl opacity-50 group-hover:opacity-80 transition duration-1000"></div>
-                    <img src="./IMG_1419.jpg" alt="Haitao Zheng" class="relative w-full object-cover object-right transition-transform duration-700 hover:scale-[1.02] avatar-mask">
-                    <div class="signal-dossier hidden md:block p-5 text-left">
-                        <div class="flex items-center justify-between gap-4">
-                            <p class="text-[11px] uppercase tracking-[0.18em] text-sky-200 font-mono">active file</p>
-                            <span class="chip">live</span>
-                        </div>
-                        <h2 class="mt-3 text-lg font-semibold text-white tracking-tight">Security engineering portfolio</h2>
-                        <p class="mt-2 text-sm text-gray-400 leading-relaxed">Building small, reviewable tools around logs, IOCs, AWS, and detection work.</p>
-                        <div class="dossier-line">
-                            <span class="text-gray-500">latest</span>
-                            <span class="text-gray-200">cfn-lint PR #4566</span>
-                        </div>
-                        <div class="dossier-line">
-                            <span class="text-gray-500">stack</span>
-                            <span class="text-gray-200">Python / Java / C / SQL</span>
-                        </div>
+        </div>
+
+        <div class="portrait-stage reveal delay-200">
+            <div class="portrait-orbit" aria-hidden="true"></div>
+            <div class="portrait-card" data-tilt>
+                <img src="./IMG_1419.jpg" alt="Haitao Zheng" class="object-cover object-right transition-transform duration-700 hover:scale-[1.015] avatar-mask">
+                <div class="portrait-caption text-left">
+                    <div class="flex items-center justify-between gap-4">
+                        <p class="text-[11px] uppercase tracking-[0.18em] text-sky-200 font-mono">active file</p>
+                        <span class="chip">live</span>
+                    </div>
+                    <h2 class="mt-3 text-lg font-semibold text-white tracking-tight">Security engineering portfolio</h2>
+                    <p class="mt-2 text-sm text-gray-400 leading-relaxed">Compact work around logs, IOCs, AWS, and reviewable engineering.</p>
+                    <div class="dossier-line">
+                        <span class="text-gray-500">latest</span>
+                        <span class="text-gray-200">cfn-lint PR #4566</span>
+                    </div>
+                    <div class="dossier-line">
+                        <span class="text-gray-500">stack</span>
+                        <span class="text-gray-200">Python / Java / C / SQL</span>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- 精选项目 -->
-    <section id="projects" class="py-32 px-6 max-w-7xl mx-auto">
-        <div class="mb-16 reveal">
-            <p class="section-kicker mb-4">Selected work</p>
-            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-                <div>
-                    <h2 class="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">Projects.</h2>
-                    <p class="text-xl text-gray-400 font-light max-w-3xl">Small tools and practical work around logs, IOCs, cloud security, and detection engineering.</p>
-                </div>
-                <a href="https://github.com/0xTaoZ" target="_blank" class="inline-flex items-center justify-center px-5 py-3 rounded-full border border-sky-300/25 text-sky-100 hover:bg-sky-300 hover:text-black transition duration-300 text-sm font-medium">
-                    View GitHub
-                </a>
+<!-- 精选项目：保留内容，升级为低调高级 case deck -->
+<section id="projects" class="py-32 px-6 max-w-7xl mx-auto">
+    <div class="mb-14 reveal">
+        <p class="section-kicker mb-4">Selected work</p>
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+            <div>
+                <h2 class="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">Projects.</h2>
+                <p class="text-xl text-gray-400 font-light max-w-3xl">Small tools and practical work around logs, IOCs, cloud security, and detection engineering.</p>
             </div>
+            <a href="https://github.com/0xTaoZ" target="_blank" class="inline-flex items-center justify-center px-5 py-3 rounded-full border border-sky-300/25 text-sky-100 hover:bg-sky-300 hover:text-black transition duration-300 text-sm font-medium">
+                View GitHub
+            </a>
         </div>
+        <p class="mt-5 text-sm text-gray-500 font-mono md:hidden">Swipe sideways to scan project cards →</p>
+    </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <article class="signal-card project-card-featured p-8 md:p-10 reveal">
+    <div class="project-deck">
+        <article class="project-case featured reveal" data-tilt>
+            <div class="case-inner">
                 <div class="flex flex-wrap items-center gap-2 mb-6">
-                    <span class="chip">Python</span>
-                    <span class="chip">AWS</span>
-                    <span class="chip">CloudTrail</span>
-                    <span class="chip">Tests</span>
+                    <span class="chip">Python</span><span class="chip">AWS</span><span class="chip">CloudTrail</span><span class="chip">Tests</span>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-8 items-start">
-                    <div>
-                        <p class="section-kicker mb-3">Featured build</p>
-                        <h3 class="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">cloudtrail-quickscan</h3>
-                        <p class="text-gray-300 leading-relaxed font-light text-lg">A small CLI that reads CloudTrail JSON and reports suspicious events such as failed logins, root activity, IAM changes, security group changes, and uncommon regions.</p>
-                    </div>
-                    <div class="rounded-2xl border border-sky-300/15 bg-black/25 p-5 font-mono text-xs text-gray-300 leading-7">
-                        <p><span class="text-emerald-300">$</span> cloudtrail-quickscan sample.json</p>
-                        <p class="text-gray-500">Events checked: 5</p>
-                        <p class="text-sky-200">Findings: HIGH=1, MED=3, LOW=1</p>
-                        <p class="text-gray-500">Output: text / json</p>
-                    </div>
+                <p class="section-kicker mb-3">Featured build</p>
+                <h3 class="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">cloudtrail-quickscan</h3>
+                <p class="text-gray-300 leading-relaxed font-light text-lg">A small CLI that reads CloudTrail JSON and reports suspicious events such as failed logins, root activity, IAM changes, security group changes, and uncommon regions.</p>
+                <div class="case-meta-grid">
+                    <div class="case-fact"><b>Problem</b><span>Cloud logs get noisy fast; small checks make first-pass review easier.</span></div>
+                    <div class="case-fact"><b>Build</b><span>Plain Python parser, rule functions, fake CloudTrail samples, JSON output, and tests.</span></div>
+                    <div class="case-fact"><b>Output</b><span>HIGH / MED / LOW findings in text or JSON for quick review.</span></div>
+                    <div class="case-fact"><b>Next</b><span>Add short investigation playbooks and more realistic event samples.</span></div>
                 </div>
-                <details class="details-panel">
-                    <summary class="flex items-center justify-between text-sm text-sky-200 font-medium">
-                        Full project note
-                        <span class="summary-icon text-xl">+</span>
-                    </summary>
-                    <div class="pt-4 text-sm text-gray-400 leading-relaxed space-y-3">
-                        <p><strong class="text-gray-200 font-medium">Why it exists:</strong> CloudTrail is one of the first places I want to understand better for cloud security. This project keeps the scope small: load fake or exported events, run readable checks, and print a result that can be reviewed quickly.</p>
-                        <p><strong class="text-gray-200 font-medium">Implementation:</strong> Plain Python parser, rule functions, fake CloudTrail samples, JSON output, contribution notes, and unit tests.</p>
-                        <p><strong class="text-gray-200 font-medium">Next step:</strong> Add a few investigation playbooks and more realistic sample events.</p>
-                    </div>
-                </details>
-                <div class="mt-7">
-                    <a href="https://github.com/0xTaoZ/cloudtrail-quickscan" target="_blank" class="text-sm text-sky-200 hover:text-white transition">github.com/0xTaoZ/cloudtrail-quickscan</a>
-                </div>
-            </article>
+                <a href="https://github.com/0xTaoZ/cloudtrail-quickscan" target="_blank" class="case-link">Open on GitHub <span>↗</span></a>
+            </div>
+        </article>
 
-            <article class="signal-card p-8 reveal delay-100">
-                <div class="flex flex-wrap items-center gap-2 mb-6">
-                    <span class="chip">Open Source</span>
-                    <span class="chip">CloudFormation</span>
-                    <span class="chip">PR</span>
-                </div>
+        <article class="project-case reveal delay-100" data-tilt>
+            <div class="case-inner">
+                <div class="flex flex-wrap items-center gap-2 mb-6"><span class="chip">Open Source</span><span class="chip">CloudFormation</span><span class="chip">PR</span></div>
                 <h3 class="text-2xl font-bold text-white mb-3">cfn-lint contribution</h3>
                 <p class="text-gray-400 leading-relaxed font-light">A focused upstream fix for a false positive in the legacy Elasticsearch domain instance type enum.</p>
-                <details class="details-panel">
-                    <summary class="flex items-center justify-between text-sm text-sky-200 font-medium">
-                        Contribution notes
-                        <span class="summary-icon text-xl">+</span>
-                    </summary>
-                    <div class="pt-4 text-sm text-gray-400 leading-relaxed space-y-3">
-                        <p><strong class="text-gray-200 font-medium">Issue:</strong> `AWS::Elasticsearch::Domain` was being checked with OpenSearch `.search` instance names.</p>
-                        <p><strong class="text-gray-200 font-medium">Patch:</strong> Restore `.elasticsearch` values for the legacy resource and add a regression fixture.</p>
-                    </div>
-                </details>
-                <div class="mt-7">
-                    <a href="https://github.com/aws-cloudformation/cfn-lint/pull/4566" target="_blank" class="text-sm text-sky-200 hover:text-white transition">aws-cloudformation/cfn-lint#4566</a>
+                <div class="case-meta-grid">
+                    <div class="case-fact"><b>Issue</b><span>`AWS::Elasticsearch::Domain` was checked with OpenSearch `.search` instance names.</span></div>
+                    <div class="case-fact"><b>Patch</b><span>Restore `.elasticsearch` values for the legacy resource and add a regression fixture.</span></div>
                 </div>
-            </article>
+                <a href="https://github.com/aws-cloudformation/cfn-lint/pull/4566" target="_blank" class="case-link">View PR <span>↗</span></a>
+            </div>
+        </article>
 
-            <article class="signal-card p-8 reveal">
-                <div class="flex flex-wrap items-center gap-2 mb-6">
-                    <span class="chip">Python</span>
-                    <span class="chip">IOC</span>
-                    <span class="chip">Blue Team</span>
-                </div>
+        <article class="project-case reveal" data-tilt>
+            <div class="case-inner">
+                <div class="flex flex-wrap items-center gap-2 mb-6"><span class="chip">Python</span><span class="chip">IOC</span><span class="chip">Blue Team</span></div>
                 <h3 class="text-2xl font-bold text-white mb-3">Sentinel-IOC-Toolkit</h3>
                 <p class="text-gray-400 leading-relaxed font-light">A lightweight tool for extracting IOCs from logs and preparing them for security analysis workflows.</p>
-                <details class="details-panel">
-                    <summary class="flex items-center justify-between text-sm text-sky-200 font-medium">
-                        Project details
-                        <span class="summary-icon text-xl">+</span>
-                    </summary>
-                    <div class="pt-4 text-sm text-gray-400 leading-relaxed space-y-3">
-                        <p><strong class="text-gray-200 font-medium">Background:</strong> Built around a practical blue-team workflow: collect messy text, extract useful indicators, and make the result easier to review.</p>
-                        <p><strong class="text-gray-200 font-medium">Next step:</strong> Add tests, sample logs, and clearer CLI documentation.</p>
-                    </div>
-                </details>
-                <div class="mt-7">
-                    <a href="https://github.com/0xTaoZ/Sentinel-IOC-Toolkit" target="_blank" class="text-sm text-sky-200 hover:text-white transition">github.com/0xTaoZ/Sentinel-IOC-Toolkit</a>
+                <div class="case-meta-grid">
+                    <div class="case-fact"><b>Workflow</b><span>Collect messy text, extract indicators, remove duplicates, and make output easier to review.</span></div>
+                    <div class="case-fact"><b>Next</b><span>Add tests, sample logs, clearer CLI docs, and CSV/JSON exports.</span></div>
                 </div>
-            </article>
+                <a href="https://github.com/0xTaoZ/Sentinel-IOC-Toolkit" target="_blank" class="case-link">Open on GitHub <span>↗</span></a>
+            </div>
+        </article>
 
-            <article class="signal-card p-8 reveal delay-100">
-                <div class="flex flex-wrap items-center gap-2 mb-6">
-                    <span class="chip">HTML</span>
-                    <span class="chip">Design</span>
-                    <span class="chip">Portfolio</span>
-                </div>
+        <article class="project-case reveal delay-100" data-tilt>
+            <div class="case-inner">
+                <div class="flex flex-wrap items-center gap-2 mb-6"><span class="chip">HTML</span><span class="chip">Design</span><span class="chip">Portfolio</span></div>
                 <h3 class="text-2xl font-bold text-white mb-3">tzheng.dev</h3>
                 <p class="text-gray-400 leading-relaxed font-light">This personal site: a compact portfolio for education, projects, notes, and security-focused engineering work.</p>
-                <details class="details-panel">
-                    <summary class="flex items-center justify-between text-sm text-sky-200 font-medium">
-                        Site direction
-                        <span class="summary-icon text-xl">+</span>
-                    </summary>
-                    <div class="pt-4 text-sm text-gray-400 leading-relaxed space-y-3">
-                        <p><strong class="text-gray-200 font-medium">Goal:</strong> Keep the site fast and simple while making the information architecture more useful.</p>
-                        <p><strong class="text-gray-200 font-medium">Next step:</strong> Add short project writeups and research notes over time.</p>
-                    </div>
-                </details>
-                <div class="mt-7">
-                    <a href="https://github.com/0xTaoZ/tzheng.dev" target="_blank" class="text-sm text-sky-200 hover:text-white transition">github.com/0xTaoZ/tzheng.dev</a>
+                <div class="case-meta-grid">
+                    <div class="case-fact"><b>Goal</b><span>Keep the site fast and simple while making the information architecture more useful.</span></div>
+                    <div class="case-fact"><b>Direction</b><span>Add short project writeups and research notes over time.</span></div>
                 </div>
-            </article>
-        </div>
-    </section>
+                <a href="https://github.com/0xTaoZ/tzheng.dev" target="_blank" class="case-link">Open repository <span>↗</span></a>
+            </div>
+        </article>
+    </div>
+    <div class="project-dots" id="project-dots" aria-hidden="true">
+        <button class="active" data-project-index="0"></button>
+        <button data-project-index="1"></button>
+        <button data-project-index="2"></button>
+        <button data-project-index="3"></button>
+    </div>
+</section>
 
-    <div class="divider max-w-6xl mx-auto"></div>
-
-    <!-- 教育经历 (修复了校标显示与集美中学排版) -->
+<div class="divider max-w-6xl mx-auto"></div>
+<!-- 教育经历 (修复了校标显示与集美中学排版) -->
     <section id="education" class="py-32 px-6 max-w-7xl mx-auto">
         <div class="mb-20 text-center reveal">
             <h2 class="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">Education.</h2>
@@ -635,8 +1267,8 @@
                             <img src="hbrs-logo.png" alt="H-BRS" class="w-10 h-10 object-contain">
                         </div>
                         <div>
-                            <h3 class="text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight">Bonn-Rhein-Sieg University of Applied Sciences (H-BRS)</h3>
-                            <span class="text-gray-500 font-normal">Germany</span>
+                            <h3 class="text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight">University of Bonn-Rhein-Sieg (H-BRS)</h3>
+                            <span class="text-gray-500 font-normal">Germany · University of Applied Sciences</span>
                         </div>
                     </div>
                     <span class="text-gray-400 font-mono text-sm shrink-0">Oct 2025 – Present</span>
@@ -779,92 +1411,44 @@
 
     <div class="divider max-w-6xl mx-auto"></div>
 
-    <!-- 学习笔记 -->
-    <section id="notes" class="py-32 px-6 max-w-7xl mx-auto">
-        <div class="mb-16 text-center reveal">
-            <p class="section-kicker mb-4">Research log</p>
-            <h2 class="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">Notes.</h2>
-            <p class="text-xl text-gray-400 font-light max-w-3xl mx-auto">Short notes from projects, labs, and open-source work. Simple writing, focused on what changed and what was learned.</p>
-        </div>
+    
+<!-- 学习笔记：低调可扩展的静态文章入口 -->
+<section id="notes" class="py-32 px-6 max-w-7xl mx-auto">
+    <div class="mb-16 text-center reveal">
+        <p class="section-kicker mb-4">Research log</p>
+        <h2 class="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">Notes.</h2>
+        <p class="text-xl text-gray-400 font-light max-w-3xl mx-auto">Short notes from projects, labs, and open-source work. Designed as a quiet, expandable writing system.</p>
+    </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <article class="pro-card note-card p-8 reveal">
-                <div class="flex items-center justify-between gap-4 mb-8">
-                    <span class="chip">Research log</span>
-                    <span class="text-xs text-gray-500 font-mono">2026-06</span>
-                </div>
-                <h3 class="text-xl font-bold text-white mb-4">Reading CloudTrail logs by hand</h3>
-                <p class="text-gray-400 text-sm leading-relaxed font-light">A short note about failed console logins, root account events, IAM changes, and why small log samples are useful before using bigger tools.</p>
-                <details class="note-body">
-                    <summary class="flex items-center justify-between text-sm text-sky-200 font-medium">
-                        Read note
-                        <span class="summary-icon text-xl">+</span>
-                    </summary>
-                    <div class="pt-4 text-sm text-gray-400 leading-relaxed space-y-3">
-                        <p>I started with a small fake CloudTrail file because real cloud logs can get noisy very fast. A small sample makes it easier to ask basic questions first: who did the action, where did it happen, and was it normal for this account?</p>
-                        <p>The most useful checks were simple ones: failed console login, root account activity, IAM access key changes, security group changes, and events from regions I do not expect. These are not final detections, but they are good starting points for a review.</p>
-                        <p>My next step is to add short investigation notes for every rule. I want each finding to answer: what happened, why it matters, and what I should check next.</p>
-                    </div>
-                </details>
-                <div class="mt-7 flex flex-wrap gap-2">
-                    <span class="chip">AWS</span>
-                    <span class="chip">logs</span>
-                </div>
-            </article>
+    <div class="notes-grid-final">
+        <a class="note-link-card reveal" href="#note-cloudtrail" data-note="cloudtrail">
+            <div class="flex items-center justify-between gap-4 mb-8"><span class="chip">Research log</span><span class="text-xs text-gray-500 font-mono">2026-06</span></div>
+            <h3 class="text-xl font-bold text-white mb-4">Reading CloudTrail logs by hand</h3>
+            <p class="text-gray-400 text-sm leading-relaxed font-light">A short note about failed console logins, root account events, IAM changes, and why small log samples are useful before using bigger tools.</p>
+            <span class="read-more">Read note <span>↗</span></span>
+            <div class="mt-7 flex flex-wrap gap-2"><span class="chip">AWS</span><span class="chip">logs</span></div>
+        </a>
 
-            <article class="pro-card note-card p-8 reveal delay-100">
-                <div class="flex items-center justify-between gap-4 mb-8">
-                    <span class="chip">Open source</span>
-                    <span class="text-xs text-gray-500 font-mono">2026-06</span>
-                </div>
-                <h3 class="text-xl font-bold text-white mb-4">What makes a small PR good</h3>
-                <p class="text-gray-400 text-sm leading-relaxed font-light">A practical reminder: reproduce the bug, keep the patch small, add one test or fixture, and explain what was verified.</p>
-                <details class="note-body">
-                    <summary class="flex items-center justify-between text-sm text-sky-200 font-medium">
-                        Read note
-                        <span class="summary-icon text-xl">+</span>
-                    </summary>
-                    <div class="pt-4 text-sm text-gray-400 leading-relaxed space-y-3">
-                        <p>I used to think open source contribution means big features. Now I think a small bug fix can be better. A good PR should make the maintainer's job easy.</p>
-                        <p>The pattern I like is simple: find a real issue, reproduce it, keep the diff focused, add a small test or fixture, and write the PR description with the exact reason for the change.</p>
-                        <p>The hard part is not the code only. It is also understanding how the project wants changes to be made. If the maintainer wants the fix in another place, I should adjust instead of defending my first version too much.</p>
-                    </div>
-                </details>
-                <div class="mt-7 flex flex-wrap gap-2">
-                    <span class="chip">open-source</span>
-                    <span class="chip">workflow</span>
-                </div>
-            </article>
+        <a class="note-link-card reveal delay-100" href="#note-open-source" data-note="opensource">
+            <div class="flex items-center justify-between gap-4 mb-8"><span class="chip">Open source</span><span class="text-xs text-gray-500 font-mono">2026-06</span></div>
+            <h3 class="text-xl font-bold text-white mb-4">What makes a small PR good</h3>
+            <p class="text-gray-400 text-sm leading-relaxed font-light">A practical reminder: reproduce the bug, keep the patch small, add one test or fixture, and explain what was verified.</p>
+            <span class="read-more">Read note <span>↗</span></span>
+            <div class="mt-7 flex flex-wrap gap-2"><span class="chip">open-source</span><span class="chip">workflow</span></div>
+        </a>
 
-            <article class="pro-card note-card p-8 reveal delay-200">
-                <div class="flex items-center justify-between gap-4 mb-8">
-                    <span class="chip">Blue team</span>
-                    <span class="text-xs text-gray-500 font-mono">2026-06</span>
-                </div>
-                <h3 class="text-xl font-bold text-white mb-4">IOC extraction as a first blue-team tool</h3>
-                <p class="text-gray-400 text-sm leading-relaxed font-light">Notes on parsing IPs, URLs, and hashes from text, and why the output format matters for later investigation.</p>
-                <details class="note-body">
-                    <summary class="flex items-center justify-between text-sm text-sky-200 font-medium">
-                        Read note
-                        <span class="summary-icon text-xl">+</span>
-                    </summary>
-                    <div class="pt-4 text-sm text-gray-400 leading-relaxed space-y-3">
-                        <p>IOC extraction is a good first tool because it is small but still close to real security work. Logs and reports often have IPs, URLs, domains, and hashes mixed with normal text.</p>
-                        <p>The first version does not need to be smart. It should be predictable. I care more about clean output, duplicate removal, and simple tests than trying to detect everything.</p>
-                        <p>Later, the tool can connect to reputation APIs or export to CSV/JSON. But the base should stay readable, because I want to understand each step instead of hiding everything behind a big framework.</p>
-                    </div>
-                </details>
-                <div class="mt-7 flex flex-wrap gap-2">
-                    <span class="chip">IOC</span>
-                    <span class="chip">Python</span>
-                </div>
-            </article>
-        </div>
-    </section>
+        <a class="note-link-card reveal delay-200" href="#note-ioc" data-note="ioc">
+            <div class="flex items-center justify-between gap-4 mb-8"><span class="chip">Blue team</span><span class="text-xs text-gray-500 font-mono">2026-06</span></div>
+            <h3 class="text-xl font-bold text-white mb-4">IOC extraction as a first blue-team tool</h3>
+            <p class="text-gray-400 text-sm leading-relaxed font-light">Notes on parsing IPs, URLs, and hashes from text, and why the output format matters for later investigation.</p>
+            <span class="read-more">Read note <span>↗</span></span>
+            <div class="mt-7 flex flex-wrap gap-2"><span class="chip">IOC</span><span class="chip">Python</span></div>
+        </a>
+    </div>
+</section>
 
-    <div class="divider max-w-6xl mx-auto"></div>
-
-    <!-- 语言与兴趣 (Languages & Interests) -->
+<div class="divider max-w-6xl mx-auto"></div>
+<!-- 语言与兴趣 (Languages & Interests) -->
     <section id="about" class="py-32 px-6 max-w-7xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
             <!-- Languages -->
@@ -919,87 +1503,278 @@
         </div>
     </footer>
 
-    <!-- JavaScript：无限触发渐入动画 -->
+    
+
+    <div id="note-reader" class="note-reader" aria-hidden="true">
+        <div class="note-reader-shell" role="dialog" aria-modal="true" aria-labelledby="note-reader-title">
+            <div class="note-reader-top">
+                <span class="note-reader-kicker">Security Lab Note</span>
+                <button id="note-reader-close" class="note-reader-close" aria-label="Close note">×</button>
+            </div>
+            <article id="note-reader-body" class="note-reader-body"></article>
+        </div>
+    </div>
+
+    <div id="command-palette" class="command-palette" aria-hidden="true">
+        <div class="command-box">
+            <input id="command-input" aria-label="Command palette search" placeholder="Search commands…  Projects / Notes / GitHub / Contact">
+            <div>
+                <a href="#projects"><span>Open Projects</span><span>↘</span></a>
+                <a href="#notes"><span>Read Notes</span><span>↘</span></a>
+                <a href="#education"><span>View Education</span><span>↘</span></a>
+                <a href="https://github.com/0xTaoZ" target="_blank"><span>Open GitHub</span><span>↗</span></a>
+                <a href="mailto:h@tzheng.dev"><span>Contact by email</span><span>↗</span></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript：低调交互、移动导航、终端打字、3D tilt、渐入动画 -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const canvas = document.getElementById("ambient-grid");
             const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            const isMobile = () => window.matchMedia("(max-width: 768px)").matches;
 
+            const progress = document.getElementById('scroll-progress');
+            const updateProgress = () => {
+                if (!progress) return;
+                const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+                progress.style.width = `${Math.min(100, Math.max(0, window.scrollY / max * 100))}%`;
+            };
+            updateProgress();
+            window.addEventListener('scroll', updateProgress, { passive: true });
+
+
+            const canvas = document.getElementById("ambient-grid");
             if (canvas && !reducedMotion) {
                 const ctx = canvas.getContext("2d");
-                let width = 0;
-                let height = 0;
-                let particles = [];
-
+                let width = 0, height = 0, particles = [], raf = null;
                 const resizeCanvas = () => {
-                    width = canvas.width = window.innerWidth * window.devicePixelRatio;
-                    height = canvas.height = window.innerHeight * window.devicePixelRatio;
+                    const dpr = Math.min(window.devicePixelRatio || 1, isMobile() ? 1.25 : 2);
+                    width = canvas.width = Math.floor(window.innerWidth * dpr);
+                    height = canvas.height = Math.floor(window.innerHeight * dpr);
                     canvas.style.width = `${window.innerWidth}px`;
                     canvas.style.height = `${window.innerHeight}px`;
-                    const count = Math.min(80, Math.floor(window.innerWidth / 18));
+                    const count = isMobile() ? Math.min(34, Math.floor(window.innerWidth / 12)) : Math.min(80, Math.floor(window.innerWidth / 18));
                     particles = Array.from({ length: count }, () => ({
                         x: Math.random() * width,
                         y: Math.random() * height,
-                        vx: (Math.random() - 0.5) * 0.18 * window.devicePixelRatio,
-                        vy: (Math.random() - 0.5) * 0.18 * window.devicePixelRatio,
+                        vx: (Math.random() - 0.5) * 0.16 * dpr,
+                        vy: (Math.random() - 0.5) * 0.16 * dpr,
+                        r: (Math.random() * 0.8 + 0.55) * dpr
                     }));
                 };
-
                 const draw = () => {
                     ctx.clearRect(0, 0, width, height);
-                    ctx.fillStyle = "rgba(125, 211, 252, 0.42)";
-                    ctx.strokeStyle = "rgba(125, 211, 252, 0.11)";
+                    ctx.fillStyle = "rgba(125, 211, 252, 0.38)";
+                    ctx.strokeStyle = "rgba(125, 211, 252, 0.10)";
+                    const linkDistance = (isMobile() ? 92 : 150) * Math.min(window.devicePixelRatio || 1, 2);
                     particles.forEach((p, index) => {
-                        p.x += p.vx;
-                        p.y += p.vy;
+                        p.x += p.vx; p.y += p.vy;
                         if (p.x < 0 || p.x > width) p.vx *= -1;
                         if (p.y < 0 || p.y > height) p.vy *= -1;
-                        ctx.beginPath();
-                        ctx.arc(p.x, p.y, 1.15 * window.devicePixelRatio, 0, Math.PI * 2);
-                        ctx.fill();
+                        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
                         for (let i = index + 1; i < particles.length; i++) {
-                            const q = particles[i];
-                            const dx = p.x - q.x;
-                            const dy = p.y - q.y;
-                            const distance = Math.hypot(dx, dy);
-                            if (distance < 150 * window.devicePixelRatio) {
-                                ctx.globalAlpha = 1 - distance / (150 * window.devicePixelRatio);
-                                ctx.beginPath();
-                                ctx.moveTo(p.x, p.y);
-                                ctx.lineTo(q.x, q.y);
-                                ctx.stroke();
-                                ctx.globalAlpha = 1;
+                            const q = particles[i], dx = p.x - q.x, dy = p.y - q.y, distance = Math.hypot(dx, dy);
+                            if (distance < linkDistance) {
+                                ctx.globalAlpha = 1 - distance / linkDistance;
+                                ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke(); ctx.globalAlpha = 1;
                             }
                         }
                     });
-                    requestAnimationFrame(draw);
+                    raf = requestAnimationFrame(draw);
                 };
-
-                resizeCanvas();
-                window.addEventListener("resize", resizeCanvas);
-                draw();
+                resizeCanvas(); draw();
+                window.addEventListener("resize", () => { cancelAnimationFrame(raf); resizeCanvas(); draw(); }, { passive: true });
             }
 
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px 0px -40px 0px',
-                threshold: 0.1 
-            };
-
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    } else {
-                        entry.target.classList.remove('active');
-                    }
-                });
-            }, observerOptions);
+                entries.forEach(entry => entry.target.classList.toggle('active', entry.isIntersecting));
+            }, { root: null, rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-            const revealElements = document.querySelectorAll('.reveal');
-            revealElements.forEach(el => {
-                observer.observe(el);
+            const terminal = document.getElementById('terminal-output');
+            if (terminal) {
+                const lines = [
+                    '$ whoami',
+                    'haitao.zheng',
+                    '',
+                    '$ focus --area',
+                    'blue-team / cloud-security / systems',
+                    '',
+                    '$ projects --featured',
+                    '01  cloudtrail-quickscan',
+                    '02  cfn-lint contribution',
+                    '03  Sentinel-IOC-Toolkit',
+                    '',
+                    '$ status',
+                    'building small, reviewable security tools'
+                ];
+                const text = lines.join('\n');
+                if (reducedMotion) terminal.textContent = text;
+                else {
+                    let i = 0;
+                    const type = () => {
+                        terminal.textContent = text.slice(0, i++);
+                        if (i <= text.length) setTimeout(type, text[i - 2] === '\n' ? 90 : 18);
+                    };
+                    type();
+                }
+            }
+
+            const mobileButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileButton?.addEventListener('click', () => {
+                const open = mobileMenu.classList.toggle('open');
+                mobileMenu.setAttribute('aria-hidden', String(!open));
             });
+            mobileMenu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                mobileMenu.setAttribute('aria-hidden', 'true');
+            }));
+
+            const palette = document.getElementById('command-palette');
+            const commandOpen = document.getElementById('command-open');
+            const commandInput = document.getElementById('command-input');
+            const openPalette = () => { palette?.classList.add('open'); palette?.setAttribute('aria-hidden','false'); setTimeout(() => commandInput?.focus(), 20); };
+            const closePalette = () => { palette?.classList.remove('open'); palette?.setAttribute('aria-hidden','true'); };
+            commandOpen?.addEventListener('click', openPalette);
+            palette?.addEventListener('click', (e) => { if (e.target === palette) closePalette(); });
+            palette?.querySelectorAll('a').forEach(a => a.addEventListener('click', closePalette));
+            window.addEventListener('keydown', (e) => {
+                if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openPalette(); }
+                if (e.key === 'Escape') closePalette();
+            });
+
+            if (!reducedMotion && !isMobile()) {
+                document.querySelectorAll('[data-tilt], .pro-card, .note-link-card').forEach(card => {
+                    card.addEventListener('mousemove', (e) => {
+                        const r = card.getBoundingClientRect();
+                        const x = e.clientX - r.left, y = e.clientY - r.top;
+                        const rx = ((y / r.height) - 0.5) * -5;
+                        const ry = ((x / r.width) - 0.5) * 5;
+                        card.style.setProperty('--mx', `${(x / r.width) * 100}%`);
+                        card.style.setProperty('--my', `${(y / r.height) * 100}%`);
+                        card.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+                    });
+                    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+                });
+            }
+
+
+            const projectDeck = document.querySelector('.project-deck');
+            const projectCards = Array.from(document.querySelectorAll('.project-case'));
+            const projectDots = Array.from(document.querySelectorAll('#project-dots button'));
+            const setActiveProject = () => {
+                if (!projectDeck || projectCards.length === 0) return;
+                const deckRect = projectDeck.getBoundingClientRect();
+                const center = deckRect.left + deckRect.width / 2;
+                let activeIndex = 0;
+                let best = Infinity;
+                projectCards.forEach((card, index) => {
+                    const rect = card.getBoundingClientRect();
+                    const distance = Math.abs(rect.left + rect.width / 2 - center);
+                    if (distance < best) { best = distance; activeIndex = index; }
+                });
+                projectCards.forEach((card, index) => card.classList.toggle('is-active', index === activeIndex));
+                projectDots.forEach((dot, index) => dot.classList.toggle('active', index === activeIndex));
+            };
+            setActiveProject();
+            projectDeck?.addEventListener('scroll', () => requestAnimationFrame(setActiveProject), { passive: true });
+            window.addEventListener('resize', setActiveProject, { passive: true });
+            projectDots.forEach((dot, index) => {
+                dot.addEventListener('click', () => projectCards[index]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }));
+            });
+
+            if (!reducedMotion && !isMobile() && window.matchMedia('(pointer: fine)').matches) {
+                const magneticItems = document.querySelectorAll('.primary-action, .secondary-action, .hero-mini-card, .case-link, .note-link-card');
+                magneticItems.forEach(item => {
+                    item.addEventListener('mousemove', (e) => {
+                        const r = item.getBoundingClientRect();
+                        const x = (e.clientX - r.left - r.width / 2) / r.width;
+                        const y = (e.clientY - r.top - r.height / 2) / r.height;
+                        item.style.transform = `translate(${x * 8}px, ${y * 8}px)`;
+                    });
+                    item.addEventListener('mouseleave', () => { item.style.transform = ''; });
+                });
+            }
+
+            const noteData = {
+                cloudtrail: {
+                    title: 'Reading CloudTrail logs by hand',
+                    meta: '2026-06 · AWS · logs · blue team',
+                    html: `
+                        <h1 id="note-reader-title">Reading CloudTrail logs by hand</h1>
+                        <div class="note-reader-meta">2026-06 · AWS · logs · blue team</div>
+                        <p>I started with a small fake CloudTrail file because real cloud logs can get noisy very fast. A small sample makes it easier to ask basic questions first: who did the action, where did it happen, and was it normal for this account?</p>
+                        <h2>What I look for first</h2>
+                        <p>The most useful checks were simple ones: failed console login, root account activity, IAM access key changes, security group changes, and events from regions I do not expect.</p>
+                        <p>These are not final detections, but they are good starting points for review. The next step is to add short investigation notes for every rule: what happened, why it matters, and what to check next.</p>
+                    `
+                },
+                opensource: {
+                    title: 'What makes a small PR good',
+                    meta: '2026-06 · open source · workflow',
+                    html: `
+                        <h1 id="note-reader-title">What makes a small PR good</h1>
+                        <div class="note-reader-meta">2026-06 · open source · workflow</div>
+                        <p>I used to think open source contribution means big features. Now I think a small bug fix can be better. A good PR should make the maintainer's job easy.</p>
+                        <h2>The pattern</h2>
+                        <p>Find a real issue, reproduce it, keep the diff focused, add a small test or fixture, and write the PR description with the exact reason for the change.</p>
+                        <p>The hard part is not the code only. It is also understanding how the project wants changes to be made.</p>
+                    `
+                },
+                ioc: {
+                    title: 'IOC extraction as a first blue-team tool',
+                    meta: '2026-06 · IOC · Python · blue team',
+                    html: `
+                        <h1 id="note-reader-title">IOC extraction as a first blue-team tool</h1>
+                        <div class="note-reader-meta">2026-06 · IOC · Python · blue team</div>
+                        <p>IOC extraction is a good first tool because it is small but still close to real security work. Logs and reports often have IPs, URLs, domains, and hashes mixed with normal text.</p>
+                        <h2>Keep the first version predictable</h2>
+                        <p>The first version does not need to be smart. It should be predictable. I care more about clean output, duplicate removal, and simple tests than trying to detect everything.</p>
+                        <p>Later, the tool can export to CSV/JSON or connect to reputation APIs. But the base should stay readable, because every step should be understandable.</p>
+                    `
+                }
+            };
+            const noteReader = document.getElementById('note-reader');
+            const noteReaderBody = document.getElementById('note-reader-body');
+            const noteReaderClose = document.getElementById('note-reader-close');
+            const openNote = (key, push = true) => {
+                const note = noteData[key];
+                if (!note || !noteReader || !noteReaderBody) return;
+                noteReaderBody.innerHTML = note.html;
+                noteReader.classList.add('open');
+                noteReader.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+                if (push) history.pushState({ note: key }, '', `#note-${key === 'opensource' ? 'open-source' : key}`);
+            };
+            const closeNote = (clearHash = true) => {
+                noteReader?.classList.remove('open');
+                noteReader?.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+                if (clearHash && location.hash.startsWith('#note-')) history.pushState(null, '', location.pathname + location.search);
+            };
+            document.querySelectorAll('[data-note]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openNote(link.dataset.note);
+                });
+            });
+            noteReaderClose?.addEventListener('click', () => closeNote());
+            noteReader?.addEventListener('click', (e) => { if (e.target === noteReader) closeNote(); });
+            window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && noteReader?.classList.contains('open')) closeNote(); });
+            window.addEventListener('popstate', () => {
+                const h = location.hash;
+                if (h === '#note-cloudtrail') openNote('cloudtrail', false);
+                else if (h === '#note-open-source') openNote('opensource', false);
+                else if (h === '#note-ioc') openNote('ioc', false);
+                else closeNote(false);
+            });
+            if (location.hash === '#note-cloudtrail') openNote('cloudtrail', false);
+            if (location.hash === '#note-open-source') openNote('opensource', false);
+            if (location.hash === '#note-ioc') openNote('ioc', false);
+
+
         });
     </script>
 </body>
