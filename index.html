@@ -4,23 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Haitao Zheng | Cyber Security</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2302050a'/%3E%3Cpath d='M16 22h32M16 32h22M16 42h32' stroke='%237dd3fc' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='46' cy='32' r='5' fill='%2334d399'/%3E%3C/svg%3E">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        :root {
+            color-scheme: dark;
+            --bg: #020305;
+            --panel: rgba(12, 16, 24, 0.68);
+            --panel-strong: rgba(18, 24, 35, 0.82);
+            --line: rgba(148, 163, 184, 0.18);
+            --line-strong: rgba(125, 211, 252, 0.28);
+            --blue: #7dd3fc;
+            --cyan: #22d3ee;
+            --green: #34d399;
+            --violet: #a78bfa;
+            --amber: #fbbf24;
+        }
+
         /* 苹果系统级排版 */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #000000;
+            background:
+                radial-gradient(circle at 18% 10%, rgba(56, 189, 248, 0.12), transparent 30rem),
+                radial-gradient(circle at 88% 18%, rgba(167, 139, 250, 0.10), transparent 26rem),
+                radial-gradient(circle at 55% 88%, rgba(52, 211, 153, 0.07), transparent 32rem),
+                var(--bg);
             color: #f5f5f7;
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
 
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(125, 211, 252, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(125, 211, 252, 0.045) 1px, transparent 1px);
+            background-size: 64px 64px;
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), transparent 72%);
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(255,255,255,0.08), transparent 22rem),
+                linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.32));
+        }
+
+        body > section,
+        body > footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        .ambient-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.32;
+            mix-blend-mode: screen;
+        }
+
         /* 磨砂玻璃导航栏 */
         .glass-nav {
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(2, 5, 10, 0.62);
             backdrop-filter: saturate(180%) blur(30px);
             -webkit-backdrop-filter: saturate(180%) blur(30px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.13);
         }
 
         /* 地球视差背景 */
@@ -34,16 +92,18 @@
         .hero-overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 70%, #000000 100%);
+            background:
+                radial-gradient(circle at 18% 46%, rgba(34, 211, 238, 0.13), transparent 23rem),
+                linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.72) 68%, var(--bg) 100%);
         }
 
         /* 阻尼高级卡片 */
         .pro-card {
-            background-color: rgba(22, 22, 24, 0.6);
+            background: linear-gradient(145deg, rgba(22, 29, 43, 0.72), rgba(9, 12, 18, 0.64));
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
+            border: 1px solid var(--line);
+            border-radius: 18px;
             transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
                         background-color 0.6s ease,
                         box-shadow 0.8s cubic-bezier(0.16, 1, 0.3, 1),
@@ -52,10 +112,10 @@
             height: 100%;
         }
         .pro-card:hover {
-            transform: scale(1.03) translateY(-8px);
-            background-color: rgba(30, 30, 34, 0.9);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+            transform: translateY(-7px);
+            background: linear-gradient(145deg, rgba(28, 38, 56, 0.88), rgba(10, 14, 21, 0.74));
+            border-color: rgba(125, 211, 252, 0.28);
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.48), 0 0 0 1px rgba(125, 211, 252, 0.05) inset;
         }
 
         /* 滚动无限触发浮现动画 */
@@ -73,7 +133,7 @@
 
         .divider {
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            background: linear-gradient(90deg, transparent, rgba(125, 211, 252, 0.22), rgba(167, 139, 250, 0.15), transparent);
         }
         .delay-100 { transition-delay: 100ms; }
         .delay-200 { transition-delay: 200ms; }
@@ -83,17 +143,268 @@
             -webkit-mask-image: radial-gradient(ellipse at 85% 50%, black 40%, transparent 80%);
             mask-image: radial-gradient(ellipse at 85% 50%, black 40%, transparent 80%);
         }
+
+        .nav-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: var(--green);
+            box-shadow: 0 0 18px rgba(52, 211, 153, 0.8);
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            color: #bae6fd;
+            border: 1px solid rgba(125, 211, 252, 0.24);
+            background: rgba(8, 20, 33, 0.46);
+            border-radius: 999px;
+            padding: 0.42rem 0.75rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.04em;
+        }
+
+        .terminal-panel {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            border: 1px solid rgba(125, 211, 252, 0.18);
+            background: rgba(1, 8, 16, 0.56);
+            box-shadow: 0 24px 90px rgba(0, 0, 0, 0.5);
+        }
+
+        .terminal-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(125, 211, 252, 0.08), transparent);
+            transform: translateX(-100%);
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateX(-100%); }
+            45%, 100% { transform: translateX(100%); }
+        }
+
+        .terminal-line {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            color: #cbd5e1;
+            font-size: 0.82rem;
+            line-height: 1.8;
+        }
+
+        .terminal-line span {
+            color: var(--green);
+        }
+
+        .section-kicker {
+            color: var(--blue);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            background: rgba(15, 23, 42, 0.54);
+            color: #cbd5e1;
+            border-radius: 999px;
+            padding: 0.34rem 0.65rem;
+            font-size: 0.72rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+        }
+
+        .signal-card {
+            border-radius: 18px;
+            border: 1px solid rgba(148, 163, 184, 0.14);
+            background:
+                linear-gradient(160deg, rgba(15, 23, 42, 0.74), rgba(2, 6, 14, 0.56)),
+                radial-gradient(circle at 100% 0%, rgba(34, 211, 238, 0.12), transparent 18rem);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .signal-card::after {
+            content: "";
+            position: absolute;
+            inset: auto 0 0 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(125, 211, 252, 0.45), transparent);
+        }
+
+        .status-row {
+            border: 1px solid rgba(125, 211, 252, 0.16);
+            background: rgba(4, 12, 24, 0.56);
+            border-radius: 16px;
+        }
+
+        .proof-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.75rem;
+        }
+
+        .proof-card {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(125, 211, 252, 0.18);
+            background: linear-gradient(145deg, rgba(8, 18, 32, 0.72), rgba(3, 8, 16, 0.58));
+            border-radius: 16px;
+            padding: 1rem;
+        }
+
+        .proof-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 15% 0%, rgba(125, 211, 252, 0.13), transparent 42%);
+            pointer-events: none;
+        }
+
+        .proof-number {
+            color: #f8fafc;
+            font-size: 1.45rem;
+            line-height: 1;
+            font-weight: 700;
+            letter-spacing: 0;
+        }
+
+        .proof-label {
+            color: #94a3b8;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 0.68rem;
+            line-height: 1.45;
+            margin-top: 0.45rem;
+        }
+
+        .signal-dossier {
+            position: absolute;
+            left: -1.5rem;
+            bottom: 2.25rem;
+            width: 330px;
+            border-radius: 20px;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            background:
+                linear-gradient(145deg, rgba(10, 18, 31, 0.78), rgba(2, 6, 14, 0.64)),
+                radial-gradient(circle at 100% 0%, rgba(34, 211, 238, 0.14), transparent 12rem);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+        }
+
+        .dossier-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.12);
+            padding-top: 0.78rem;
+            margin-top: 0.78rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 0.72rem;
+        }
+
+        .project-card-featured {
+            grid-column: span 1;
+        }
+
+        @media (min-width: 1024px) {
+            .project-card-featured {
+                grid-column: span 2;
+            }
+        }
+
+        .note-card {
+            min-height: 100%;
+        }
+
+        .note-body {
+            border-top: 1px solid rgba(148, 163, 184, 0.13);
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+        }
+
+        .timeline-card {
+            position: relative;
+        }
+
+        .timeline-card::before {
+            content: "";
+            position: absolute;
+            left: -1.25rem;
+            top: 2rem;
+            bottom: 2rem;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(125, 211, 252, 0.45), transparent);
+            display: none;
+        }
+
+        @media (min-width: 1024px) {
+            .timeline-card::before {
+                display: block;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .proof-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .proof-card {
+                text-align: left;
+            }
+        }
+
+        .details-panel {
+            border-top: 1px solid rgba(148, 163, 184, 0.14);
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+        }
+
+        details summary {
+            cursor: pointer;
+            list-style: none;
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details[open] .summary-icon {
+            transform: rotate(45deg);
+        }
+
+        .summary-icon {
+            transition: transform 0.25s ease;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-blue-600 selection:text-white">
+    <canvas id="ambient-grid" class="ambient-canvas" aria-hidden="true"></canvas>
 
     <!-- 导航栏 -->
     <nav class="fixed top-0 w-full glass-nav z-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between text-sm font-medium text-gray-300">
-            <a href="#" class="text-white tracking-widest font-semibold hover:opacity-70 transition duration-300">TAO ZHENG</a>
-            <div class="hidden md:flex space-x-8">
+            <a href="#" class="text-white tracking-widest font-semibold hover:opacity-70 transition duration-300 flex items-center gap-3"><span class="nav-dot"></span>HAITAO ZHENG</a>
+            <div class="hidden lg:flex space-x-8">
+                <a href="#projects" class="hover:text-white transition duration-300">Projects</a>
                 <a href="#education" class="hover:text-white transition duration-300">Education</a>
                 <a href="#toolkit" class="hover:text-white transition duration-300">Toolkit</a>
+                <a href="#notes" class="hover:text-white transition duration-300">Notes</a>
                 <a href="#about" class="hover:text-white transition duration-300">About</a>
             </div>
             <div class="flex space-x-4">
@@ -111,6 +422,9 @@
         <div class="relative z-10 w-full max-w-[100rem] mx-auto flex flex-col-reverse lg:flex-row items-center justify-between gap-12 lg:gap-0 pl-6 lg:pl-12 pr-0">
             
             <div class="w-full lg:w-[55%] text-center lg:text-left reveal lg:pl-8 pr-6 lg:pr-0">
+                <div class="mb-6 flex justify-center lg:justify-start">
+                    <div class="eyebrow"><span class="nav-dot"></span>blue-team / cloud-security / systems</div>
+                </div>
                 <h1 class="text-5xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight mb-2 text-white leading-tight drop-shadow-2xl">
                     HAITAO ZHENG <br>
                     <span class="text-3xl md:text-5xl lg:text-6xl text-gray-300 font-light">(TAO)</span>
@@ -136,16 +450,172 @@
                         0xTaoZ
                     </a>
                 </div>
+
+                <div class="proof-grid mt-10 text-left">
+                    <div class="proof-card">
+                        <p class="proof-number">02</p>
+                        <p class="proof-label">security tools shipped</p>
+                    </div>
+                    <div class="proof-card">
+                        <p class="proof-number">01</p>
+                        <p class="proof-label">upstream PR in review</p>
+                    </div>
+                    <div class="proof-card">
+                        <p class="proof-number">CSP</p>
+                        <p class="proof-label">cyber security & privacy track</p>
+                    </div>
+                </div>
             </div>
             
             <div class="w-full lg:w-[45%] flex justify-end reveal delay-200">
                 <div class="relative w-full max-w-[320px] md:max-w-[420px] lg:max-w-[600px] flex justify-end">
                     <div class="absolute -inset-2 bg-gradient-to-br from-blue-900/30 to-gray-800/30 rounded-full blur-3xl opacity-50 group-hover:opacity-80 transition duration-1000"></div>
                     <img src="./IMG_1419.jpg" alt="Haitao Zheng" class="relative w-full object-cover object-right transition-transform duration-700 hover:scale-[1.02] avatar-mask">
+                    <div class="signal-dossier hidden md:block p-5 text-left">
+                        <div class="flex items-center justify-between gap-4">
+                            <p class="text-[11px] uppercase tracking-[0.18em] text-sky-200 font-mono">active file</p>
+                            <span class="chip">live</span>
+                        </div>
+                        <h2 class="mt-3 text-lg font-semibold text-white tracking-tight">Security engineering portfolio</h2>
+                        <p class="mt-2 text-sm text-gray-400 leading-relaxed">Building small, reviewable tools around logs, IOCs, AWS, and detection work.</p>
+                        <div class="dossier-line">
+                            <span class="text-gray-500">latest</span>
+                            <span class="text-gray-200">cfn-lint PR #4566</span>
+                        </div>
+                        <div class="dossier-line">
+                            <span class="text-gray-500">stack</span>
+                            <span class="text-gray-200">Python / Java / C / SQL</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- 精选项目 -->
+    <section id="projects" class="py-32 px-6 max-w-7xl mx-auto">
+        <div class="mb-16 reveal">
+            <p class="section-kicker mb-4">Selected work</p>
+            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+                <div>
+                    <h2 class="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">Projects.</h2>
+                    <p class="text-xl text-gray-400 font-light max-w-3xl">Small tools and practical work around logs, IOCs, cloud security, and detection engineering.</p>
+                </div>
+                <a href="https://github.com/0xTaoZ" target="_blank" class="inline-flex items-center justify-center px-5 py-3 rounded-full border border-sky-300/25 text-sky-100 hover:bg-sky-300 hover:text-black transition duration-300 text-sm font-medium">
+                    View GitHub
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <article class="signal-card project-card-featured p-8 md:p-10 reveal">
+                <div class="flex flex-wrap items-center gap-2 mb-6">
+                    <span class="chip">Python</span>
+                    <span class="chip">AWS</span>
+                    <span class="chip">CloudTrail</span>
+                    <span class="chip">Tests</span>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-8 items-start">
+                    <div>
+                        <p class="section-kicker mb-3">Featured build</p>
+                        <h3 class="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">cloudtrail-quickscan</h3>
+                        <p class="text-gray-300 leading-relaxed font-light text-lg">A small CLI that reads CloudTrail JSON and reports suspicious events such as failed logins, root activity, IAM changes, security group changes, and uncommon regions.</p>
+                    </div>
+                    <div class="rounded-2xl border border-sky-300/15 bg-black/25 p-5 font-mono text-xs text-gray-300 leading-7">
+                        <p><span class="text-emerald-300">$</span> cloudtrail-quickscan sample.json</p>
+                        <p class="text-gray-500">Events checked: 5</p>
+                        <p class="text-sky-200">Findings: HIGH=1, MED=3, LOW=1</p>
+                        <p class="text-gray-500">Output: text / json</p>
+                    </div>
+                </div>
+                <details class="details-panel">
+                    <summary class="flex items-center justify-between text-sm text-sky-200 font-medium">
+                        Full project note
+                        <span class="summary-icon text-xl">+</span>
+                    </summary>
+                    <div class="pt-4 text-sm text-gray-400 leading-relaxed space-y-3">
+                        <p><strong class="text-gray-200 font-medium">Why it exists:</strong> CloudTrail is one of the first places I want to understand better for cloud security. This project keeps the scope small: load fake or exported events, run readable checks, and print a result that can be reviewed quickly.</p>
+                        <p><strong class="text-gray-200 font-medium">Implementation:</strong> Plain Python parser, rule functions, fake CloudTrail samples, JSON output, contribution notes, and unit tests.</p>
+                        <p><strong class="text-gray-200 font-medium">Next step:</strong> Add a few investigation playbooks and more realistic sample events.</p>
+                    </div>
+                </details>
+                <div class="mt-7">
+                    <a href="https://github.com/0xTaoZ/cloudtrail-quickscan" target="_blank" class="text-sm text-sky-200 hover:text-white transition">github.com/0xTaoZ/cloudtrail-quickscan</a>
+                </div>
+            </article>
+
+            <article class="signal-card p-8 reveal delay-100">
+                <div class="flex flex-wrap items-center gap-2 mb-6">
+                    <span class="chip">Open Source</span>
+                    <span class="chip">CloudFormation</span>
+                    <span class="chip">PR</span>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3">cfn-lint contribution</h3>
+                <p class="text-gray-400 leading-relaxed font-light">A focused upstream fix for a false positive in the legacy Elasticsearch domain instance type enum.</p>
+                <details class="details-panel">
+                    <summary class="flex items-center justify-between text-sm text-sky-200 font-medium">
+                        Contribution notes
+                        <span class="summary-icon text-xl">+</span>
+                    </summary>
+                    <div class="pt-4 text-sm text-gray-400 leading-relaxed space-y-3">
+                        <p><strong class="text-gray-200 font-medium">Issue:</strong> `AWS::Elasticsearch::Domain` was being checked with OpenSearch `.search` instance names.</p>
+                        <p><strong class="text-gray-200 font-medium">Patch:</strong> Restore `.elasticsearch` values for the legacy resource and add a regression fixture.</p>
+                    </div>
+                </details>
+                <div class="mt-7">
+                    <a href="https://github.com/aws-cloudformation/cfn-lint/pull/4566" target="_blank" class="text-sm text-sky-200 hover:text-white transition">aws-cloudformation/cfn-lint#4566</a>
+                </div>
+            </article>
+
+            <article class="signal-card p-8 reveal">
+                <div class="flex flex-wrap items-center gap-2 mb-6">
+                    <span class="chip">Python</span>
+                    <span class="chip">IOC</span>
+                    <span class="chip">Blue Team</span>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3">Sentinel-IOC-Toolkit</h3>
+                <p class="text-gray-400 leading-relaxed font-light">A lightweight tool for extracting IOCs from logs and preparing them for security analysis workflows.</p>
+                <details class="details-panel">
+                    <summary class="flex items-center justify-between text-sm text-sky-200 font-medium">
+                        Project details
+                        <span class="summary-icon text-xl">+</span>
+                    </summary>
+                    <div class="pt-4 text-sm text-gray-400 leading-relaxed space-y-3">
+                        <p><strong class="text-gray-200 font-medium">Background:</strong> Built around a practical blue-team workflow: collect messy text, extract useful indicators, and make the result easier to review.</p>
+                        <p><strong class="text-gray-200 font-medium">Next step:</strong> Add tests, sample logs, and clearer CLI documentation.</p>
+                    </div>
+                </details>
+                <div class="mt-7">
+                    <a href="https://github.com/0xTaoZ/Sentinel-IOC-Toolkit" target="_blank" class="text-sm text-sky-200 hover:text-white transition">github.com/0xTaoZ/Sentinel-IOC-Toolkit</a>
+                </div>
+            </article>
+
+            <article class="signal-card p-8 reveal delay-100">
+                <div class="flex flex-wrap items-center gap-2 mb-6">
+                    <span class="chip">HTML</span>
+                    <span class="chip">Design</span>
+                    <span class="chip">Portfolio</span>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3">tzheng.dev</h3>
+                <p class="text-gray-400 leading-relaxed font-light">This personal site: a compact portfolio for education, projects, notes, and security-focused engineering work.</p>
+                <details class="details-panel">
+                    <summary class="flex items-center justify-between text-sm text-sky-200 font-medium">
+                        Site direction
+                        <span class="summary-icon text-xl">+</span>
+                    </summary>
+                    <div class="pt-4 text-sm text-gray-400 leading-relaxed space-y-3">
+                        <p><strong class="text-gray-200 font-medium">Goal:</strong> Keep the site fast and simple while making the information architecture more useful.</p>
+                        <p><strong class="text-gray-200 font-medium">Next step:</strong> Add short project writeups and research notes over time.</p>
+                    </div>
+                </details>
+                <div class="mt-7">
+                    <a href="https://github.com/0xTaoZ/tzheng.dev" target="_blank" class="text-sm text-sky-200 hover:text-white transition">github.com/0xTaoZ/tzheng.dev</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <div class="divider max-w-6xl mx-auto"></div>
 
     <!-- 教育经历 (修复了校标显示与集美中学排版) -->
     <section id="education" class="py-32 px-6 max-w-7xl mx-auto">
@@ -157,15 +627,15 @@
         <div class="flex flex-col gap-8">
             <!-- H-BRS -->
         <div class="reveal">
-            <div class="pro-card p-10 md:p-12">
+            <div class="pro-card timeline-card p-10 md:p-12">
                 <!-- 头部区域紧凑化 -->
                 <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-6 gap-6">
-                    <div class="flex items-center gap-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-5 w-full text-center sm:text-left">
                         <div class="w-16 h-16 rounded-2xl bg-gray-800/40 border border-gray-700/50 flex items-center justify-center shrink-0 overflow-hidden">
                             <img src="hbrs-logo.png" alt="H-BRS" class="w-10 h-10 object-contain">
                         </div>
                         <div>
-                            <h3 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Hochschule Bonn-Rhein-Sieg (H-BRS)</h3>
+                            <h3 class="text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight">Bonn-Rhein-Sieg University of Applied Sciences (H-BRS)</h3>
                             <span class="text-gray-500 font-normal">Germany</span>
                         </div>
                     </div>
@@ -184,14 +654,14 @@
         </div>
             <!-- FHM -->
             <div class="reveal delay-100">
-                <div class="pro-card p-10 md:p-12">
+                <div class="pro-card timeline-card p-10 md:p-12">
                     <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-6 gap-4">
-                        <div class="flex items-center gap-5">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-4 w-full text-center sm:text-left">
                             <div class="w-14 h-14 rounded-xl bg-gray-800/40 border border-gray-700/50 flex items-center justify-center overflow-hidden shrink-0">
                                 <img src="fhm-logo.png" alt="FHM" class="w-10 h-10 object-contain">
                             </div>
                             <div>
-                                <h3 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Fachhochschule des Mittelstands (FHM)</h3>
+                                <h3 class="text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight">FHM University of Applied Sciences</h3>
                                 <span class="text-gray-500 font-normal">Bielefeld, Germany</span>
                             </div>
                         </div>
@@ -210,7 +680,7 @@
                 <div class="reveal">
                     <div class="pro-card p-10">
                         <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-6 gap-4">
-                            <div class="flex items-center gap-4">
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-4 w-full text-center sm:text-left">
                                 <div class="w-12 h-12 rounded-lg bg-gray-800/40 border border-gray-700/50 flex items-center justify-center overflow-hidden shrink-0">
                                     <img src="harvard-logo.png" alt="Harvard" class="w-8 h-8 object-contain">
                                 </div>
@@ -234,7 +704,7 @@
                 <div class="reveal delay-100">
                     <div class="pro-card p-10">
                         <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-6 gap-4">
-                            <div class="flex items-center gap-4">
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-4 w-full text-center sm:text-left">
                                 <div class="w-12 h-12 rounded-lg bg-gray-800/40 border border-gray-700/50 flex items-center justify-center overflow-hidden shrink-0">
                                     <img src="jimei-logo.png" alt="Jimei" class="w-8 h-8 object-contain">
                                 </div>
@@ -309,6 +779,91 @@
 
     <div class="divider max-w-6xl mx-auto"></div>
 
+    <!-- 学习笔记 -->
+    <section id="notes" class="py-32 px-6 max-w-7xl mx-auto">
+        <div class="mb-16 text-center reveal">
+            <p class="section-kicker mb-4">Research log</p>
+            <h2 class="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">Notes.</h2>
+            <p class="text-xl text-gray-400 font-light max-w-3xl mx-auto">Short notes from projects, labs, and open-source work. Simple writing, focused on what changed and what was learned.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <article class="pro-card note-card p-8 reveal">
+                <div class="flex items-center justify-between gap-4 mb-8">
+                    <span class="chip">Research log</span>
+                    <span class="text-xs text-gray-500 font-mono">2026-06</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-4">Reading CloudTrail logs by hand</h3>
+                <p class="text-gray-400 text-sm leading-relaxed font-light">A short note about failed console logins, root account events, IAM changes, and why small log samples are useful before using bigger tools.</p>
+                <details class="note-body">
+                    <summary class="flex items-center justify-between text-sm text-sky-200 font-medium">
+                        Read note
+                        <span class="summary-icon text-xl">+</span>
+                    </summary>
+                    <div class="pt-4 text-sm text-gray-400 leading-relaxed space-y-3">
+                        <p>I started with a small fake CloudTrail file because real cloud logs can get noisy very fast. A small sample makes it easier to ask basic questions first: who did the action, where did it happen, and was it normal for this account?</p>
+                        <p>The most useful checks were simple ones: failed console login, root account activity, IAM access key changes, security group changes, and events from regions I do not expect. These are not final detections, but they are good starting points for a review.</p>
+                        <p>My next step is to add short investigation notes for every rule. I want each finding to answer: what happened, why it matters, and what I should check next.</p>
+                    </div>
+                </details>
+                <div class="mt-7 flex flex-wrap gap-2">
+                    <span class="chip">AWS</span>
+                    <span class="chip">logs</span>
+                </div>
+            </article>
+
+            <article class="pro-card note-card p-8 reveal delay-100">
+                <div class="flex items-center justify-between gap-4 mb-8">
+                    <span class="chip">Open source</span>
+                    <span class="text-xs text-gray-500 font-mono">2026-06</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-4">What makes a small PR good</h3>
+                <p class="text-gray-400 text-sm leading-relaxed font-light">A practical reminder: reproduce the bug, keep the patch small, add one test or fixture, and explain what was verified.</p>
+                <details class="note-body">
+                    <summary class="flex items-center justify-between text-sm text-sky-200 font-medium">
+                        Read note
+                        <span class="summary-icon text-xl">+</span>
+                    </summary>
+                    <div class="pt-4 text-sm text-gray-400 leading-relaxed space-y-3">
+                        <p>I used to think open source contribution means big features. Now I think a small bug fix can be better. A good PR should make the maintainer's job easy.</p>
+                        <p>The pattern I like is simple: find a real issue, reproduce it, keep the diff focused, add a small test or fixture, and write the PR description with the exact reason for the change.</p>
+                        <p>The hard part is not the code only. It is also understanding how the project wants changes to be made. If the maintainer wants the fix in another place, I should adjust instead of defending my first version too much.</p>
+                    </div>
+                </details>
+                <div class="mt-7 flex flex-wrap gap-2">
+                    <span class="chip">open-source</span>
+                    <span class="chip">workflow</span>
+                </div>
+            </article>
+
+            <article class="pro-card note-card p-8 reveal delay-200">
+                <div class="flex items-center justify-between gap-4 mb-8">
+                    <span class="chip">Blue team</span>
+                    <span class="text-xs text-gray-500 font-mono">2026-06</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-4">IOC extraction as a first blue-team tool</h3>
+                <p class="text-gray-400 text-sm leading-relaxed font-light">Notes on parsing IPs, URLs, and hashes from text, and why the output format matters for later investigation.</p>
+                <details class="note-body">
+                    <summary class="flex items-center justify-between text-sm text-sky-200 font-medium">
+                        Read note
+                        <span class="summary-icon text-xl">+</span>
+                    </summary>
+                    <div class="pt-4 text-sm text-gray-400 leading-relaxed space-y-3">
+                        <p>IOC extraction is a good first tool because it is small but still close to real security work. Logs and reports often have IPs, URLs, domains, and hashes mixed with normal text.</p>
+                        <p>The first version does not need to be smart. It should be predictable. I care more about clean output, duplicate removal, and simple tests than trying to detect everything.</p>
+                        <p>Later, the tool can connect to reputation APIs or export to CSV/JSON. But the base should stay readable, because I want to understand each step instead of hiding everything behind a big framework.</p>
+                    </div>
+                </details>
+                <div class="mt-7 flex flex-wrap gap-2">
+                    <span class="chip">IOC</span>
+                    <span class="chip">Python</span>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <div class="divider max-w-6xl mx-auto"></div>
+
     <!-- 语言与兴趣 (Languages & Interests) -->
     <section id="about" class="py-32 px-6 max-w-7xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
@@ -367,6 +922,64 @@
     <!-- JavaScript：无限触发渐入动画 -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            const canvas = document.getElementById("ambient-grid");
+            const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+            if (canvas && !reducedMotion) {
+                const ctx = canvas.getContext("2d");
+                let width = 0;
+                let height = 0;
+                let particles = [];
+
+                const resizeCanvas = () => {
+                    width = canvas.width = window.innerWidth * window.devicePixelRatio;
+                    height = canvas.height = window.innerHeight * window.devicePixelRatio;
+                    canvas.style.width = `${window.innerWidth}px`;
+                    canvas.style.height = `${window.innerHeight}px`;
+                    const count = Math.min(80, Math.floor(window.innerWidth / 18));
+                    particles = Array.from({ length: count }, () => ({
+                        x: Math.random() * width,
+                        y: Math.random() * height,
+                        vx: (Math.random() - 0.5) * 0.18 * window.devicePixelRatio,
+                        vy: (Math.random() - 0.5) * 0.18 * window.devicePixelRatio,
+                    }));
+                };
+
+                const draw = () => {
+                    ctx.clearRect(0, 0, width, height);
+                    ctx.fillStyle = "rgba(125, 211, 252, 0.42)";
+                    ctx.strokeStyle = "rgba(125, 211, 252, 0.11)";
+                    particles.forEach((p, index) => {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        if (p.x < 0 || p.x > width) p.vx *= -1;
+                        if (p.y < 0 || p.y > height) p.vy *= -1;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, 1.15 * window.devicePixelRatio, 0, Math.PI * 2);
+                        ctx.fill();
+                        for (let i = index + 1; i < particles.length; i++) {
+                            const q = particles[i];
+                            const dx = p.x - q.x;
+                            const dy = p.y - q.y;
+                            const distance = Math.hypot(dx, dy);
+                            if (distance < 150 * window.devicePixelRatio) {
+                                ctx.globalAlpha = 1 - distance / (150 * window.devicePixelRatio);
+                                ctx.beginPath();
+                                ctx.moveTo(p.x, p.y);
+                                ctx.lineTo(q.x, q.y);
+                                ctx.stroke();
+                                ctx.globalAlpha = 1;
+                            }
+                        }
+                    });
+                    requestAnimationFrame(draw);
+                };
+
+                resizeCanvas();
+                window.addEventListener("resize", resizeCanvas);
+                draw();
+            }
+
             const observerOptions = {
                 root: null,
                 rootMargin: '0px 0px -40px 0px',
