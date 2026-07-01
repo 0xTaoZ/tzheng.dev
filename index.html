@@ -976,9 +976,11 @@ html { scroll-padding-top: 5rem; }
         rgba(1,3,7,.92);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
+    perspective: 1400px;
 }
 .note-reader.open { display: block; }
 .note-reader-shell {
+    position: relative;
     width: min(92vw, 860px);
     margin: 6.5rem auto 4rem;
     border: 1px solid rgba(148,163,184,.18);
@@ -986,6 +988,77 @@ html { scroll-padding-top: 5rem; }
     background: linear-gradient(145deg, rgba(12,16,24,.92), rgba(3,7,14,.88));
     box-shadow: 0 50px 150px rgba(0,0,0,.72);
     overflow: hidden;
+    transform-origin: 50% 12%;
+    animation: readerIn .62s cubic-bezier(.16,1,.3,1) both;
+}
+.note-reader-shell::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        conic-gradient(from var(--reader-angle, 0deg), transparent, rgba(125,211,252,.32), rgba(57,255,136,.20), transparent 42%),
+        radial-gradient(circle at var(--reader-x, 50%) var(--reader-y, 0%), rgba(125,211,252,.14), transparent 24rem);
+    opacity: .72;
+    animation: readerOrbit 9s linear infinite;
+}
+.note-reader-shell::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: 27px;
+    background: linear-gradient(145deg, rgba(12,16,24,.94), rgba(3,7,14,.91));
+}
+.note-reader-top,
+.note-reader-body {
+    position: relative;
+    z-index: 1;
+}
+@keyframes readerIn {
+    from { opacity: 0; transform: translateY(34px) rotateX(8deg) scale(.96); filter: blur(10px); }
+    to { opacity: 1; transform: translateY(0) rotateX(0deg) scale(1); filter: blur(0); }
+}
+@keyframes readerOrbit {
+    to { --reader-angle: 360deg; }
+}
+@property --reader-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+.note-reader-progress {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    height: 2px;
+    transform-origin: left center;
+    transform: scaleX(var(--note-progress, 0));
+    background: linear-gradient(90deg, rgba(57,255,136,.25), rgba(125,211,252,.95), rgba(167,139,250,.8));
+    box-shadow: 0 0 22px rgba(125,211,252,.35);
+}
+.note-reader-actions {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+}
+.note-reader-action {
+    width: 2.25rem;
+    height: 2.25rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    border: 1px solid rgba(148,163,184,.18);
+    color: #e5e7eb;
+    background: rgba(255,255,255,.035);
+    transition: transform .25s ease, background .25s ease, border-color .25s ease;
+}
+.note-reader-action:hover {
+    transform: translateY(-1px) scale(1.05);
+    background: rgba(125,211,252,.10);
+    border-color: rgba(125,211,252,.26);
 }
 .note-reader-top {
     display: flex;
@@ -1015,6 +1088,19 @@ html { scroll-padding-top: 5rem; }
 }
 .note-reader-close:hover { transform: scale(1.06); background: rgba(255,255,255,.075); }
 .note-reader-body { padding: clamp(1.5rem, 4vw, 3.2rem); }
+.note-reader-body > * {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: readerLineIn .55s cubic-bezier(.16,1,.3,1) forwards;
+}
+.note-reader-body > *:nth-child(1) { animation-delay: .04s; }
+.note-reader-body > *:nth-child(2) { animation-delay: .09s; }
+.note-reader-body > *:nth-child(3) { animation-delay: .14s; }
+.note-reader-body > *:nth-child(4) { animation-delay: .19s; }
+.note-reader-body > *:nth-child(5) { animation-delay: .24s; }
+@keyframes readerLineIn {
+    to { opacity: 1; transform: translateY(0); }
+}
 .note-reader-body h1 {
     font-size: clamp(2.2rem, 6vw, 4rem);
     line-height: .98;
@@ -1046,9 +1132,235 @@ html { scroll-padding-top: 5rem; }
     border-radius: .45rem;
     padding: .12rem .35rem;
 }
+.note-link-card {
+    view-transition-name: var(--note-transition, none);
+}
+.note-reader-shell {
+    view-transition-name: active-note;
+}
+::view-transition-old(active-note),
+::view-transition-new(active-note) {
+    animation-duration: .55s;
+    animation-timing-function: cubic-bezier(.16,1,.3,1);
+}
 @media (max-width: 768px) {
     .note-reader-shell { margin-top: 4.5rem; border-radius: 22px; }
     .note-reader-body p { font-size: .98rem; }
+    .note-reader-progress { top: 0; }
+}
+
+/* Front-end performance pass: stabilize fixed glass UI and compose motion on GPU. */
+:root {
+    --pointer-x: 50vw;
+    --pointer-y: 50vh;
+    --scroll-progress: 0;
+}
+.glass-nav {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    contain: paint;
+    isolation: isolate;
+}
+.glass-nav::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(125,211,252,.58), rgba(57,255,136,.42), transparent);
+    transform: scaleX(var(--scroll-progress));
+    transform-origin: left center;
+    opacity: .9;
+}
+.glass-nav a,
+.glass-nav button {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+.glass-nav a[aria-current="true"] {
+    color: #fff;
+    text-shadow: 0 0 18px rgba(125,211,252,.35);
+}
+.ambient-canvas {
+    contain: strict;
+    transform: translateZ(0);
+}
+.cursor-field,
+.cursor-dot {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 120;
+    pointer-events: none;
+    border-radius: 999px;
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0);
+    transition: opacity .25s ease;
+}
+.cursor-field {
+    width: 21rem;
+    height: 21rem;
+    background:
+        radial-gradient(circle, rgba(125,211,252,.14), rgba(57,255,136,.055) 36%, transparent 68%);
+    mix-blend-mode: screen;
+    filter: blur(2px);
+}
+.cursor-dot {
+    width: .42rem;
+    height: .42rem;
+    background: rgba(186,230,253,.95);
+    box-shadow: 0 0 18px rgba(125,211,252,.85);
+}
+body.pointer-ready .cursor-field,
+body.pointer-ready .cursor-dot {
+    opacity: 1;
+}
+.hero-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background:
+        radial-gradient(circle at var(--hero-x, 50%) var(--hero-y, 50%), rgba(125,211,252,.16), transparent 18rem),
+        linear-gradient(115deg, transparent 0%, rgba(255,255,255,.055) 48%, transparent 58%);
+    mix-blend-mode: screen;
+    opacity: .58;
+    transform: translateZ(0);
+}
+.mission-layout {
+    transform: translate3d(calc(var(--hero-pan-x, 0) * 1px), calc(var(--hero-pan-y, 0) * 1px), 0);
+    transition: transform .18s ease-out;
+}
+.scroll-progress {
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left center;
+    contain: strict;
+}
+#projects,
+#education,
+#toolkit,
+#notes,
+#about,
+footer {
+    content-visibility: auto;
+    contain-intrinsic-size: 900px;
+}
+.pro-card,
+.project-case,
+.note-link-card,
+.portrait-card,
+.hero-mini-card,
+.primary-action,
+.secondary-action,
+.case-link {
+    --tilt-x: 0deg;
+    --tilt-y: 0deg;
+    --mag-x: 0px;
+    --mag-y: 0px;
+    --lift: 0px;
+    --card-scale: 1;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+@media (pointer: fine) and (min-width: 1024px) {
+    .pro-card,
+    .project-case,
+    .note-link-card,
+    .portrait-card,
+    .pro-card:hover,
+    .project-case:hover,
+    .note-link-card:hover,
+    .portrait-card:hover {
+        transform: perspective(1000px)
+            rotateX(var(--tilt-x))
+            rotateY(var(--tilt-y))
+            translate3d(var(--mag-x), calc(var(--mag-y) + var(--lift)), 0)
+            scale(var(--card-scale));
+    }
+    .pro-card:hover {
+        --lift: -8px;
+        --card-scale: 1.008;
+    }
+    .project-case:hover {
+        --lift: -4px;
+    }
+    .note-link-card:hover {
+        --lift: -5px;
+    }
+    .hero-mini-card,
+    .hero-mini-card:hover,
+    .primary-action,
+    .primary-action:hover,
+    .secondary-action,
+    .secondary-action:hover,
+    .case-link,
+    .case-link:hover,
+    .mission-actions a,
+    .mission-actions a:hover {
+        transform: translate3d(var(--mag-x), var(--mag-y), 0);
+    }
+}
+.case-link,
+.hero-mini-card,
+.primary-action,
+.secondary-action,
+.note-link-card,
+.project-case,
+.pro-card {
+    position: relative;
+}
+.case-link::before,
+.hero-mini-card::before,
+.primary-action::before,
+.secondary-action::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,.22), transparent);
+    opacity: 0;
+    transform: translateX(-35%);
+    transition: opacity .35s ease, transform .65s cubic-bezier(.16,1,.3,1);
+}
+.case-link:hover::before,
+.hero-mini-card:hover::before,
+.primary-action:hover::before,
+.secondary-action:hover::before {
+    opacity: 1;
+    transform: translateX(35%);
+}
+.command-box a[hidden] {
+    display: none;
+}
+@supports (animation-timeline: view()) {
+    .project-case,
+    .pro-card,
+    .note-link-card {
+        animation: scrollDepth both linear;
+        animation-timeline: view();
+        animation-range: entry 0% cover 30%;
+    }
+    @keyframes scrollDepth {
+        from { opacity: .72; filter: saturate(.78); }
+        to { opacity: 1; filter: saturate(1); }
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .glass-nav,
+    .ambient-canvas,
+    .mission-layout {
+        transform: none;
+    }
+    .cursor-field,
+    .cursor-dot {
+        display: none;
+    }
 }
 
     </style>
@@ -1056,6 +1368,8 @@ html { scroll-padding-top: 5rem; }
 <body class="antialiased selection:bg-blue-600 selection:text-white">
     <canvas id="ambient-grid" class="ambient-canvas" aria-hidden="true"></canvas>
     <div id="scroll-progress" class="scroll-progress" aria-hidden="true"></div>
+    <div id="cursor-field" class="cursor-field" aria-hidden="true"></div>
+    <div id="cursor-dot" class="cursor-dot" aria-hidden="true"></div>
 
     
 <!-- 导航栏 -->
@@ -1066,7 +1380,7 @@ html { scroll-padding-top: 5rem; }
             <a href="#projects" class="hover:text-white transition duration-300">Projects</a>
             <a href="#education" class="hover:text-white transition duration-300">Education</a>
             <a href="#toolkit" class="hover:text-white transition duration-300">Toolkit</a>
-            <a href="#notes" class="hover:text-white transition duration-300">Notes</a>
+            <a href="./articles.html" class="hover:text-white transition duration-300">Articles</a>
             <a href="#about" class="hover:text-white transition duration-300">About</a>
         </div>
         <div class="flex items-center gap-3">
@@ -1085,7 +1399,7 @@ html { scroll-padding-top: 5rem; }
     <a href="#projects">Projects <span>↘</span></a>
     <a href="#education">Education <span>↘</span></a>
     <a href="#toolkit">Toolkit <span>↘</span></a>
-    <a href="#notes">Notes <span>↘</span></a>
+    <a href="./articles.html">Articles <span>↗</span></a>
     <a href="#about">About <span>↘</span></a>
     <a href="https://github.com/0xTaoZ" target="_blank">GitHub <span>↗</span></a>
 </div>
@@ -1127,7 +1441,7 @@ html { scroll-padding-top: 5rem; }
                     <p class="title">cfn-lint contribution</p>
                     <p class="meta">CloudFormation · PR</p>
                 </a>
-                <a href="#notes" class="hero-mini-card">
+                <a href="./articles.html" class="hero-mini-card">
                     <p class="num">03 / notes</p>
                     <p class="title">Security Lab Notes</p>
                     <p class="meta">writeups · learning log</p>
@@ -1421,7 +1735,7 @@ html { scroll-padding-top: 5rem; }
     </div>
 
     <div class="notes-grid-final">
-        <a class="note-link-card reveal" href="#note-cloudtrail" data-note="cloudtrail">
+        <a class="note-link-card reveal" href="./articles.html#cloudtrail-first-pass">
             <div class="flex items-center justify-between gap-4 mb-8"><span class="chip">Research log</span><span class="text-xs text-gray-500 font-mono">2026-06</span></div>
             <h3 class="text-xl font-bold text-white mb-4">Reading CloudTrail logs by hand</h3>
             <p class="text-gray-400 text-sm leading-relaxed font-light">A short note about failed console logins, root account events, IAM changes, and why small log samples are useful before using bigger tools.</p>
@@ -1429,7 +1743,7 @@ html { scroll-padding-top: 5rem; }
             <div class="mt-7 flex flex-wrap gap-2"><span class="chip">AWS</span><span class="chip">logs</span></div>
         </a>
 
-        <a class="note-link-card reveal delay-100" href="#note-open-source" data-note="opensource">
+        <a class="note-link-card reveal delay-100" href="./articles.html#small-pr-good">
             <div class="flex items-center justify-between gap-4 mb-8"><span class="chip">Open source</span><span class="text-xs text-gray-500 font-mono">2026-06</span></div>
             <h3 class="text-xl font-bold text-white mb-4">What makes a small PR good</h3>
             <p class="text-gray-400 text-sm leading-relaxed font-light">A practical reminder: reproduce the bug, keep the patch small, add one test or fixture, and explain what was verified.</p>
@@ -1437,7 +1751,7 @@ html { scroll-padding-top: 5rem; }
             <div class="mt-7 flex flex-wrap gap-2"><span class="chip">open-source</span><span class="chip">workflow</span></div>
         </a>
 
-        <a class="note-link-card reveal delay-200" href="#note-ioc" data-note="ioc">
+        <a class="note-link-card reveal delay-200" href="./articles.html#ioc-tool">
             <div class="flex items-center justify-between gap-4 mb-8"><span class="chip">Blue team</span><span class="text-xs text-gray-500 font-mono">2026-06</span></div>
             <h3 class="text-xl font-bold text-white mb-4">IOC extraction as a first blue-team tool</h3>
             <p class="text-gray-400 text-sm leading-relaxed font-light">Notes on parsing IPs, URLs, and hashes from text, and why the output format matters for later investigation.</p>
@@ -1496,9 +1810,9 @@ html { scroll-padding-top: 5rem; }
             </div>
             <!-- 大厂预留链接（href="#" 代表留在当前页） -->
             <div class="flex space-x-6 text-xs text-gray-500 font-mono">
-                <a href="#" class="hover:text-white transition">Impressum</a>
-                <a href="#" class="hover:text-white transition">Datenschutz</a>
-                <a href="#" class="hover:text-white transition">Legal</a>
+                <a href="./legal.html#impressum" class="hover:text-white transition">Impressum</a>
+                <a href="./legal.html#datenschutz" class="hover:text-white transition">Datenschutz</a>
+                <a href="./legal.html" class="hover:text-white transition">Legal</a>
             </div>
         </div>
     </footer>
@@ -1507,9 +1821,15 @@ html { scroll-padding-top: 5rem; }
 
     <div id="note-reader" class="note-reader" aria-hidden="true">
         <div class="note-reader-shell" role="dialog" aria-modal="true" aria-labelledby="note-reader-title">
+            <div id="note-reader-progress" class="note-reader-progress" aria-hidden="true"></div>
             <div class="note-reader-top">
                 <span class="note-reader-kicker">Security Lab Note</span>
-                <button id="note-reader-close" class="note-reader-close" aria-label="Close note">×</button>
+                <div class="note-reader-actions">
+                    <button id="note-reader-prev" class="note-reader-action" aria-label="Previous note">‹</button>
+                    <button id="note-reader-copy" class="note-reader-action" aria-label="Copy note link">↗</button>
+                    <button id="note-reader-next" class="note-reader-action" aria-label="Next note">›</button>
+                    <button id="note-reader-close" class="note-reader-close" aria-label="Close note">×</button>
+                </div>
             </div>
             <article id="note-reader-body" class="note-reader-body"></article>
         </div>
@@ -1517,10 +1837,10 @@ html { scroll-padding-top: 5rem; }
 
     <div id="command-palette" class="command-palette" aria-hidden="true">
         <div class="command-box">
-            <input id="command-input" aria-label="Command palette search" placeholder="Search commands…  Projects / Notes / GitHub / Contact">
+            <input id="command-input" aria-label="Command palette search" placeholder="Search commands…  Projects / Articles / GitHub / Contact">
             <div>
                 <a href="#projects"><span>Open Projects</span><span>↘</span></a>
-                <a href="#notes"><span>Read Notes</span><span>↘</span></a>
+                <a href="./articles.html"><span>Read Articles</span><span>↗</span></a>
                 <a href="#education"><span>View Education</span><span>↘</span></a>
                 <a href="https://github.com/0xTaoZ" target="_blank"><span>Open GitHub</span><span>↗</span></a>
                 <a href="mailto:h@tzheng.dev"><span>Contact by email</span><span>↗</span></a>
@@ -1533,21 +1853,72 @@ html { scroll-padding-top: 5rem; }
         document.addEventListener("DOMContentLoaded", function() {
             const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             const isMobile = () => window.matchMedia("(max-width: 768px)").matches;
+            const finePointer = window.matchMedia("(pointer: fine)").matches;
+            const root = document.documentElement;
+            const pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2, sx: window.innerWidth / 2, sy: window.innerHeight / 2 };
+
+            if (!reducedMotion && finePointer) {
+                const cursorField = document.getElementById('cursor-field');
+                const cursorDot = document.getElementById('cursor-dot');
+                const hero = document.querySelector('.hero-bg');
+                const mission = document.querySelector('.mission-layout');
+                let cursorFrame = null;
+                const renderPointer = () => {
+                    cursorFrame = null;
+                    pointer.sx += (pointer.x - pointer.sx) * 0.16;
+                    pointer.sy += (pointer.y - pointer.sy) * 0.16;
+                    const x = `${pointer.sx}px`;
+                    const y = `${pointer.sy}px`;
+                    cursorField?.style.setProperty('transform', `translate3d(${x}, ${y}, 0) translate(-50%, -50%)`);
+                    cursorDot?.style.setProperty('transform', `translate3d(${pointer.x}px, ${pointer.y}px, 0) translate(-50%, -50%)`);
+                    root.style.setProperty('--pointer-x', x);
+                    root.style.setProperty('--pointer-y', y);
+                    if (hero && mission) {
+                        const rect = hero.getBoundingClientRect();
+                        const hx = ((pointer.x - rect.left) / rect.width) * 100;
+                        const hy = ((pointer.y - rect.top) / rect.height) * 100;
+                        hero.style.setProperty('--hero-x', `${Math.max(0, Math.min(100, hx))}%`);
+                        hero.style.setProperty('--hero-y', `${Math.max(0, Math.min(100, hy))}%`);
+                        mission.style.setProperty('--hero-pan-x', ((pointer.x / window.innerWidth) - 0.5) * -8);
+                        mission.style.setProperty('--hero-pan-y', ((pointer.y / window.innerHeight) - 0.5) * -5);
+                    }
+                    if (Math.abs(pointer.x - pointer.sx) > 0.1 || Math.abs(pointer.y - pointer.sy) > 0.1) {
+                        cursorFrame = requestAnimationFrame(renderPointer);
+                    }
+                };
+                window.addEventListener('pointermove', (e) => {
+                    pointer.x = e.clientX;
+                    pointer.y = e.clientY;
+                    document.body.classList.add('pointer-ready');
+                    if (cursorFrame === null) cursorFrame = requestAnimationFrame(renderPointer);
+                }, { passive: true });
+                window.addEventListener('pointerleave', () => document.body.classList.remove('pointer-ready'), { passive: true });
+            }
 
             const progress = document.getElementById('scroll-progress');
+            let progressFrame = null;
             const updateProgress = () => {
                 if (!progress) return;
                 const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-                progress.style.width = `${Math.min(100, Math.max(0, window.scrollY / max * 100))}%`;
+                const value = Math.min(1, Math.max(0, window.scrollY / max));
+                progress.style.transform = `scaleX(${value})`;
+                root.style.setProperty('--scroll-progress', value.toFixed(4));
+            };
+            const scheduleProgress = () => {
+                if (progressFrame !== null) return;
+                progressFrame = requestAnimationFrame(() => {
+                    progressFrame = null;
+                    updateProgress();
+                });
             };
             updateProgress();
-            window.addEventListener('scroll', updateProgress, { passive: true });
+            window.addEventListener('scroll', scheduleProgress, { passive: true });
 
 
             const canvas = document.getElementById("ambient-grid");
             if (canvas && !reducedMotion) {
                 const ctx = canvas.getContext("2d");
-                let width = 0, height = 0, particles = [], raf = null;
+                let width = 0, height = 0, particles = [], raf = null, resizeFrame = null;
                 const resizeCanvas = () => {
                     const dpr = Math.min(window.devicePixelRatio || 1, isMobile() ? 1.25 : 2);
                     width = canvas.width = Math.floor(window.innerWidth * dpr);
@@ -1564,11 +1935,34 @@ html { scroll-padding-top: 5rem; }
                     }));
                 };
                 const draw = () => {
+                    if (document.hidden) {
+                        raf = null;
+                        return;
+                    }
                     ctx.clearRect(0, 0, width, height);
+                    const scale = width / Math.max(1, window.innerWidth);
+                    const px = pointer.sx * scale;
+                    const py = pointer.sy * scale;
+                    const glow = ctx.createRadialGradient(px, py, 0, px, py, 260 * scale);
+                    glow.addColorStop(0, "rgba(125, 211, 252, 0.105)");
+                    glow.addColorStop(0.42, "rgba(57, 255, 136, 0.045)");
+                    glow.addColorStop(1, "rgba(125, 211, 252, 0)");
+                    ctx.fillStyle = glow;
+                    ctx.fillRect(0, 0, width, height);
                     ctx.fillStyle = "rgba(125, 211, 252, 0.38)";
                     ctx.strokeStyle = "rgba(125, 211, 252, 0.10)";
                     const linkDistance = (isMobile() ? 92 : 150) * Math.min(window.devicePixelRatio || 1, 2);
                     particles.forEach((p, index) => {
+                        const mdx = px - p.x;
+                        const mdy = py - p.y;
+                        const md = Math.hypot(mdx, mdy);
+                        if (finePointer && md < 220 * scale) {
+                            const force = (1 - md / (220 * scale)) * 0.018;
+                            p.vx += mdx * force / Math.max(md, 1);
+                            p.vy += mdy * force / Math.max(md, 1);
+                        }
+                        p.vx *= 0.995;
+                        p.vy *= 0.995;
                         p.x += p.vx; p.y += p.vy;
                         if (p.x < 0 || p.x > width) p.vx *= -1;
                         if (p.y < 0 || p.y > height) p.vy *= -1;
@@ -1583,12 +1977,35 @@ html { scroll-padding-top: 5rem; }
                     });
                     raf = requestAnimationFrame(draw);
                 };
-                resizeCanvas(); draw();
-                window.addEventListener("resize", () => { cancelAnimationFrame(raf); resizeCanvas(); draw(); }, { passive: true });
+                const restartCanvas = () => {
+                    if (raf !== null) cancelAnimationFrame(raf);
+                    resizeCanvas();
+                    draw();
+                };
+                restartCanvas();
+                window.addEventListener("resize", () => {
+                    if (resizeFrame !== null) cancelAnimationFrame(resizeFrame);
+                    resizeFrame = requestAnimationFrame(() => {
+                        resizeFrame = null;
+                        restartCanvas();
+                    });
+                }, { passive: true });
+                document.addEventListener("visibilitychange", () => {
+                    if (document.hidden && raf !== null) {
+                        cancelAnimationFrame(raf);
+                        raf = null;
+                    } else if (!document.hidden && raf === null) {
+                        restartCanvas();
+                    }
+                });
             }
 
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => entry.target.classList.toggle('active', entry.isIntersecting));
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                });
             }, { root: null, rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
@@ -1640,9 +2057,70 @@ html { scroll-padding-top: 5rem; }
             commandOpen?.addEventListener('click', openPalette);
             palette?.addEventListener('click', (e) => { if (e.target === palette) closePalette(); });
             palette?.querySelectorAll('a').forEach(a => a.addEventListener('click', closePalette));
+            const commandItems = Array.from(palette?.querySelectorAll('.command-box a') || []);
+            let commandIndex = 0;
+            const syncCommandSearch = () => {
+                const query = (commandInput?.value || '').trim().toLowerCase();
+                const visible = [];
+                commandItems.forEach((item) => {
+                    const match = item.textContent.toLowerCase().includes(query);
+                    item.hidden = !match;
+                    if (match) visible.push(item);
+                    item.style.background = '';
+                });
+                commandIndex = Math.min(commandIndex, Math.max(0, visible.length - 1));
+                visible[commandIndex]?.style.setProperty('background', 'rgba(125,211,252,.10)');
+            };
+            commandInput?.addEventListener('input', () => { commandIndex = 0; syncCommandSearch(); });
+            commandInput?.addEventListener('keydown', (e) => {
+                const visible = commandItems.filter(item => !item.hidden);
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    commandIndex = Math.min(visible.length - 1, commandIndex + 1);
+                    syncCommandSearch();
+                }
+                if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    commandIndex = Math.max(0, commandIndex - 1);
+                    syncCommandSearch();
+                }
+                if (e.key === 'Enter' && visible[commandIndex]) {
+                    e.preventDefault();
+                    visible[commandIndex].click();
+                }
+            });
             window.addEventListener('keydown', (e) => {
-                if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openPalette(); }
+                if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openPalette(); syncCommandSearch(); }
                 if (e.key === 'Escape') closePalette();
+            });
+
+            const navLinks = Array.from(document.querySelectorAll('.glass-nav a[href^="#"]'));
+            const sectionMap = new Map(navLinks.map(link => [link.getAttribute('href')?.slice(1), link]).filter(([id]) => id));
+            const navObserver = new IntersectionObserver((entries) => {
+                const active = entries
+                    .filter(entry => entry.isIntersecting)
+                    .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+                if (!active) return;
+                navLinks.forEach(link => link.removeAttribute('aria-current'));
+                sectionMap.get(active.target.id)?.setAttribute('aria-current', 'true');
+            }, { rootMargin: '-35% 0px -55% 0px', threshold: [0.05, 0.25, 0.55] });
+            sectionMap.forEach((_, id) => {
+                const section = document.getElementById(id);
+                if (section) navObserver.observe(section);
+            });
+
+            document.querySelectorAll('a[href^="#"]:not([data-note])').forEach(anchor => {
+                anchor.addEventListener('click', (e) => {
+                    const hash = anchor.getAttribute('href');
+                    if (!hash || hash === '#') return;
+                    const target = document.querySelector(hash);
+                    if (!target) return;
+                    e.preventDefault();
+                    const jump = () => target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+                    if (document.startViewTransition && !reducedMotion) document.startViewTransition(jump);
+                    else jump();
+                    history.pushState(null, '', hash);
+                });
             });
 
             if (!reducedMotion && !isMobile()) {
@@ -1654,9 +2132,13 @@ html { scroll-padding-top: 5rem; }
                         const ry = ((x / r.width) - 0.5) * 5;
                         card.style.setProperty('--mx', `${(x / r.width) * 100}%`);
                         card.style.setProperty('--my', `${(y / r.height) * 100}%`);
-                        card.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+                        card.style.setProperty('--tilt-x', `${rx}deg`);
+                        card.style.setProperty('--tilt-y', `${ry}deg`);
                     });
-                    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+                    card.addEventListener('mouseleave', () => {
+                        card.style.setProperty('--tilt-x', '0deg');
+                        card.style.setProperty('--tilt-y', '0deg');
+                    });
                 });
             }
 
@@ -1664,6 +2146,7 @@ html { scroll-padding-top: 5rem; }
             const projectDeck = document.querySelector('.project-deck');
             const projectCards = Array.from(document.querySelectorAll('.project-case'));
             const projectDots = Array.from(document.querySelectorAll('#project-dots button'));
+            let projectFrame = null;
             const setActiveProject = () => {
                 if (!projectDeck || projectCards.length === 0) return;
                 const deckRect = projectDeck.getBoundingClientRect();
@@ -1678,9 +2161,16 @@ html { scroll-padding-top: 5rem; }
                 projectCards.forEach((card, index) => card.classList.toggle('is-active', index === activeIndex));
                 projectDots.forEach((dot, index) => dot.classList.toggle('active', index === activeIndex));
             };
+            const scheduleActiveProject = () => {
+                if (projectFrame !== null) return;
+                projectFrame = requestAnimationFrame(() => {
+                    projectFrame = null;
+                    setActiveProject();
+                });
+            };
             setActiveProject();
-            projectDeck?.addEventListener('scroll', () => requestAnimationFrame(setActiveProject), { passive: true });
-            window.addEventListener('resize', setActiveProject, { passive: true });
+            projectDeck?.addEventListener('scroll', scheduleActiveProject, { passive: true });
+            window.addEventListener('resize', scheduleActiveProject, { passive: true });
             projectDots.forEach((dot, index) => {
                 dot.addEventListener('click', () => projectCards[index]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }));
             });
@@ -1692,9 +2182,13 @@ html { scroll-padding-top: 5rem; }
                         const r = item.getBoundingClientRect();
                         const x = (e.clientX - r.left - r.width / 2) / r.width;
                         const y = (e.clientY - r.top - r.height / 2) / r.height;
-                        item.style.transform = `translate(${x * 8}px, ${y * 8}px)`;
+                        item.style.setProperty('--mag-x', `${x * 8}px`);
+                        item.style.setProperty('--mag-y', `${y * 8}px`);
                     });
-                    item.addEventListener('mouseleave', () => { item.style.transform = ''; });
+                    item.addEventListener('mouseleave', () => {
+                        item.style.setProperty('--mag-x', '0px');
+                        item.style.setProperty('--mag-y', '0px');
+                    });
                 });
             }
 
@@ -1739,30 +2233,89 @@ html { scroll-padding-top: 5rem; }
             const noteReader = document.getElementById('note-reader');
             const noteReaderBody = document.getElementById('note-reader-body');
             const noteReaderClose = document.getElementById('note-reader-close');
-            const openNote = (key, push = true) => {
+            const noteReaderShell = noteReader?.querySelector('.note-reader-shell');
+            const noteReaderProgress = document.getElementById('note-reader-progress');
+            const noteReaderPrev = document.getElementById('note-reader-prev');
+            const noteReaderNext = document.getElementById('note-reader-next');
+            const noteReaderCopy = document.getElementById('note-reader-copy');
+            const noteOrder = ['cloudtrail', 'opensource', 'ioc'];
+            const noteHash = (key) => `#note-${key === 'opensource' ? 'open-source' : key}`;
+            let activeNoteKey = null;
+            const updateNoteProgress = () => {
+                if (!noteReader || !noteReaderProgress) return;
+                const max = Math.max(1, noteReader.scrollHeight - noteReader.clientHeight);
+                noteReaderProgress.style.setProperty('--note-progress', Math.min(1, noteReader.scrollTop / max).toFixed(4));
+            };
+            const navigateNote = (direction) => {
+                if (!activeNoteKey) return;
+                const current = noteOrder.indexOf(activeNoteKey);
+                const next = noteOrder[(current + direction + noteOrder.length) % noteOrder.length];
+                openNote(next);
+            };
+            const openNote = (key, push = true, source = null) => {
                 const note = noteData[key];
                 if (!note || !noteReader || !noteReaderBody) return;
-                noteReaderBody.innerHTML = note.html;
-                noteReader.classList.add('open');
-                noteReader.setAttribute('aria-hidden', 'false');
-                document.body.style.overflow = 'hidden';
-                if (push) history.pushState({ note: key }, '', `#note-${key === 'opensource' ? 'open-source' : key}`);
+                activeNoteKey = key;
+                const paint = () => {
+                    noteReaderBody.innerHTML = note.html;
+                    noteReader.classList.add('open');
+                    noteReader.setAttribute('aria-hidden', 'false');
+                    noteReader.scrollTop = 0;
+                    document.body.style.overflow = 'hidden';
+                    updateNoteProgress();
+                    noteReaderClose?.focus({ preventScroll: true });
+                    if (push) history.pushState({ note: key }, '', noteHash(key));
+                };
+                if (source && document.startViewTransition && !reducedMotion) {
+                    source.style.setProperty('--note-transition', 'active-note');
+                    document.startViewTransition(paint).finished.finally(() => {
+                        source.style.setProperty('--note-transition', 'none');
+                    });
+                } else {
+                    paint();
+                }
             };
             const closeNote = (clearHash = true) => {
+                activeNoteKey = null;
                 noteReader?.classList.remove('open');
                 noteReader?.setAttribute('aria-hidden', 'true');
                 document.body.style.overflow = '';
+                noteReaderProgress?.style.setProperty('--note-progress', '0');
                 if (clearHash && location.hash.startsWith('#note-')) history.pushState(null, '', location.pathname + location.search);
             };
             document.querySelectorAll('[data-note]').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    openNote(link.dataset.note);
+                    openNote(link.dataset.note, true, link);
                 });
             });
             noteReaderClose?.addEventListener('click', () => closeNote());
+            noteReaderPrev?.addEventListener('click', () => navigateNote(-1));
+            noteReaderNext?.addEventListener('click', () => navigateNote(1));
+            noteReaderCopy?.addEventListener('click', async () => {
+                if (!activeNoteKey) return;
+                const url = `${location.origin}${location.pathname}${location.search}${noteHash(activeNoteKey)}`;
+                try {
+                    await navigator.clipboard.writeText(url);
+                    noteReaderCopy.textContent = '✓';
+                    setTimeout(() => { noteReaderCopy.textContent = '↗'; }, 900);
+                } catch {
+                    location.hash = noteHash(activeNoteKey);
+                }
+            });
+            noteReader?.addEventListener('scroll', () => requestAnimationFrame(updateNoteProgress), { passive: true });
             noteReader?.addEventListener('click', (e) => { if (e.target === noteReader) closeNote(); });
-            window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && noteReader?.classList.contains('open')) closeNote(); });
+            noteReaderShell?.addEventListener('pointermove', (e) => {
+                const rect = noteReaderShell.getBoundingClientRect();
+                noteReaderShell.style.setProperty('--reader-x', `${((e.clientX - rect.left) / rect.width) * 100}%`);
+                noteReaderShell.style.setProperty('--reader-y', `${((e.clientY - rect.top) / rect.height) * 100}%`);
+            }, { passive: true });
+            window.addEventListener('keydown', (e) => {
+                if (!noteReader?.classList.contains('open')) return;
+                if (e.key === 'Escape') closeNote();
+                if (e.key === 'ArrowLeft') navigateNote(-1);
+                if (e.key === 'ArrowRight') navigateNote(1);
+            });
             window.addEventListener('popstate', () => {
                 const h = location.hash;
                 if (h === '#note-cloudtrail') openNote('cloudtrail', false);
