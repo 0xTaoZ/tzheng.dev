@@ -1338,6 +1338,66 @@ footer {
 .command-box a[hidden] {
     display: none;
 }
+.capability-board {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+}
+@media (min-width: 1024px) {
+    .capability-board { grid-template-columns: 1.1fr .9fr; }
+}
+.capability-row {
+    display: grid;
+    grid-template-columns: 9rem minmax(0, 1fr) 3rem;
+    gap: .9rem;
+    align-items: center;
+    padding: .8rem 0;
+    border-bottom: 1px solid rgba(148,163,184,.10);
+    font: .78rem ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.capability-row:last-child { border-bottom: 0; }
+.capability-track {
+    height: .46rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(148,163,184,.12);
+}
+.capability-fill {
+    display: block;
+    width: var(--level);
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, rgba(57,255,136,.88), rgba(125,211,252,.95));
+    box-shadow: 0 0 18px rgba(125,211,252,.28);
+    transform-origin: left center;
+    animation: capabilityFill 1.2s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes capabilityFill {
+    from { transform: scaleX(.08); opacity: .45; }
+    to { transform: scaleX(1); opacity: 1; }
+}
+.signal-stack {
+    display: grid;
+    gap: .75rem;
+}
+.signal-item {
+    border: 1px solid rgba(125,211,252,.14);
+    border-radius: 1rem;
+    padding: .95rem;
+    background: rgba(2,6,14,.36);
+}
+.signal-item b {
+    display: block;
+    color: white;
+    font-size: .82rem;
+    margin-bottom: .35rem;
+}
+.signal-item span {
+    color: #94a3b8;
+    font-size: .82rem;
+    line-height: 1.55;
+}
 @supports (animation-timeline: view()) {
     .project-case,
     .pro-card,
@@ -1432,24 +1492,25 @@ footer {
 
             <div class="hero-feature-strip max-w-3xl mx-auto lg:mx-0">
                 <a href="#projects" class="hero-mini-card">
-                    <p class="num">01 / featured</p>
+                    <p class="num">project / tool</p>
                     <p class="title">cloudtrail-quickscan</p>
                     <p class="meta">AWS logs · detection checks</p>
                 </a>
                 <a href="#projects" class="hero-mini-card">
-                    <p class="num">02 / open source</p>
+                    <p class="num">open source / PR</p>
                     <p class="title">cfn-lint contribution</p>
                     <p class="meta">CloudFormation · PR</p>
                 </a>
                 <a href="./articles.html" class="hero-mini-card">
-                    <p class="num">03 / notes</p>
-                    <p class="title">Security Lab Notes</p>
-                    <p class="meta">writeups · learning log</p>
+                    <p class="num">writing / blog</p>
+                    <p class="title">Technical Articles</p>
+                    <p class="meta">security notes · learning log</p>
                 </a>
             </div>
 
             <div class="mission-actions flex flex-wrap justify-center lg:justify-start gap-4 mt-8">
                 <a href="#projects" class="primary-action px-7 py-3.5 rounded-full font-semibold text-sm flex items-center">View Projects</a>
+                <a href="./articles.html" class="primary-action px-7 py-3.5 rounded-full font-semibold text-sm flex items-center">Read Articles</a>
                 <a href="mailto:h@tzheng.dev" class="secondary-action px-7 py-3.5 rounded-full font-medium text-sm flex items-center">h@tzheng.dev</a>
                 <a href="https://github.com/0xTaoZ" target="_blank" class="secondary-action px-7 py-3.5 rounded-full font-medium text-sm flex items-center">GitHub</a>
             </div>
@@ -1721,6 +1782,24 @@ footer {
                 <p class="text-gray-400 leading-relaxed font-light text-sm">Leveraging LLM-assisted engineering and modern AI tooling to enhance development productivity and technical research.</p>
             </div></div>
         </div>
+        <div class="capability-board reveal delay-200">
+            <div class="pro-card p-8">
+                <p class="section-kicker mb-5">Capability signal</p>
+                <div class="capability-row"><span>Linux</span><div class="capability-track"><span class="capability-fill" style="--level: 82%"></span></div><span>82</span></div>
+                <div class="capability-row"><span>Python</span><div class="capability-track"><span class="capability-fill" style="--level: 78%"></span></div><span>78</span></div>
+                <div class="capability-row"><span>Cloud logs</span><div class="capability-track"><span class="capability-fill" style="--level: 74%"></span></div><span>74</span></div>
+                <div class="capability-row"><span>Networking</span><div class="capability-track"><span class="capability-fill" style="--level: 70%"></span></div><span>70</span></div>
+                <div class="capability-row"><span>Frontend</span><div class="capability-track"><span class="capability-fill" style="--level: 76%"></span></div><span>76</span></div>
+            </div>
+            <div class="pro-card p-8">
+                <p class="section-kicker mb-5">How I work</p>
+                <div class="signal-stack">
+                    <div class="signal-item"><b>Build small first</b><span>Use focused tools, readable outputs, and testable behavior before adding complexity.</span></div>
+                    <div class="signal-item"><b>Write while learning</b><span>Turn projects into notes so the reasoning is visible, not only the final repository.</span></div>
+                    <div class="signal-item"><b>Security mindset</b><span>Prefer static delivery, minimal tracking, clear links, and privacy-aware defaults.</span></div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <div class="divider max-w-6xl mx-auto"></div>
@@ -1729,9 +1808,9 @@ footer {
 <!-- 学习笔记：低调可扩展的静态文章入口 -->
 <section id="notes" class="py-32 px-6 max-w-7xl mx-auto">
     <div class="mb-16 text-center reveal">
-        <p class="section-kicker mb-4">Research log</p>
-        <h2 class="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">Notes.</h2>
-        <p class="text-xl text-gray-400 font-light max-w-3xl mx-auto">Short notes from projects, labs, and open-source work. Designed as a quiet, expandable writing system.</p>
+        <p class="section-kicker mb-4">Technical writing</p>
+        <h2 class="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">Articles.</h2>
+        <p class="text-xl text-gray-400 font-light max-w-3xl mx-auto">Short notes from projects, labs, open-source work, and security learning. Designed as a quiet, expandable writing system.</p>
     </div>
 
     <div class="notes-grid-final">
@@ -1802,10 +1881,13 @@ footer {
     <footer class="border-t border-gray-900/80 py-12 mt-10 reveal">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="text-center md:text-left">
-                <h2 class="text-xl font-bold text-white tracking-tight mb-2">Engineering the Future.</h2>
+                <h2 class="text-xl font-bold text-white tracking-tight mb-2">Security, systems, and steady improvement.</h2>
                 <p class="text-xs text-gray-500 font-mono">
                     © 2026 Haitao Zheng. All rights reserved.<br class="md:hidden">
                     <span class="hidden md:inline"> | </span>Alle Rechte vorbehalten.
+                </p>
+                <p class="mt-3 text-xs text-gray-600 font-mono max-w-xl">
+                    Cloudflare edge protected · HTTPS-first · no intentional tracking pixels · static attack surface kept clean.
                 </p>
             </div>
             <!-- 大厂预留链接（href="#" 代表留在当前页） -->
@@ -1920,12 +2002,13 @@ footer {
                 const ctx = canvas.getContext("2d");
                 let width = 0, height = 0, particles = [], raf = null, resizeFrame = null;
                 const resizeCanvas = () => {
-                    const dpr = Math.min(window.devicePixelRatio || 1, isMobile() ? 1.25 : 2);
+                    const saveData = navigator.connection?.saveData;
+                    const dpr = saveData ? 1 : Math.min(window.devicePixelRatio || 1, isMobile() ? 1.25 : 2);
                     width = canvas.width = Math.floor(window.innerWidth * dpr);
                     height = canvas.height = Math.floor(window.innerHeight * dpr);
                     canvas.style.width = `${window.innerWidth}px`;
                     canvas.style.height = `${window.innerHeight}px`;
-                    const count = isMobile() ? Math.min(34, Math.floor(window.innerWidth / 12)) : Math.min(80, Math.floor(window.innerWidth / 18));
+                    const count = saveData ? 22 : (isMobile() ? Math.min(34, Math.floor(window.innerWidth / 12)) : Math.min(80, Math.floor(window.innerWidth / 18)));
                     particles = Array.from({ length: count }, () => ({
                         x: Math.random() * width,
                         y: Math.random() * height,
@@ -1951,7 +2034,7 @@ footer {
                     ctx.fillRect(0, 0, width, height);
                     ctx.fillStyle = "rgba(125, 211, 252, 0.38)";
                     ctx.strokeStyle = "rgba(125, 211, 252, 0.10)";
-                    const linkDistance = (isMobile() ? 92 : 150) * Math.min(window.devicePixelRatio || 1, 2);
+                    const linkDistance = (isMobile() ? 92 : 150) * (saveData ? 1 : Math.min(window.devicePixelRatio || 1, 2));
                     particles.forEach((p, index) => {
                         const mdx = px - p.x;
                         const mdy = py - p.y;
@@ -2032,7 +2115,8 @@ footer {
                     let i = 0;
                     const type = () => {
                         terminal.textContent = text.slice(0, i++);
-                        if (i <= text.length) setTimeout(type, text[i - 2] === '\n' ? 90 : 18);
+                        const delay = isMobile() ? (text[i - 2] === '\n' ? 56 : 12) : (text[i - 2] === '\n' ? 34 : 7);
+                        if (i <= text.length) setTimeout(type, delay);
                     };
                     type();
                 }
