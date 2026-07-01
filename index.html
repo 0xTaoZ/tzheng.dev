@@ -1241,15 +1241,6 @@ body.pointer-ready .cursor-dot {
     transform-origin: left center;
     contain: strict;
 }
-#projects,
-#education,
-#toolkit,
-#notes,
-#about,
-footer {
-    content-visibility: auto;
-    contain-intrinsic-size: 900px;
-}
 .pro-card,
 .project-case,
 .note-link-card,
@@ -1397,19 +1388,6 @@ footer {
     color: #94a3b8;
     font-size: .82rem;
     line-height: 1.55;
-}
-@supports (animation-timeline: view()) {
-    .project-case,
-    .pro-card,
-    .note-link-card {
-        animation: scrollDepth both linear;
-        animation-timeline: view();
-        animation-range: entry 0% cover 30%;
-    }
-    @keyframes scrollDepth {
-        from { opacity: .72; filter: saturate(.78); }
-        to { opacity: 1; filter: saturate(1); }
-    }
 }
 @media (prefers-reduced-motion: reduce) {
     .glass-nav,
@@ -2002,13 +1980,12 @@ footer {
                 const ctx = canvas.getContext("2d");
                 let width = 0, height = 0, particles = [], raf = null, resizeFrame = null;
                 const resizeCanvas = () => {
-                    const saveData = navigator.connection?.saveData;
-                    const dpr = saveData ? 1 : Math.min(window.devicePixelRatio || 1, isMobile() ? 1.25 : 2);
+                    const dpr = Math.min(window.devicePixelRatio || 1, isMobile() ? 1.25 : 2);
                     width = canvas.width = Math.floor(window.innerWidth * dpr);
                     height = canvas.height = Math.floor(window.innerHeight * dpr);
                     canvas.style.width = `${window.innerWidth}px`;
                     canvas.style.height = `${window.innerHeight}px`;
-                    const count = saveData ? 22 : (isMobile() ? Math.min(34, Math.floor(window.innerWidth / 12)) : Math.min(80, Math.floor(window.innerWidth / 18)));
+                    const count = isMobile() ? Math.min(34, Math.floor(window.innerWidth / 12)) : Math.min(80, Math.floor(window.innerWidth / 18));
                     particles = Array.from({ length: count }, () => ({
                         x: Math.random() * width,
                         y: Math.random() * height,
@@ -2034,7 +2011,7 @@ footer {
                     ctx.fillRect(0, 0, width, height);
                     ctx.fillStyle = "rgba(125, 211, 252, 0.38)";
                     ctx.strokeStyle = "rgba(125, 211, 252, 0.10)";
-                    const linkDistance = (isMobile() ? 92 : 150) * (saveData ? 1 : Math.min(window.devicePixelRatio || 1, 2));
+                    const linkDistance = (isMobile() ? 92 : 150) * Math.min(window.devicePixelRatio || 1, 2);
                     particles.forEach((p, index) => {
                         const mdx = px - p.x;
                         const mdy = py - p.y;

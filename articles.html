@@ -563,13 +563,12 @@
         let raf = null;
         let resizeFrame = null;
         const resize = () => {
-            const saveData = navigator.connection?.saveData;
-            const dpr = saveData ? 1 : Math.min(devicePixelRatio || 1, 2);
+            const dpr = Math.min(devicePixelRatio || 1, 2);
             canvas.width = innerWidth * dpr;
             canvas.height = innerHeight * dpr;
             canvas.style.width = `${innerWidth}px`;
             canvas.style.height = `${innerHeight}px`;
-            particles = Array.from({ length: saveData ? 28 : Math.min(90, Math.floor(innerWidth / 15)) }, () => ({
+            particles = Array.from({ length: Math.min(90, Math.floor(innerWidth / 15)) }, () => ({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
                 vx: (Math.random() - .5) * .22 * dpr,
