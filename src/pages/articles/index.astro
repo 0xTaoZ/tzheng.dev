@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { entrySlug } from "../../lib/content";
+
+const articles = (await getCollection("articles", ({ data }) => data.status === "published"))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const tags = [...new Set(articles.flatMap((article) => article.data.tags))];
+const months = new Set(articles.map((article) => article.data.date.toISOString().slice(0, 7))).size;
+const minutes = articles.reduce((sum, article) => sum + Number.parseInt(article.data.readingTime, 10), 0);
+---
+
+<BaseLayout title="Articles | Haitao Zheng" description="Technical articles and learning notes by Haitao Zheng.">
+  <main class="shell">
+    <section>
+      <div class="section-head">
+        <span class="eyebrow">Security notes / learning log / small systems</span>
+        <h2>Articles.</h2>
+        <p>MDX-backed writing system with tags, categories, RSS, SEO metadata, and generated detail pages.</p>
+      </div>
+      <div class="grid" style="margin-bottom:2rem">
+        <div class="card compact"><h3>{articles.length}</h3><p>articles published</p></div>
+        <div class="card compact"><h3>{tags.length}</h3><p>topics covered</p></div>
+        <div class="card compact"><h3>{months}</h3><p>active months</p></div>
+        <div class="card compact"><h3>{minutes}</h3><p>minutes in archive</p></div>
+      </div>
+      <div class="grid">
+        {articles.map((article, index) => (
+          <article class:list={["card", index === 0 && "featured", index > 0 && "compact"]}>
+            <div class="meta"><span>{article.data.date.toLocaleDateString("en", { month: "long", year: "numeric" })}</span><span>{article.data.category}</span><span>{article.data.readingTime}</span></div>
+            <h3>{article.data.title}</h3>
+            <p>{article.data.excerpt}</p>
+            <div class="meta">{article.data.tags.map((tag) => <span class="chip">{tag}</span>)}</div>
+            <a class="link" href={`/articles/${entrySlug(article)}/`}>Read article ↗</a>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+</BaseLayout>

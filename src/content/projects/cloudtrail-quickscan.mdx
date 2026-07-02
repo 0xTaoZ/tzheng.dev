@@ -1,0 +1,28 @@
+---
+title: "cloudtrail-quickscan"
+slug: "cloudtrail-quickscan"
+date: 2026-06-20
+status: "security"
+type: "CLI tool"
+featured: true
+priority: 1
+stack: ["Python", "AWS", "CloudTrail", "Tests"]
+github: "https://github.com/0xTaoZ/cloudtrail-quickscan"
+excerpt: "A small CLI that reads CloudTrail JSON and reports suspicious events such as failed logins, root activity, IAM changes, security group changes, and uncommon regions."
+---
+
+## Problem
+
+Cloud logs get noisy fast. A small first-pass scanner makes review easier before bigger tools or SIEM pipelines are involved.
+
+## Build
+
+The project uses a plain Python parser, rule functions, fake CloudTrail samples, JSON output, and tests.
+
+## Output
+
+Findings are grouped as high, medium, and low severity so a reviewer can understand the risk quickly.
+
+## Next
+
+I want to add short investigation playbooks and more realistic event samples.

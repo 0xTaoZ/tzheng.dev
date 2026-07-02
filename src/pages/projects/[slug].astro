@@ -1,0 +1,38 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { entrySlug } from "../../lib/content";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({ params: { slug: entrySlug(project) }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const { Content, headings } = await render(project);
+---
+
+<BaseLayout title={`${project.data.title} | Projects`} description={project.data.excerpt}>
+  <main class="article-body">
+    <a class="button" href="/projects/">← Projects</a>
+    <h1>{project.data.title}</h1>
+    <div class="meta">
+      <span>{project.data.status}</span>
+      <span>{project.data.type}</span>
+      <span>{project.data.date.toLocaleDateString("en", { month: "long", year: "numeric" })}</span>
+    </div>
+    <p>{project.data.excerpt}</p>
+    <div class="meta">{project.data.stack.map((item) => <span class="chip">{item}</span>)}</div>
+    <div class="actions">
+      {project.data.github && <a class="button primary" href={project.data.github} target="_blank">GitHub ↗</a>}
+      {project.data.demo && <a class="button" href={project.data.demo} target="_blank">Demo ↗</a>}
+    </div>
+    {headings.length > 0 && (
+      <nav class="toc" aria-label="Table of contents">
+        <strong>Contents</strong>
+        {headings.map((heading) => <a href={`#${heading.slug}`}>{heading.text}</a>)}
+      </nav>
+    )}
+    <Content />
+  </main>
+</BaseLayout>

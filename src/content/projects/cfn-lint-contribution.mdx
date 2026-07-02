@@ -1,0 +1,24 @@
+---
+title: "cfn-lint contribution"
+slug: "cfn-lint-contribution"
+date: 2026-06-12
+status: "open-source"
+type: "Open source PR"
+featured: true
+priority: 2
+stack: ["Open Source", "CloudFormation", "PR"]
+github: "https://github.com/aws-cloudformation/cfn-lint/pull/4566"
+excerpt: "A focused upstream fix for a false positive in the legacy Elasticsearch domain instance type enum."
+---
+
+## Issue
+
+`AWS::Elasticsearch::Domain` was checked with OpenSearch `.search` instance names.
+
+## Patch
+
+The fix restores `.elasticsearch` values for the legacy resource and adds a regression fixture.
+
+## Lesson
+
+Small open-source patches are useful because they force careful reading of existing behavior and maintainer expectations.

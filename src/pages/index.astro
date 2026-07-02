@@ -1,0 +1,138 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { entrySlug } from "../lib/content";
+
+const articles = (await getCollection("articles", ({ data }) => data.status === "published"))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const featuredArticles = articles.filter((article) => article.data.featured).slice(0, 3);
+const projects = (await getCollection("projects"))
+  .sort((a, b) => a.data.priority - b.data.priority);
+const featuredProjects = projects.filter((project) => project.data.featured).slice(0, 4);
+---
+
+<BaseLayout title="Haitao Zheng | Cyber Security" description="Cyber Security & Privacy student building small security tools, technical writing, and systems projects.">
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <span class="eyebrow"><span class="dot"></span>blue-team / cloud-security / systems</span>
+        <h1>HAITAO ZHENG <br /><span style="font-size:.55em;color:#cbd5e1;font-weight:300">(TAO)</span></h1>
+        <p class="hero-subtitle">Cyber Security & Privacy <span style="color:#64748b">|</span> Systems & Infrastructure Engineering</p>
+        <div class="terminal">
+          <div class="terminal-top"><span>local / portfolio console</span><span>live</span></div>
+          <div class="terminal-body">$ whoami
+haitao.zheng
+
+$ focus --area
+blue-team / cloud-security / systems
+
+$ content --source
+Astro collections: articles + projects</div>
+        </div>
+        <div class="actions">
+          <a class="button primary" href="#projects">View Projects</a>
+          <a class="button primary" href="/articles/">Read Articles</a>
+          <a class="button" href="mailto:h@tzheng.dev">h@tzheng.dev</a>
+          <a class="button" href="https://github.com/0xTaoZ" target="_blank">GitHub</a>
+        </div>
+      </div>
+      <div class="portrait">
+        <img src="/IMG_1419.jpg" alt="Haitao Zheng" />
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="section-head">
+        <span class="eyebrow">Selected work</span>
+        <h2>Projects.</h2>
+        <p>Featured projects only. This is not a repository dump; it is a curated project system backed by MDX content files.</p>
+      </div>
+      <div class="grid">
+        {featuredProjects.map((project, index) => (
+          <article class:list={["card", index === 0 && "featured", index > 0 && "compact"]}>
+            <div class="meta">{project.data.stack.map((item) => <span class="chip">{item}</span>)}</div>
+            <h3>{project.data.title}</h3>
+            <p>{project.data.excerpt}</p>
+            <p class="meta">{project.data.status} · {project.data.type}</p>
+            <a class="link" href={`/projects/${entrySlug(project)}/`}>Read case study ↗</a>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="articles">
+      <div class="section-head">
+        <span class="eyebrow">Technical writing</span>
+        <h2>Articles.</h2>
+        <p>Featured writing pulled automatically from MDX frontmatter. The newest and strongest notes can be promoted without touching homepage HTML.</p>
+      </div>
+      <div class="grid">
+        {featuredArticles.map((article) => (
+          <article class="card">
+            <div class="meta"><span>{article.data.category}</span><span>{article.data.readingTime}</span></div>
+            <h3>{article.data.title}</h3>
+            <p>{article.data.excerpt}</p>
+            <a class="link" href={`/articles/${entrySlug(article)}/`}>Read article ↗</a>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="education">
+      <div class="section-head">
+        <span class="eyebrow">Academic path</span>
+        <h2>Education.</h2>
+        <p>A rigorous foundation in engineering, privacy, languages, and European academic environments.</p>
+      </div>
+      <div class="timeline">
+        <article class="card" style="grid-column:span 12">
+          <div class="meta"><span>Oct 2025 - Present</span><span>Germany</span></div>
+          <h3>University of Bonn-Rhein-Sieg (H-BRS)</h3>
+          <p><strong>B.Sc. Cyber Security & Privacy.</strong> Academic focus across Java programming, Linux, networking protocols, SQL, mathematics, privacy-by-design, GDPR, and infrastructure-oriented cybersecurity.</p>
+        </article>
+        <article class="card" style="grid-column:span 12">
+          <div class="meta"><span>Dec 2024 - June 2025</span><span>Bielefeld</span></div>
+          <h3>FHM University of Applied Sciences</h3>
+          <p>Accelerated university transition and FSP preparation, including certified German C1 proficiency in a high-intensity academic timeframe.</p>
+        </article>
+        <article class="card" style="grid-column:span 12">
+          <div class="meta"><span>2024</span><span>CS50x</span></div>
+          <h3>Harvard University</h3>
+          <p>Computer science foundations through project-based coursework in algorithms, data structures, C, Python, SQL, and web development.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="toolkit">
+      <div class="section-head">
+        <span class="eyebrow">Technical toolkit</span>
+        <h2>Toolkit.</h2>
+        <p>Systems, cloud logs, Python tooling, frontend craft, and AI-assisted workflows.</p>
+      </div>
+      <div class="grid">
+        {["Systems & Infrastructure", "Cloud Research", "Deployment", "Development", "AI-Enhanced Workflows"].map((item) => (
+          <article class="card compact">
+            <span class="chip">active</span>
+            <h3>{item}</h3>
+            <p>Focused learning and practical work around security-conscious engineering, readable tools, and maintainable systems.</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="grid">
+        <article class="card">
+          <span class="eyebrow">Languages</span>
+          <h3>English, German, Mandarin, Hokkien, Japanese.</h3>
+          <p>English C2 professional, German C1 advanced academic, Mandarin native, Hokkien fluent, Japanese A2 elementary.</p>
+        </article>
+        <article class="card">
+          <span class="eyebrow">Interests</span>
+          <h3>Photography, athletics, cycling, global insight.</h3>
+          <p>Portrait and landscape photography, football, skateboarding, basketball, badminton, volleyball, strength training, markets, and geopolitics.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

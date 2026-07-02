@@ -1,0 +1,43 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { entrySlug } from "../../lib/content";
+
+export async function getStaticPaths() {
+  const articles = await getCollection("articles", ({ data }) => data.status === "published");
+  return articles.map((article) => ({ params: { slug: entrySlug(article) }, props: { article } }));
+}
+
+const { article } = Astro.props;
+const all = (await getCollection("articles", ({ data }) => data.status === "published"))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const index = all.findIndex((item) => entrySlug(item) === entrySlug(article));
+const previous = all[index + 1];
+const next = all[index - 1];
+const { Content, headings } = await render(article);
+---
+
+<BaseLayout title={`${article.data.title} | Haitao Zheng`} description={article.data.excerpt}>
+  <main class="article-body">
+    <a class="button" href="/articles/">← Articles</a>
+    <h1>{article.data.title}</h1>
+    <div class="meta">
+      <span>{article.data.date.toLocaleDateString("en", { month: "long", day: "numeric", year: "numeric" })}</span>
+      <span>{article.data.category}</span>
+      <span>{article.data.readingTime}</span>
+      {article.data.updated && <span>updated {article.data.updated.toLocaleDateString("en")}</span>}
+    </div>
+    <p>{article.data.excerpt}</p>
+    {headings.length > 0 && (
+      <nav class="toc" aria-label="Table of contents">
+        <strong>Contents</strong>
+        {headings.map((heading) => <a href={`#${heading.slug}`}>{heading.text}</a>)}
+      </nav>
+    )}
+    <Content />
+    <div class="grid" style="margin-top:3rem">
+      {previous && <a class="card compact" href={`/articles/${entrySlug(previous)}/`}><span class="meta">Previous</span><h3>{previous.data.title}</h3></a>}
+      {next && <a class="card compact" href={`/articles/${entrySlug(next)}/`}><span class="meta">Next</span><h3>{next.data.title}</h3></a>}
+    </div>
+  </main>
+</BaseLayout>

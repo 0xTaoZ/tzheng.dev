@@ -1,0 +1,65 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = "Haitao Zheng's cyber security portfolio, technical articles, and project system.",
+  ogImage = "/logo.png"
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <nav class="nav">
+      <a class="brand" href="/">
+        <img src="/logo.png" alt="" />
+        <span>HAITAO ZHENG</span>
+      </a>
+      <div class="nav-links">
+        <a href="/#projects">Projects</a>
+        <a href="/articles/">Articles</a>
+        <a href="/projects/">Project System</a>
+        <a href="/system/">System Design</a>
+        <a href="/#education">Education</a>
+        <a href="/#toolkit">Toolkit</a>
+        <a href="/legal/">Legal</a>
+      </div>
+    </nav>
+    <slot />
+    <footer class="site-footer">
+      <div class="shell footer-inner">
+        <div>
+          <p class="footer-kicker">Cloudflare edge · HTTPS-first · static attack surface</p>
+          <p>© 2026 Haitao Zheng. No intentional ad pixels, no public login surface, and no unnecessary database for static content.</p>
+        </div>
+        <a class="system-link" href="/system/" aria-label="Read the tzheng.dev system design">
+          <span>System Design</span>
+          <small>Architecture, content system, security posture, and publishing workflow</small>
+        </a>
+      </div>
+    </footer>
+  </body>
+</html>

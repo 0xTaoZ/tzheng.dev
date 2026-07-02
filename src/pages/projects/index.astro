@@ -1,0 +1,31 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { entrySlug } from "../../lib/content";
+
+const projects = (await getCollection("projects")).sort((a, b) => a.data.priority - b.data.priority);
+const featured = projects.filter((project) => project.data.featured);
+---
+
+<BaseLayout title="Projects | Haitao Zheng" description="Curated security, open-source, and portfolio projects by Haitao Zheng.">
+  <main class="shell">
+    <section>
+      <div class="section-head">
+        <span class="eyebrow">Curated project system</span>
+        <h2>Projects.</h2>
+        <p>Featured projects only, stored as MDX files with status, stack, GitHub links, and case-study body content.</p>
+      </div>
+      <div class="grid">
+        {featured.map((project, index) => (
+          <article class:list={["card", index === 0 && "featured", index > 0 && "compact"]}>
+            <div class="meta"><span>{project.data.status}</span><span>{project.data.type}</span></div>
+            <h3>{project.data.title}</h3>
+            <p>{project.data.excerpt}</p>
+            <div class="meta">{project.data.stack.map((item) => <span class="chip">{item}</span>)}</div>
+            <a class="link" href={`/projects/${entrySlug(project)}/`}>Open case study ↗</a>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+</BaseLayout>

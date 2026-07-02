@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Admin | Haitao Zheng</title>
+    <link rel="icon" href="./favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #020305;
+            --panel: rgba(10,16,26,.72);
+            --line: rgba(148,163,184,.16);
+            --blue: #7dd3fc;
+            --green: #39ff88;
+            --muted: #94a3b8;
+            --text: #f8fafc;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 18% 8%, rgba(125,211,252,.16), transparent 30rem),
+                radial-gradient(circle at 88% 10%, rgba(57,255,136,.08), transparent 28rem),
+                var(--bg);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image:
+                linear-gradient(rgba(125,211,252,.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(125,211,252,.045) 1px, transparent 1px);
+            background-size: 58px 58px;
+            mask-image: linear-gradient(to bottom, black, transparent 75%);
+        }
+        a { color: inherit; text-decoration: none; }
+        button, input, textarea { font: inherit; }
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 clamp(1rem, 4vw, 4rem);
+            border-bottom: 1px solid rgba(148,163,184,.12);
+            background: rgba(2,5,10,.68);
+            backdrop-filter: blur(26px) saturate(180%);
+        }
+        .brand { display:flex; align-items:center; gap:.7rem; font-weight:750; letter-spacing:.12em; font-size:.82rem; }
+        .dot { width:7px; height:7px; border-radius:99px; background:var(--green); box-shadow:0 0 18px rgba(57,255,136,.8); }
+        .shell { width:min(1320px, calc(100vw - 2rem)); margin:0 auto; padding:3rem 0 5rem; }
+        .hero { display:flex; justify-content:space-between; gap:2rem; align-items:end; margin:3rem 0 1.2rem; }
+        .pill {
+            display:inline-flex;
+            align-items:center;
+            gap:.5rem;
+            border:1px solid rgba(125,211,252,.22);
+            background:rgba(8,20,33,.46);
+            color:#bae6fd;
+            border-radius:999px;
+            padding:.45rem .75rem;
+            font:.72rem ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+        h1 { margin:1rem 0 0; font-size:clamp(3rem, 8vw, 7rem); line-height:.9; letter-spacing:-.07em; }
+        .lede { color:#cbd5e1; max-width:680px; line-height:1.7; font-size:1.05rem; }
+        .actions { display:flex; flex-wrap:wrap; gap:.7rem; }
+        .btn {
+            border:1px solid rgba(148,163,184,.18);
+            border-radius:999px;
+            padding:.82rem 1rem;
+            color:#e0f2fe;
+            background:rgba(2,6,14,.58);
+            cursor:pointer;
+            transition:transform .25s ease, border-color .25s ease, background .25s ease;
+        }
+        .btn:hover { transform:translateY(-1px); border-color:rgba(125,211,252,.34); background:rgba(15,23,42,.78); }
+        .btn.primary { color:#020305; background:#f8fafc; border-color:transparent; font-weight:700; }
+        .workspace {
+            display:grid;
+            grid-template-columns: 320px minmax(0, 1fr) minmax(320px, .72fr);
+            gap:1rem;
+            align-items:start;
+        }
+        .panel {
+            border:1px solid var(--line);
+            border-radius:24px;
+            background:linear-gradient(145deg, rgba(16,24,39,.78), rgba(2,6,14,.68));
+            box-shadow:0 30px 100px rgba(0,0,0,.34);
+            overflow:hidden;
+        }
+        .panel-head { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.1rem; border-bottom:1px solid rgba(148,163,184,.12); }
+        .panel-title { font:.78rem ui-monospace, SFMono-Regular, Menlo, monospace; color:#bae6fd; letter-spacing:.12em; text-transform:uppercase; }
+        .list { padding:.7rem; display:grid; gap:.55rem; max-height:70vh; overflow:auto; }
+        .item {
+            border:1px solid rgba(148,163,184,.12);
+            border-radius:16px;
+            padding:.9rem;
+            background:rgba(2,6,14,.34);
+            cursor:pointer;
+        }
+        .item.active { border-color:rgba(57,255,136,.42); box-shadow:0 0 0 1px rgba(57,255,136,.12) inset; }
+        .item b { display:block; font-size:.9rem; line-height:1.25; }
+        .item span { display:block; color:var(--muted); font:.72rem ui-monospace, monospace; margin-top:.4rem; }
+        .form { padding:1rem; display:grid; gap:.9rem; }
+        label { display:grid; gap:.4rem; color:#cbd5e1; font-size:.84rem; }
+        input, textarea {
+            width:100%;
+            border:1px solid rgba(148,163,184,.15);
+            border-radius:16px;
+            outline:0;
+            color:white;
+            background:rgba(255,255,255,.045);
+            padding:.85rem .95rem;
+        }
+        textarea { min-height:260px; resize:vertical; line-height:1.65; }
+        .split { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; }
+        .preview { padding:1.25rem; }
+        .preview h2 { font-size:clamp(1.9rem, 4vw, 3.6rem); line-height:.95; letter-spacing:-.055em; margin:.8rem 0 1rem; }
+        .preview .meta { color:var(--muted); font:.78rem ui-monospace, monospace; margin-bottom:1.5rem; }
+        .preview p { color:#cbd5e1; line-height:1.85; }
+        .notice { margin-top:1rem; color:#94a3b8; font:.78rem ui-monospace, monospace; }
+        .lock-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            display: grid;
+            place-items: center;
+            padding: 1rem;
+            background:
+                radial-gradient(circle at 35% 20%, rgba(125,211,252,.16), transparent 28rem),
+                rgba(0,0,0,.74);
+            backdrop-filter: blur(24px) saturate(160%);
+        }
+        .lock-screen.hidden { display: none; }
+        .lock-box {
+            width: min(92vw, 440px);
+            border: 1px solid rgba(125,211,252,.18);
+            border-radius: 28px;
+            padding: 1.3rem;
+            background: linear-gradient(145deg, rgba(12,16,24,.94), rgba(3,7,14,.92));
+            box-shadow: 0 50px 160px rgba(0,0,0,.72);
+        }
+        .lock-box h2 { margin: 1rem 0 .7rem; font-size: 2rem; letter-spacing: -.05em; }
+        .lock-box p { color: #94a3b8; line-height: 1.7; margin: 0 0 1rem; }
+        .lock-error { min-height: 1.2rem; color: #fca5a5; font: .78rem ui-monospace, monospace; margin-top: .7rem; }
+        @media (max-width: 1100px) {
+            .workspace { grid-template-columns:1fr; }
+            .list { max-height:none; }
+            .hero { display:block; }
+            .actions { margin-top:1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="lock" class="lock-screen">
+        <div class="lock-box">
+            <span class="pill"><span class="dot"></span>local admin gate</span>
+            <h2>Unlock article studio.</h2>
+            <p>Set a local passphrase the first time. This protects your local editor from casual access; real online publishing still needs GitHub or Cloudflare authentication.</p>
+            <input id="admin-pass" type="password" placeholder="Passphrase">
+            <div class="actions" style="margin-top:.9rem">
+                <button id="unlock" class="btn primary">Unlock</button>
+                <button id="reset-lock" class="btn">Reset local lock</button>
+            </div>
+            <div id="lock-error" class="lock-error"></div>
+        </div>
+    </div>
+    <nav class="nav">
+        <a class="brand" href="./index.html"><span class="dot"></span>HAITAO ZHENG</a>
+        <div class="actions">
+            <a class="btn" href="./articles.html">View Articles</a>
+            <a class="btn" href="./index.html">Portfolio</a>
+        </div>
+    </nav>
+    <main class="shell">
+        <section class="hero">
+            <div>
+                <span class="pill"><span class="dot"></span>local article studio / no backend required</span>
+                <h1>Article Admin.</h1>
+                <p class="lede">A local GUI for drafting, editing, previewing, and exporting article data. It stays private on your machine until you decide to publish.</p>
+            </div>
+            <div class="actions">
+                <button id="new" class="btn">New article</button>
+                <button id="download-json" class="btn primary">Export JSON</button>
+                <button id="download-md" class="btn">Export Markdown</button>
+            </div>
+        </section>
+        <section class="workspace">
+            <aside class="panel">
+                <div class="panel-head"><span class="panel-title">Draft index</span><span id="count" class="pill">0</span></div>
+                <div id="list" class="list"></div>
+            </aside>
+            <section class="panel">
+                <div class="panel-head"><span class="panel-title">Editor</span><span class="pill">autosaves locally</span></div>
+                <div class="form">
+                    <div class="split">
+                        <label>Slug<input id="slug" placeholder="my-security-note"></label>
+                        <label>Date<input id="date" placeholder="July 2026"></label>
+                    </div>
+                    <label>Title<input id="title" placeholder="Article title"></label>
+                    <label>Tags<input id="tags" placeholder="cloud, blue-team, learning"></label>
+                    <label>Excerpt<textarea id="excerpt" placeholder="Short summary for the article card."></textarea></label>
+                    <label>Body<textarea id="body" placeholder="Write paragraphs separated by blank lines. Simple HTML like <code>ping</code> is okay."></textarea></label>
+                    <div class="actions">
+                        <button id="save" class="btn primary">Save draft</button>
+                        <button id="delete" class="btn">Delete</button>
+                    </div>
+                    <p class="notice">This admin page writes to browser localStorage and exports files. For publishing, sync the exported content into the MDX collection and commit the change through Git.</p>
+                </div>
+            </section>
+            <aside class="panel">
+                <div class="panel-head"><span class="panel-title">Live preview</span><span class="pill">rendered</span></div>
+                <article id="preview" class="preview"></article>
+            </aside>
+        </section>
+    </main>
+    <script>
+        const lock = document.getElementById("lock");
+        const pass = document.getElementById("admin-pass");
+        const lockError = document.getElementById("lock-error");
+        const hashText = async (text) => {
+            const data = new TextEncoder().encode(text);
+            const digest = await crypto.subtle.digest("SHA-256", data);
+            return [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+        };
+        const unlockAdmin = async () => {
+            const value = pass.value.trim();
+            if (value.length < 4) {
+                lockError.textContent = "Use at least 4 characters.";
+                return;
+            }
+            const key = "tzheng.adminHash";
+            const hash = await hashText(value);
+            const saved = localStorage.getItem(key);
+            if (!saved) {
+                localStorage.setItem(key, hash);
+                sessionStorage.setItem("tzheng.adminUnlocked", "true");
+                lock.classList.add("hidden");
+                return;
+            }
+            if (saved === hash) {
+                sessionStorage.setItem("tzheng.adminUnlocked", "true");
+                lock.classList.add("hidden");
+            } else {
+                lockError.textContent = "Wrong passphrase.";
+            }
+        };
+        if (sessionStorage.getItem("tzheng.adminUnlocked") === "true") lock.classList.add("hidden");
+        document.getElementById("unlock").addEventListener("click", unlockAdmin);
+        pass.addEventListener("keydown", (event) => { if (event.key === "Enter") unlockAdmin(); });
+        document.getElementById("reset-lock").addEventListener("click", () => {
+            localStorage.removeItem("tzheng.adminHash");
+            lockError.textContent = "Local lock reset. Enter a new passphrase.";
+        });
+
+        const seed = [
+            { slug: "new-security-note", date: "July 2026", tags: ["learning"], title: "New security note", excerpt: "A short draft about what I learned today.", body: ["Write one clear idea.", "Add what I tried, what failed, and what I want to improve next."] }
+        ];
+        const fields = ["slug", "date", "title", "tags", "excerpt", "body"].reduce((acc, id) => ({ ...acc, [id]: document.getElementById(id) }), {});
+        const list = document.getElementById("list");
+        const preview = document.getElementById("preview");
+        const count = document.getElementById("count");
+        let drafts = JSON.parse(localStorage.getItem("tzheng.articleDrafts") || "null") || seed;
+        let active = 0;
+
+        const normalize = () => ({
+            slug: fields.slug.value.trim() || "untitled-note",
+            date: fields.date.value.trim() || "July 2026",
+            title: fields.title.value.trim() || "Untitled article",
+            tags: fields.tags.value.split(",").map(tag => tag.trim()).filter(Boolean),
+            excerpt: fields.excerpt.value.trim(),
+            body: fields.body.value.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean)
+        });
+
+        const persist = () => localStorage.setItem("tzheng.articleDrafts", JSON.stringify(drafts));
+        const load = (index) => {
+            active = Math.max(0, Math.min(index, drafts.length - 1));
+            const article = drafts[active];
+            fields.slug.value = article.slug || "";
+            fields.date.value = article.date || "";
+            fields.title.value = article.title || "";
+            fields.tags.value = (article.tags || []).join(", ");
+            fields.excerpt.value = article.excerpt || "";
+            fields.body.value = (article.body || []).join("\n\n");
+            render();
+        };
+        const render = () => {
+            count.textContent = String(drafts.length);
+            list.innerHTML = drafts.map((article, index) => `
+                <div class="item ${index === active ? "active" : ""}" data-index="${index}">
+                    <b>${article.title || "Untitled article"}</b>
+                    <span>${article.date || "No date"} · ${(article.tags || []).join(" / ") || "draft"}</span>
+                </div>
+            `).join("");
+            const article = normalize();
+            preview.innerHTML = `
+                <span class="pill">${article.tags.join(" / ") || "draft"}</span>
+                <h2>${article.title}</h2>
+                <div class="meta">${article.date} · ${article.slug}</div>
+                <p>${article.excerpt}</p>
+                ${article.body.map(p => `<p>${p}</p>`).join("")}
+            `;
+            list.querySelectorAll(".item").forEach(item => item.addEventListener("click", () => load(Number(item.dataset.index))));
+        };
+        const save = () => {
+            drafts[active] = normalize();
+            persist();
+            render();
+        };
+        Object.values(fields).forEach(field => field.addEventListener("input", () => {
+            drafts[active] = normalize();
+            persist();
+            render();
+        }));
+        document.getElementById("new").addEventListener("click", () => {
+            drafts.unshift({ ...seed[0], slug: `note-${Date.now()}`, title: "Untitled article" });
+            persist();
+            load(0);
+        });
+        document.getElementById("save").addEventListener("click", save);
+        document.getElementById("delete").addEventListener("click", () => {
+            if (drafts.length <= 1) return;
+            drafts.splice(active, 1);
+            persist();
+            load(0);
+        });
+        const download = (name, text, type) => {
+            const blob = new Blob([text], { type });
+            const url = URL.createObjectURL(blob);
+            const a = Object.assign(document.createElement("a"), { href: url, download: name });
+            a.click();
+            URL.revokeObjectURL(url);
+        };
+        document.getElementById("download-json").addEventListener("click", () => {
+            save();
+            download("articles-drafts.json", JSON.stringify(drafts, null, 2), "application/json");
+        });
+        document.getElementById("download-md").addEventListener("click", () => {
+            save();
+            const article = drafts[active];
+            const md = `---\ntitle: ${article.title}\ndate: ${article.date}\nslug: ${article.slug}\ntags: ${(article.tags || []).join(", ")}\nexcerpt: ${article.excerpt}\n---\n\n${(article.body || []).join("\n\n")}\n`;
+            download(`${article.slug || "article"}.md`, md, "text/markdown");
+        });
+        load(0);
+    </script>
+</body>
+</html>
