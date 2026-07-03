@@ -46,6 +46,43 @@ const systemEntry = `
 let html = readFileSync(sourcePath, "utf8")
   .replace(/<link rel="icon"[^>]+>/, '<link rel="icon" href="/favicon.png" type="image/png">\n    <link rel="apple-touch-icon" href="/apple-touch-icon.png">')
   .replace(
+    "<title>Haitao Zheng | Cyber Security</title>",
+    `<title>Haitao Zheng | Cyber Security Portfolio</title>
+    <meta name="description" content="Haitao Zheng, also known as Tao, Jensen Zheng, and Jensen Zane, is a Cyber Security & Privacy student building security tooling, cloud log analysis projects, IOC workflows, technical articles, and static-first web systems.">
+    <meta name="keywords" content="Haitao Zheng, Tao Zheng, Tao, Jensen Zheng, Jensen Zane, jensenzheng, jensenzane, cyber security, cybersecurity portfolio, cloud security, blue team, IOC toolkit, security tooling, technical articles, developer portfolio, Astro portfolio, Cloudflare Pages">
+    <link rel="canonical" href="https://tzheng.dev/">
+    <meta property="og:title" content="Haitao Zheng | Cyber Security Portfolio">
+    <meta property="og:description" content="Cyber security portfolio, technical articles, project case studies, and system design notes by Haitao Zheng.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tzheng.dev/">
+    <meta property="og:image" content="https://tzheng.dev/logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://tzheng.dev/#person",
+          "name": "Haitao Zheng",
+          "alternateName": ["Tao", "Tao Zheng", "Jensen Zheng", "Jensen Zane", "jensenzheng", "jensenzane"],
+          "url": "https://tzheng.dev/",
+          "sameAs": ["https://github.com/0xTaoZ"],
+          "knowsAbout": ["Cyber Security", "Cloud Security", "Blue Team", "IOC Workflows", "Security Tooling", "Static Websites", "Astro", "Cloudflare Pages"]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://tzheng.dev/#website",
+          "url": "https://tzheng.dev/",
+          "name": "Haitao Zheng | Cyber Security Portfolio",
+          "alternateName": ["tzheng.dev", "Tao Zheng Portfolio", "Jensen Zheng Cyber Security Portfolio"],
+          "description": "Personal cyber security portfolio, technical articles, project case studies, and system design notes by Haitao Zheng."
+        }
+      ]
+    }
+    </script>`
+  )
+  .replace(
     '<a href="#" class="text-white tracking-widest font-semibold hover:opacity-70 transition duration-300 flex items-center gap-3"><span class="nav-dot"></span>HAITAO ZHENG</a>',
     '<a href="#" class="text-white hover:opacity-80 transition duration-300 flex items-center" aria-label="Haitao Zheng home"><img src="/logo.png" alt="" class="w-8 h-8 rounded-xl object-cover border border-white/10 shadow-[0_0_24px_rgba(125,211,252,0.22)]"></a>'
   )
