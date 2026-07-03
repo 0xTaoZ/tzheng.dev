@@ -34,26 +34,27 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body>
     <nav class="nav">
-      <a class="brand" href="/">
+      <a class="brand logo-only" href="/" aria-label="Back to tzheng.dev home">
         <img src="/logo.png" alt="" />
-        <span>HAITAO ZHENG</span>
       </a>
       <div class="nav-links">
         <a href="/#projects">Projects</a>
-        <a href="/articles/">Articles</a>
-        <a href="/projects/">Project System</a>
         <a href="/system/">System Design</a>
-        <a href="/#education">Education</a>
+        <a href="/articles/">Articles</a>
         <a href="/#toolkit">Toolkit</a>
+        <a href="/#education">Education</a>
+        <a href="/#about">About</a>
         <a href="/legal/">Legal</a>
       </div>
     </nav>
+    <a class="back-home" href="/">← Back to home</a>
     <slot />
     <footer class="site-footer">
       <div class="shell footer-inner">
         <div>
           <p class="footer-kicker">Cloudflare edge · HTTPS-first · static attack surface</p>
-          <p>© 2026 Haitao Zheng. No intentional ad pixels, no public login surface, and no unnecessary database for static content.</p>
+          <p class="footer-security">This website is protected by Cloudflare Edge, delivered exclusively over HTTPS, built with a static architecture to minimize the attack surface, and designed with privacy by default.</p>
+          <p>© 2026 Haitao Zheng. All rights reserved.</p>
         </div>
         <a class="system-link" href="/system/" aria-label="Read the tzheng.dev system design">
           <span>System Design</span>

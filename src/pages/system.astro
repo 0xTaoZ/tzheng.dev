@@ -1,106 +1,91 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const sections = [
+  {
+    label: "01",
+    title: "Overview",
+    body: "tzheng.dev is built as a personal engineering system, not only a resume page. The public homepage keeps the original cyber portfolio feeling, while the writing and project layers are managed through structured content. The goal is simple: a recruiter can scan quickly, and an engineer can open the deeper pages and see how the site is actually designed."
+  },
+  {
+    label: "02",
+    title: "Design Principles",
+    body: "The visual language is dark, technical, and premium, but it stays readable. The homepage uses a cinematic hero, glass navigation, terminal motion, project cards, soft grid lines, and restrained neon accents. The design avoids turning every section into a demo. Important content still has to be easy to read on a phone, a laptop, or a recruiter screen."
+  },
+  {
+    label: "03",
+    title: "Interface System",
+    body: "The interface is organized around repeatable patterns: hero actions, project case cards, chips, metadata rows, timeline cards, note cards, command palette links, and footer system signals. The homepage keeps the original custom HTML/CSS/JavaScript because it carries the strongest visual identity. Astro serves it as raw HTML so the original global animation system is not broken by component scoping."
+  },
+  {
+    label: "04",
+    title: "Content Architecture",
+    body: "Articles and projects are no longer treated as long-term page fragments. They live as Markdown/MDX files in content collections, with frontmatter for title, date, tags, category, featured state, status, reading time, stack, links, and summaries. This makes the writing system easier to grow: a new article is a new content file, not a risky edit inside a large homepage."
+  },
+  {
+    label: "05",
+    title: "Publishing Workflow",
+    body: "The site uses a Git-based publishing workflow. Code, content, and configuration are committed to GitHub, then Cloudflare Pages builds the static output with npm run build and publishes the dist directory. That gives the site a clear history: changes are reviewable, reversible, and tied to commits instead of manual uploads."
+  },
+  {
+    label: "06",
+    title: "Security & Privacy Model",
+    body: "The public site is static-first. There is no public password-only admin panel, no unnecessary database, and no server session layer for content that can be safely versioned as files. The site is delivered through Cloudflare Edge over HTTPS. It is designed without intentional advertising pixels or invasive tracking. The main security idea is to keep the public attack surface small."
+  },
+  {
+    label: "07",
+    title: "Performance & Discoverability",
+    body: "Astro generates static routes for the homepage, article pages, project pages, RSS, and sitemap output. This keeps delivery fast and simple. Articles can have SEO metadata, Open Graph previews, readable URLs, tags, and table-of-contents support. Performance is treated as part of the design system: motion should feel smooth, but the site should not become heavy just to look technical."
+  },
+  {
+    label: "08",
+    title: "Trade-offs",
+    body: "The site deliberately does not run a full backend today. That means there is no online database editor or public login dashboard yet. The trade-off is worth it for this stage: fewer moving parts, easier deployment, safer public surface, and content that stays portable. A Git-based CMS can be added later without changing the static-first model."
+  },
+  {
+    label: "09",
+    title: "Roadmap",
+    body: "Next steps include richer MDX components, tag archives, better article search, project case-study pages, improved Open Graph images, privacy-respecting analytics, accessibility passes, and an optional Git-based CMS for editing content through a UI while still committing changes back to the repository."
+  }
+];
 ---
 
-<BaseLayout title="System Design | tzheng.dev" description="How tzheng.dev is designed as a static-first personal engineering website, technical writing system, and cyber-inspired portfolio.">
+<BaseLayout title="System Design | tzheng.dev" description="How tzheng.dev is designed as a static-first engineering portfolio, content system, and Cloudflare Pages deployment.">
   <main class="shell">
     <section>
       <div class="section-head">
         <span class="eyebrow"><span class="dot"></span>behind this site</span>
         <h2>System Design.</h2>
-        <p>tzheng.dev is designed as a personal engineering website: a cyber-inspired portfolio, technical writing system, and long-term project documentation space. The goal is to be readable for recruiters, useful for engineers, and maintainable over time.</p>
+        <p>A clear look at the architecture, content model, publishing workflow, security posture, and trade-offs behind tzheng.dev.</p>
       </div>
       <div class="grid">
         <article class="card featured">
-          <span class="chip">positioning</span>
-          <h3>More than a static resume.</h3>
-          <p>The site presents identity, projects, writing, education, and technical direction as one coherent system. It is intentionally static-first: fast to load, easy to audit, and small in public attack surface.</p>
+          <span class="chip">static-first</span>
+          <h3>Portfolio, writing system, and engineering record.</h3>
+          <p>The homepage stays visually expressive, while articles and projects move into a structured content system. That lets the site feel polished on the surface and still be maintainable underneath.</p>
         </article>
         <article class="card compact">
-          <span class="chip">design language</span>
-          <h3>Cyber, premium, minimal.</h3>
-          <p>Dark interface, glass surfaces, restrained motion, terminal-inspired details, and strong information hierarchy without turning the site into a noisy demo.</p>
+          <span class="chip">Cloudflare Pages</span>
+          <h3>Git push to static deployment.</h3>
+          <p>Changes go through GitHub, Cloudflare builds the Astro site, and the generated static files are served at the edge.</p>
         </article>
       </div>
     </section>
 
     <section>
       <div class="section-head">
-        <span class="eyebrow">frontend system</span>
-        <h2>Interface Architecture.</h2>
-        <p>The frontend is built around reusable visual patterns: cards, chips, metadata rows, responsive grids, article layouts, project case-study layouts, and quiet security signals.</p>
+        <span class="eyebrow">architecture notes</span>
+        <h2>Nine-Part Breakdown.</h2>
+        <p>The system is intentionally simple where simplicity helps security and maintenance, and structured where the site needs to grow.</p>
       </div>
       <div class="grid">
-        <article class="card compact"><h3>Responsive layout</h3><p>The homepage, article index, project index, and detail pages adapt from desktop portfolio layouts to compact mobile reading views.</p></article>
-        <article class="card compact"><h3>Visual hierarchy</h3><p>Large editorial headings are reserved for primary sections, while cards use tighter headings and metadata for fast scanning.</p></article>
-        <article class="card compact"><h3>Reading experience</h3><p>Article pages support metadata, tags, categories, table of contents, code-friendly typography, previous/next navigation, and SEO meta.</p></article>
-        <article class="card compact"><h3>Extensible pages</h3><p>The site can add new pages without copying large blocks of HTML. Layout, global navigation, and core styling live in shared Astro files.</p></article>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <span class="eyebrow">content architecture</span>
-        <h2>Structured Content.</h2>
-        <p>Articles and projects are no longer intended to live as long-term hard-coded HTML arrays. They are being moved into Astro content collections backed by Markdown/MDX files.</p>
-      </div>
-      <div class="grid">
-        <article class="card featured">
-          <span class="chip">articles</span>
-          <h3>MDX technical writing system.</h3>
-          <p>Each article is stored as an independent MDX file under <code>src/content/articles/</code>. Frontmatter controls title, slug, date, updated date, excerpt, tags, category, featured state, status, and reading time.</p>
-          <p>The article index reads the collection automatically, generates cards, exposes archive statistics, and creates detail pages by slug.</p>
-        </article>
-        <article class="card compact">
-          <span class="chip">projects</span>
-          <h3>Curated case studies.</h3>
-          <p>Projects live under <code>src/content/projects/</code> with status, type, featured state, priority, stack, GitHub link, demo link, excerpt, and body content.</p>
-          <p>The site shows selected engineering work, not a raw GitHub repository list.</p>
-        </article>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <span class="eyebrow">publishing workflow</span>
-        <h2>Git-Based Publishing.</h2>
-        <p>Content and code updates are version-controlled. Changes can be reviewed, rolled back, and tracked before deployment.</p>
-      </div>
-      <div class="grid">
-        <article class="card compact"><h3>Static output</h3><p>Astro builds the site into static files in <code>dist/</code>, suitable for GitHub Pages or Cloudflare Pages.</p></article>
-        <article class="card compact"><h3>Content files</h3><p>New writing can be added as MDX without editing the homepage directly. Future CMS integration can write to the same Git-backed content files.</p></article>
-        <article class="card compact"><h3>Admin direction</h3><p>The local admin tool can stay as a drafting interface, but the source of truth is the content collection. A Git-based CMS is a planned option, not required for the public site.</p></article>
-        <article class="card compact"><h3>Deployment path</h3><p>The repository can be deployed by a static build workflow. Cloudflare Pages can use <code>npm run build</code> and publish <code>dist/</code>.</p></article>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <span class="eyebrow">security posture</span>
-        <h2>Static-First Security.</h2>
-        <p>The public website avoids unnecessary moving parts. That is a deliberate security and maintenance decision.</p>
-      </div>
-      <div class="grid">
-        <article class="card compact"><h3>No fake public admin</h3><p>The site does not pretend that a front-end password is a secure publishing backend. Real publishing should use GitHub, Cloudflare, or a proper Git-based CMS workflow.</p></article>
-        <article class="card compact"><h3>No unnecessary database</h3><p>There is no database attack surface for content that can be safely versioned as files.</p></article>
-        <article class="card compact"><h3>No ad pixels</h3><p>The site is designed without intentional advertising trackers or invasive analytics.</p></article>
-        <article class="card compact"><h3>Cloudflare-ready</h3><p>The domain is routed through Cloudflare nameservers, supporting HTTPS delivery, DNS protection, caching, and basic edge abuse filtering.</p></article>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <span class="eyebrow">roadmap</span>
-        <h2>Next Iterations.</h2>
-        <p>The architecture is designed to grow without turning the public site into a heavy application.</p>
-      </div>
-      <div class="grid">
-        <article class="card compact"><h3>MDX migration</h3><p>Completed for core articles and projects; planned next step is richer article components and longer project case studies.</p></article>
-        <article class="card compact"><h3>RSS + sitemap</h3><p>RSS and sitemap support are part of the Astro build direction for discoverability and indexing.</p></article>
-        <article class="card compact"><h3>Open Graph previews</h3><p>Planned richer social preview images for articles, project case studies, and the homepage.</p></article>
-        <article class="card compact"><h3>Optional Git CMS</h3><p>Future migration can connect a Git-based CMS such as Decap CMS while keeping files as the source of truth.</p></article>
-        <article class="card compact"><h3>Search and filtering</h3><p>Planned improvements include better client-side filtering, tag archives, and keyboard-friendly article navigation.</p></article>
-        <article class="card compact"><h3>Performance budget</h3><p>Future changes should preserve fast static delivery, careful image sizing, and a restrained animation budget.</p></article>
+        {sections.map((item, index) => (
+          <article class:list={["card", index % 3 === 0 && "featured", index % 3 !== 0 && "compact"]}>
+            <span class="chip">{item.label}</span>
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </article>
+        ))}
       </div>
     </section>
   </main>

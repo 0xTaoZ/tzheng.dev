@@ -53,9 +53,28 @@ img { max-width: 100%; display: block; }
   backdrop-filter: blur(28px) saturate(180%);
 }
 .brand { display: flex; align-items: center; gap: .75rem; font-weight: 760; letter-spacing: .12em; font-size: .82rem; }
-.brand img { width: 28px; height: 28px; border-radius: 9px; }
+.brand.logo-only { width: 2.35rem; height: 2.35rem; justify-content: center; }
+.brand img { width: 32px; height: 32px; border-radius: 11px; object-fit: cover; border: 1px solid rgba(255,255,255,.10); box-shadow: 0 0 24px rgba(125,211,252,.18); }
 .nav-links { display: flex; gap: 1.6rem; color: #cbd5e1; font-size: .9rem; }
 .nav-links a:hover { color: white; }
+.back-home {
+  position: fixed;
+  left: clamp(1rem, 3vw, 2rem);
+  top: 74px;
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  border: 1px solid rgba(125,211,252,.22);
+  border-radius: 999px;
+  padding: .68rem .9rem;
+  color: #e0f2fe;
+  background: rgba(2,6,14,.70);
+  backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: 0 18px 60px rgba(0,0,0,.35);
+  font: .78rem ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.back-home:hover { border-color: rgba(125,211,252,.45); color: #fff; transform: translateY(-1px); }
 .shell { width: min(1180px, calc(100vw - 2rem)); margin: 0 auto; }
 .hero {
   min-height: calc(100vh - 58px);
@@ -143,6 +162,15 @@ section { padding: 6.5rem 0; }
 }
 .footer-inner p { margin: .25rem 0; line-height: 1.6; font: .82rem ui-monospace, SFMono-Regular, Menlo, monospace; }
 .footer-kicker { color: #bae6fd; text-transform: uppercase; letter-spacing: .12em; }
+.footer-security {
+  max-width: 54rem;
+  border: 1px solid rgba(125,211,252,.20);
+  border-radius: 18px;
+  padding: .9rem 1rem;
+  color: #dbeafe;
+  background: rgba(125,211,252,.055);
+  box-shadow: 0 0 34px rgba(125,211,252,.08);
+}
 .system-link {
   min-width: min(100%, 24rem);
   display: grid;
@@ -169,6 +197,7 @@ section { padding: 6.5rem 0; }
   .portrait img { width:min(72vw, 20rem); }
   .actions { justify-content:center; }
   .nav-links { display:none; }
+  .back-home { top: 68px; }
   .card, .card.featured, .card.compact { grid-column: span 12; }
   .footer-inner { align-items: stretch; flex-direction: column; }
 }
