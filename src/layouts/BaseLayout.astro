@@ -4,15 +4,101 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description?: string;
+  keywords?: string | string[];
   ogImage?: string;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
   title,
   description = "Haitao Zheng's cyber security portfolio, technical articles, and project system.",
-  ogImage = "/logo.png"
+  keywords,
+  ogImage = "/logo.png",
+  structuredData = []
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const canonicalUrl = canonical.toString();
+const defaultKeywords = [
+  "Haitao Zheng",
+  "Zheng Haitao",
+  "郑海涛",
+  "鄭海濤",
+  "Tao Zheng",
+  "Tao",
+  "Jensen Zheng",
+  "Jensen Zane",
+  "jensenzheng",
+  "jensenzane",
+  "Haitao Zheng cyber security",
+  "Haitao Zheng cybersecurity",
+  "郑海涛 网络安全",
+  "鄭海濤 網路安全",
+  "cloud security",
+  "blue team",
+  "cyber security student",
+  "security tooling",
+  "IOC workflow",
+  "CloudTrail",
+  "Astro portfolio",
+  "Cloudflare Pages",
+  "GitHub portfolio",
+  "Cyber Security Deutschland",
+  "Cybersecurity Germany",
+  "Cloud-Sicherheit",
+  "IT-Sicherheit"
+];
+const pageKeywords = Array.isArray(keywords) ? keywords : keywords ? keywords.split(",") : [];
+const metaKeywords = [...new Set([...defaultKeywords, ...pageKeywords].map((item) => item.trim()).filter(Boolean))].join(", ");
+const extraStructuredData = Array.isArray(structuredData) ? structuredData : [structuredData];
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://tzheng.dev/#haitao-zheng",
+      name: "Haitao Zheng",
+      alternateName: ["Zheng Haitao", "郑海涛", "鄭海濤", "Tao Zheng", "Tao", "Jensen Zheng", "Jensen Zane", "jensenzheng", "jensenzane"],
+      url: "https://tzheng.dev/",
+      image: "https://tzheng.dev/logo.png",
+      sameAs: ["https://github.com/0xTaoZ"],
+      knowsAbout: [
+        "Cyber Security",
+        "Cloud Security",
+        "Blue Team",
+        "Security Tooling",
+        "IOC Analysis",
+        "CloudTrail",
+        "Python",
+        "Java",
+        "TypeScript",
+        "Astro",
+        "Cloudflare Pages",
+        "Static-first web architecture"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://tzheng.dev/#website",
+      name: "tzheng.dev",
+      alternateName: ["Haitao Zheng Portfolio", "郑海涛个人网站", "鄭海濤個人網站", "Tao Zheng Portfolio", "Jensen Zheng Cyber Security Portfolio"],
+      url: "https://tzheng.dev/",
+      description,
+      publisher: { "@id": "https://tzheng.dev/#haitao-zheng" },
+      inLanguage: ["en", "zh-CN", "zh-TW", "de"]
+    },
+    {
+      "@type": "WebPage",
+      "@id": canonicalUrl,
+      url: canonicalUrl,
+      name: title,
+      description,
+      isPartOf: { "@id": "https://tzheng.dev/#website" },
+      about: { "@id": "https://tzheng.dev/#haitao-zheng" },
+      primaryImageOfPage: new URL(ogImage, Astro.site).toString()
+    },
+    ...extraStructuredData.filter(Boolean)
+  ]
+};
 ---
 
 <!doctype html>
@@ -22,6 +108,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={metaKeywords} />
+    <meta name="author" content="Haitao Zheng" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.png" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -31,6 +119,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={new URL(ogImage, Astro.site)} />
     <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
     <nav class="nav">
@@ -59,6 +148,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         <a class="system-link" href="/system/" aria-label="Read the tzheng.dev system design">
           <span>System Design</span>
           <small>Architecture, content system, security posture, and publishing workflow</small>
+        </a>
+        <a class="system-link" href="/topics/" aria-label="Read Haitao Zheng technical topics">
+          <span>Topics</span>
+          <small>Cyber security, IT systems, cloud security, blue team notes, and project keywords</small>
         </a>
       </div>
     </footer>

@@ -1,0 +1,86 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const topics = [
+  {
+    group: "Identity",
+    items: ["Haitao Zheng", "Zheng Haitao", "郑海涛", "鄭海濤", "Tao Zheng", "Tao", "Jensen Zheng", "Jensen Zane", "jensenzheng", "jensenzane"]
+  },
+  {
+    group: "Cyber Security",
+    items: ["cyber security", "cybersecurity", "网络安全", "網路安全", "IT security", "IT-Sicherheit", "blue team", "cloud security", "Cloud-Sicherheit", "security tooling"]
+  },
+  {
+    group: "Systems & Cloud",
+    items: ["CloudTrail", "cloud logs", "IOC workflows", "incident investigation", "static-first architecture", "Cloudflare Pages", "GitHub workflow", "version-controlled publishing"]
+  },
+  {
+    group: "Engineering Stack",
+    items: ["Python", "Java", "C", "SQL", "TypeScript", "Astro", "MDX", "Markdown", "CSS", "GitHub"]
+  },
+  {
+    group: "Writing Themes",
+    items: ["technical articles", "learning notes", "project case studies", "security study log", "IT technology", "IT 技术", "technical portfolio", "developer portfolio"]
+  }
+];
+
+const keywords = topics.flatMap((topic) => topic.items);
+const topicsSchema = {
+  "@type": "CollectionPage",
+  "@id": "https://tzheng.dev/topics/#topics",
+  name: "Haitao Zheng technical topics",
+  description: "Technical topics connected to Haitao Zheng, including cyber security, IT systems, cloud security, blue team tooling, and static-first web engineering.",
+  url: "https://tzheng.dev/topics/",
+  author: { "@id": "https://tzheng.dev/#haitao-zheng" },
+  about: keywords.map((name) => ({ "@type": "Thing", name }))
+};
+---
+
+<BaseLayout
+  title="Topics | Haitao Zheng"
+  description="Technical topics connected to Haitao Zheng: cyber security, IT technology, cloud security, blue team tooling, project writing, and static-first engineering."
+  keywords={keywords}
+  structuredData={topicsSchema}
+>
+  <main class="shell">
+    <section>
+      <div class="section-head">
+        <span class="eyebrow">Search identity / technical direction / project language</span>
+        <h2>Topics.</h2>
+        <p>
+          This page connects Haitao Zheng, also written as Zheng Haitao, 郑海涛, and 鄭海濤, with the technical areas documented on this site:
+          cyber security, IT systems, cloud security, blue team workflows, security tooling, and static-first web engineering.
+        </p>
+      </div>
+
+      <div class="grid">
+        {topics.map((topic, index) => (
+          <article class:list={["card", index === 0 && "featured", index > 0 && "compact"]}>
+            <div class="meta"><span>{topic.group}</span></div>
+            <h3>{topic.group}</h3>
+            <div class="meta">
+              {topic.items.map((item) => <span class="chip">{item}</span>)}
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <article class="card featured" style="margin-top:2rem">
+        <div class="meta"><span>Discoverability model</span></div>
+        <h3>How these topics connect.</h3>
+        <p>
+          The site is built so search engines can connect one consistent identity with the same public technical surface:
+          the homepage, GitHub profile, article archive, project case studies, and system design documentation.
+          The goal is not to rank for every broad technology term immediately. The realistic goal is to make searches like
+          “Haitao Zheng cyber security”, “郑海涛 网络安全”, “Tao Zheng cloud security”, or project-specific searches lead back
+          to the same portfolio over time.
+        </p>
+        <p>
+          For broad keywords such as cyber security or IT technology, the strongest signal comes from useful technical writing,
+          public GitHub work, clear page titles, and repeated external references to the same domain. This page acts as a clean
+          index for the terms this site actually covers.
+        </p>
+      </article>
+    </section>
+  </main>
+</BaseLayout>

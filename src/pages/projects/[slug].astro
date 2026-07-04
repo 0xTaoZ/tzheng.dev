@@ -10,9 +10,33 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content, headings } = await render(project);
+const projectUrl = new URL(`/projects/${entrySlug(project)}/`, Astro.site).toString();
+const projectKeywords = [
+  project.data.title,
+  project.data.status,
+  project.data.type,
+  ...project.data.stack,
+  "Haitao Zheng project",
+  "郑海涛 项目",
+  "cyber security project",
+  "security engineering case study"
+];
+const projectSchema = {
+  "@type": "CreativeWork",
+  "@id": `${projectUrl}#project`,
+  name: project.data.title,
+  description: project.data.excerpt,
+  url: projectUrl,
+  dateCreated: project.data.date.toISOString(),
+  creator: { "@id": "https://tzheng.dev/#haitao-zheng" },
+  publisher: { "@id": "https://tzheng.dev/#website" },
+  keywords: projectKeywords,
+  codeRepository: project.data.github,
+  applicationCategory: project.data.type
+};
 ---
 
-<BaseLayout title={`${project.data.title} | Projects`} description={project.data.excerpt}>
+<BaseLayout title={`${project.data.title} | Projects`} description={project.data.excerpt} keywords={projectKeywords} structuredData={projectSchema}>
   <main class="article-body">
     <a class="button" href="/projects/">← Projects</a>
     <h1>{project.data.title}</h1>

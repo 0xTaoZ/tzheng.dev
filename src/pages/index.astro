@@ -48,8 +48,9 @@ let html = readFileSync(sourcePath, "utf8")
   .replace(
     "<title>Haitao Zheng | Cyber Security</title>",
     `<title>Haitao Zheng | Cyber Security Portfolio</title>
-    <meta name="description" content="Haitao Zheng, also known as Tao, Jensen Zheng, and Jensen Zane, is a Cyber Security & Privacy student building security tooling, cloud log analysis projects, IOC workflows, technical articles, and static-first web systems.">
-    <meta name="keywords" content="Haitao Zheng, Tao Zheng, Tao, Jensen Zheng, Jensen Zane, jensenzheng, jensenzane, cyber security, cybersecurity portfolio, cloud security, blue team, IOC toolkit, security tooling, technical articles, developer portfolio, Astro portfolio, Cloudflare Pages">
+    <meta name="description" content="Haitao Zheng, also known as Zheng Haitao, 郑海涛, 鄭海濤, Tao, Jensen Zheng, and Jensen Zane, is a Cyber Security & Privacy student building security tooling, cloud log analysis projects, IOC workflows, technical articles, and static-first web systems.">
+    <meta name="keywords" content="Haitao Zheng, Zheng Haitao, 郑海涛, 鄭海濤, Tao Zheng, Tao, Jensen Zheng, Jensen Zane, jensenzheng, jensenzane, Haitao Zheng cyber security, Haitao Zheng cybersecurity, 郑海涛 网络安全, 鄭海濤 網路安全, cyber security, cybersecurity portfolio, cloud security, blue team, IOC toolkit, security tooling, technical articles, developer portfolio, GitHub portfolio, Astro portfolio, Cloudflare Pages, Cyber Security Deutschland, Cybersecurity Germany, Cloud-Sicherheit, IT-Sicherheit">
+    <meta name="author" content="Haitao Zheng">
     <link rel="canonical" href="https://tzheng.dev/">
     <meta property="og:title" content="Haitao Zheng | Cyber Security Portfolio">
     <meta property="og:description" content="Cyber security portfolio, technical articles, project case studies, and system design notes by Haitao Zheng.">
@@ -65,18 +66,20 @@ let html = readFileSync(sourcePath, "utf8")
           "@type": "Person",
           "@id": "https://tzheng.dev/#person",
           "name": "Haitao Zheng",
-          "alternateName": ["Tao", "Tao Zheng", "Jensen Zheng", "Jensen Zane", "jensenzheng", "jensenzane"],
+          "alternateName": ["Zheng Haitao", "郑海涛", "鄭海濤", "Tao", "Tao Zheng", "Jensen Zheng", "Jensen Zane", "jensenzheng", "jensenzane"],
           "url": "https://tzheng.dev/",
+          "image": "https://tzheng.dev/logo.png",
           "sameAs": ["https://github.com/0xTaoZ"],
-          "knowsAbout": ["Cyber Security", "Cloud Security", "Blue Team", "IOC Workflows", "Security Tooling", "Static Websites", "Astro", "Cloudflare Pages"]
+          "knowsAbout": ["Cyber Security", "Cloud Security", "Blue Team", "IOC Workflows", "Security Tooling", "CloudTrail", "Python", "Java", "TypeScript", "Static Websites", "Astro", "GitHub", "Cloudflare Pages", "网络安全", "網路安全", "Cloud-Sicherheit", "IT-Sicherheit"]
         },
         {
           "@type": "WebSite",
           "@id": "https://tzheng.dev/#website",
           "url": "https://tzheng.dev/",
           "name": "Haitao Zheng | Cyber Security Portfolio",
-          "alternateName": ["tzheng.dev", "Tao Zheng Portfolio", "Jensen Zheng Cyber Security Portfolio"],
-          "description": "Personal cyber security portfolio, technical articles, project case studies, and system design notes by Haitao Zheng."
+          "alternateName": ["tzheng.dev", "郑海涛个人网站", "鄭海濤個人網站", "Tao Zheng Portfolio", "Jensen Zheng Cyber Security Portfolio"],
+          "description": "Personal cyber security portfolio, technical articles, project case studies, and system design notes by Haitao Zheng.",
+          "inLanguage": ["en", "zh-CN", "zh-TW", "de"]
         }
       ]
     }
@@ -216,11 +219,11 @@ let html = readFileSync(sourcePath, "utf8")
   )
   .replace(
     '<a href="mailto:h@tzheng.dev"><span>Contact by email</span><span>↗</span></a>',
-    '<a href="/system/"><span>System Design</span><span>↗</span></a>\n                <a href="mailto:h@tzheng.dev"><span>Contact by email</span><span>↗</span></a>'
+    '<a href="/system/"><span>System Design</span><span>↗</span></a>\n                <a href="/topics/"><span>Topics</span><span>↗</span></a>\n                <a href="mailto:h@tzheng.dev"><span>Contact by email</span><span>↗</span></a>'
   )
   .replace(
     '<a href="/legal/" class="hover:text-white transition">Legal</a>',
-    '<a href="/legal/" class="hover:text-white transition">Legal</a>\n                <a href="/system/" class="hover:text-white transition">System Design</a>'
+    '<a href="/legal/" class="hover:text-white transition">Legal</a>\n                <a href="/system/" class="hover:text-white transition">System Design</a>\n                <a href="/topics/" class="hover:text-white transition">Topics</a>'
   );
 
 const notes = takeBlock(html, '<!-- 学习笔记', `${divider}\n<!-- 语言与兴趣`);

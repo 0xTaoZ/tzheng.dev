@@ -8,9 +8,31 @@ const articles = (await getCollection("articles", ({ data }) => data.status === 
 const tags = [...new Set(articles.flatMap((article) => article.data.tags))];
 const months = new Set(articles.map((article) => article.data.date.toISOString().slice(0, 7))).size;
 const minutes = articles.reduce((sum, article) => sum + Number.parseInt(article.data.readingTime, 10), 0);
+const articleListKeywords = [
+  "Haitao Zheng articles",
+  "郑海涛 技术博客",
+  "鄭海濤 技術文章",
+  "cyber security blog",
+  "cloud security notes",
+  "blue team learning",
+  ...tags
+];
+const articleListSchema = {
+  "@type": "CollectionPage",
+  "@id": "https://tzheng.dev/articles/#collection",
+  name: "Articles by Haitao Zheng",
+  description: "Technical articles, security notes, and engineering learning logs by Haitao Zheng.",
+  url: "https://tzheng.dev/articles/",
+  author: { "@id": "https://tzheng.dev/#haitao-zheng" },
+  hasPart: articles.map((article) => ({
+    "@type": "Article",
+    headline: article.data.title,
+    url: new URL(`/articles/${entrySlug(article)}/`, Astro.site).toString()
+  }))
+};
 ---
 
-<BaseLayout title="Articles | Haitao Zheng" description="Technical articles and learning notes by Haitao Zheng.">
+<BaseLayout title="Articles | Haitao Zheng" description="Technical articles and learning notes by Haitao Zheng." keywords={articleListKeywords} structuredData={articleListSchema}>
   <main class="shell">
     <section>
       <div class="section-head">

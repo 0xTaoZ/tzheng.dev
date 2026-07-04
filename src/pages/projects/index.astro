@@ -5,9 +5,32 @@ import { entrySlug } from "../../lib/content";
 
 const projects = (await getCollection("projects")).sort((a, b) => a.data.priority - b.data.priority);
 const featured = projects.filter((project) => project.data.featured);
+const projectKeywords = [
+  "Haitao Zheng projects",
+  "郑海涛 项目",
+  "鄭海濤 專案",
+  "cyber security projects",
+  "cloud security projects",
+  "security engineering portfolio",
+  "blue team tools",
+  ...new Set(featured.flatMap((project) => project.data.stack))
+];
+const projectCollectionSchema = {
+  "@type": "CollectionPage",
+  "@id": "https://tzheng.dev/projects/#collection",
+  name: "Projects by Haitao Zheng",
+  description: "Curated security, open-source, and engineering case studies by Haitao Zheng.",
+  url: "https://tzheng.dev/projects/",
+  author: { "@id": "https://tzheng.dev/#haitao-zheng" },
+  hasPart: featured.map((project) => ({
+    "@type": "CreativeWork",
+    name: project.data.title,
+    url: new URL(`/projects/${entrySlug(project)}/`, Astro.site).toString()
+  }))
+};
 ---
 
-<BaseLayout title="Projects | Haitao Zheng" description="Curated security, open-source, and portfolio projects by Haitao Zheng.">
+<BaseLayout title="Projects | Haitao Zheng" description="Curated security, open-source, and portfolio projects by Haitao Zheng." keywords={projectKeywords} structuredData={projectCollectionSchema}>
   <main class="shell">
     <section>
       <div class="section-head">

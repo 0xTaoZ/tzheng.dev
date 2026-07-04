@@ -2,6 +2,8 @@
 
 Personal engineering website for Haitao Zheng: a cyber-inspired portfolio, technical writing system, and curated project documentation space.
 
+Identity signals: Haitao Zheng, Zheng Haitao, 郑海涛, 鄭海濤, Tao Zheng, Tao, Jensen Zheng, Jensen Zane, jensenzheng, and jensenzane. Main site: [tzheng.dev](https://tzheng.dev/). GitHub: [0xTaoZ](https://github.com/0xTaoZ).
+
 The site is designed as a static-first engineering project instead of a one-off resume page. It keeps the public surface small, makes content version-controlled, and gives articles and projects a maintainable structure for long-term growth.
 
 ## Purpose
@@ -68,6 +70,18 @@ src/content/projects/
 Articles use frontmatter for title, slug, date, updated date, excerpt, tags, category, featured state, publication status, and reading time.
 
 Projects use frontmatter for title, slug, date, status, type, featured state, priority, stack, GitHub link, demo link, excerpt, and body content.
+
+## Discoverability
+
+The site is structured so search engines can connect the portfolio, GitHub account, articles, and project case studies back to the same person and technical direction:
+
+- canonical URLs under `https://tzheng.dev/`
+- sitemap and robots entries for crawler discovery
+- Open Graph metadata for previews
+- JSON-LD identity data for Haitao Zheng / 郑海涛 / 鄭海濤 and related name variants
+- GitHub links from project case studies where source code is public
+- article and project pages with focused titles, excerpts, tags, and technical keywords
+- consistent cybersecurity, cloud security, blue team, and security tooling language across the site
 
 This keeps content portable. It can be edited locally, in GitHub, through a future Git-based CMS, or by any workflow that writes structured files to the repository.
 
