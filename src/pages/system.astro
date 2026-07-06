@@ -1,92 +1,1190 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-
-const sections = [
-  {
-    label: "01",
-    title: "Overview",
-    body: "tzheng.dev is built as a personal engineering system, not only a resume page. The public homepage keeps the original cyber portfolio feeling, while the writing and project layers are managed through structured content. The goal is simple: a recruiter can scan quickly, and an engineer can open the deeper pages and see how the site is actually designed."
-  },
-  {
-    label: "02",
-    title: "Design Principles",
-    body: "The visual language is dark, technical, and premium, but it stays readable. The homepage uses a cinematic hero, glass navigation, terminal motion, project cards, soft grid lines, and restrained neon accents. The design avoids turning every section into a demo. Important content still has to be easy to read on a phone, a laptop, or a recruiter screen."
-  },
-  {
-    label: "03",
-    title: "Interface System",
-    body: "The interface is organized around repeatable patterns: hero actions, project case cards, chips, metadata rows, timeline cards, note cards, command palette links, and footer system signals. The homepage keeps the original custom HTML/CSS/JavaScript because it carries the strongest visual identity. Astro serves it as raw HTML so the original global animation system is not broken by component scoping."
-  },
-  {
-    label: "04",
-    title: "Content Architecture",
-    body: "Articles and projects are no longer treated as long-term page fragments. They live as Markdown/MDX files in content collections, with frontmatter for title, date, tags, category, featured state, status, reading time, stack, links, and summaries. This makes the writing system easier to grow: a new article is a new content file, not a risky edit inside a large homepage."
-  },
-  {
-    label: "05",
-    title: "Publishing Workflow",
-    body: "The site uses a Git-based publishing workflow. Code, content, and configuration are committed to GitHub, then Cloudflare Pages builds the static output with npm run build and publishes the dist directory. That gives the site a clear history: changes are reviewable, reversible, and tied to commits instead of manual uploads."
-  },
-  {
-    label: "06",
-    title: "Security & Privacy Model",
-    body: "The public site is static-first. There is no public password-only admin panel, no unnecessary database, and no server session layer for content that can be safely versioned as files. The site is delivered through Cloudflare Edge over HTTPS. It is designed without intentional advertising pixels or invasive tracking. The main security idea is to keep the public attack surface small."
-  },
-  {
-    label: "07",
-    title: "Performance & Discoverability",
-    body: "Astro generates static routes for the homepage, article pages, project pages, RSS, and sitemap output. This keeps delivery fast and simple. Articles can have SEO metadata, Open Graph previews, readable URLs, tags, and table-of-contents support. Performance is treated as part of the design system: motion should feel smooth, but the site should not become heavy just to look technical."
-  },
-  {
-    label: "08",
-    title: "Trade-offs",
-    body: "The site deliberately does not run a full backend today. That means there is no online database editor or public login dashboard yet. The trade-off is worth it for this stage: fewer moving parts, easier deployment, safer public surface, and content that stays portable. A Git-based CMS can be added later without changing the static-first model."
-  },
-  {
-    label: "09",
-    title: "Roadmap",
-    body: "Next steps include richer MDX components, tag archives, better article search, project case-study pages, improved Open Graph images, privacy-respecting analytics, accessibility passes, and an optional Git-based CMS for editing content through a UI while still committing changes back to the repository."
-  }
-];
 ---
 
-<BaseLayout title="System Design | tzheng.dev" description="How tzheng.dev is designed as a static-first engineering portfolio, content system, and Cloudflare Pages deployment.">
-  <main class="shell">
-    <section>
-      <div class="section-head">
-        <span class="eyebrow"><span class="dot"></span>behind this site</span>
-        <h2>System Design.</h2>
-        <p>A clear look at the architecture, content model, publishing workflow, security posture, and trade-offs behind tzheng.dev.</p>
-      </div>
-      <div class="grid">
-        <article class="card featured">
-          <span class="chip">static-first</span>
-          <h3>Portfolio, writing system, and engineering record.</h3>
-          <p>The homepage stays visually expressive, while articles and projects move into a structured content system. That lets the site feel polished on the surface and still be maintainable underneath.</p>
-        </article>
-        <article class="card compact">
-          <span class="chip">Cloudflare Pages</span>
-          <h3>Git push to static deployment.</h3>
-          <p>Changes go through GitHub, Cloudflare builds the Astro site, and the generated static files are served at the edge.</p>
-        </article>
-      </div>
-    </section>
+<BaseLayout title="System Design | tzheng.dev" description="How tzheng.dev evolved from a custom cyber portfolio into a versioned, content-driven static engineering system.">
+  
+  <!-- Cursor glow elements (same as index.html) -->
+  <div id="sys-cursor-field" class="sys-cursor-field" aria-hidden="true"></div>
+  <div id="sys-cursor-dot" class="sys-cursor-dot" aria-hidden="true"></div>
+  <!-- Ambient particle canvas -->
+  <canvas id="sys-ambient" class="sys-ambient-canvas" aria-hidden="true"></canvas>
 
-    <section>
-      <div class="section-head">
-        <span class="eyebrow">architecture notes</span>
-        <h2>Nine-Part Breakdown.</h2>
-        <p>The system is intentionally simple where simplicity helps security and maintenance, and structured where the site needs to grow.</p>
+  <header class="sys-hero shell">
+    <div class="hero-grid">
+      <div class="hero-narrative">
+        <span class="eyebrow">BEHIND THIS SITE</span>
+        <h1 class="sys-title">System Design.</h1>
+        <p class="sys-subtitle">How tzheng.dev evolved from a custom cyber portfolio into a versioned, content-driven static engineering system.</p>
+        <div class="narrative-text">
+          <p>This is not a list of technologies.</p>
+          <p>It is the story of how the site was designed, how its architecture changed, how content moves from source files to production, what broke during the migration, and why some forms of complexity were deliberately left out.</p>
+        </div>
       </div>
-      <div class="grid">
-        {sections.map((item, index) => (
-          <article class:list={["card", index % 3 === 0 && "featured", index % 3 !== 0 && "compact"]}>
-            <span class="chip">{item.label}</span>
-            <h3>{item.title}</h3>
-            <p>{item.body}</p>
-          </article>
-        ))}
-      </div>
-    </section>
-  </main>
+      <aside class="hero-profile">
+        <div class="sys-card profile-card" data-tilt>
+          <div class="sys-card-inner">
+            <h3 class="profile-heading">SYSTEM PROFILE</h3>
+            <div class="profile-grid">
+              <div class="profile-fact"><b>RUNTIME MODEL</b><span>Static</span></div>
+              <div class="profile-fact"><b>FRAMEWORK</b><span>Astro 5</span></div>
+              <div class="profile-fact"><b>CONTENT</b><span>MDX Collections</span></div>
+              <div class="profile-fact"><b>BUILD</b><span>Node 24</span></div>
+              <div class="profile-fact"><b>SOURCE OF TRUTH</b><span>Git</span></div>
+              <div class="profile-fact"><b>DELIVERY</b><span>GitHub Pages &rarr; Cloudflare Edge</span></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <div class="hero-tags">
+      <span class="chip">Astro 5</span>
+      <span class="chip">TypeScript</span>
+      <span class="chip">MDX</span>
+      <span class="chip">Git</span>
+      <span class="chip">CI/CD</span>
+      <span class="chip">Static Delivery</span>
+    </div>
+  </header>
+
+  <!-- Mobile Chapter Bar -->
+  <nav class="chapter-bar sys-lg-hidden sys-glass-bar" aria-label="Chapters Mobile">
+    <ul class="chapter-list-mobile">
+      <li><a href="#origin" class="ch-link">01 Origin</a></li>
+      <li><a href="#architecture" class="ch-link">02 Arch</a></li>
+      <li><a href="#content" class="ch-link">03 Content</a></li>
+      <li><a href="#delivery" class="ch-link">04 Delivery</a></li>
+      <li><a href="#interface" class="ch-link">05 Interface</a></li>
+      <li><a href="#problems" class="ch-link">06 Problems</a></li>
+      <li><a href="#security" class="ch-link">07 Security</a></li>
+    </ul>
+  </nav>
+
+  <div class="sys-body shell">
+    <!-- Desktop Story Rail -->
+    <aside class="rail-wrapper">
+      <nav class="story-rail" aria-label="Chapters Desktop">
+        <div class="rail-label">THE STORY RAIL</div>
+        <div class="rail-track">
+          <ul class="rail-list">
+            <li><a href="#origin" class="ch-link" aria-current="page">Origin</a></li>
+            <li><a href="#architecture" class="ch-link">Architecture</a></li>
+            <li><a href="#content" class="ch-link">Content</a></li>
+            <li><a href="#delivery" class="ch-link">Delivery</a></li>
+            <li><a href="#interface" class="ch-link">Interface</a></li>
+            <li><a href="#problems" class="ch-link">Problems</a></li>
+            <li><a href="#security" class="ch-link">Security</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="story-main">
+      
+      <!-- 01 ORIGIN -->
+      <section id="origin" class="chapter reveal">
+        <h2 class="ch-kicker">01 &mdash; From Interface to System</h2>
+        <h3 class="ch-heading">The interface could grow. The content model could not.</h3>
+        <p>tzheng.dev began as a highly customized personal homepage.</p>
+        <p>The original architecture was built around visual identity: custom HTML, CSS, JavaScript, motion, terminal-inspired interactions, project presentations, and a deliberately cinematic first impression.</p>
+
+        <div class="callout-block">Keep the expressive interface. Rebuild the system underneath it.</div>
+        
+        <p>The homepage remained the identity layer.</p>
+        <p>Articles and projects became structured content.</p>
+        <p>Astro became responsible for routing, content generation, metadata, and production builds.</p>
+
+        <div class="sys-card reveal" data-tilt>
+          <div class="sys-card-inner ba-grid">
+            <div class="ba-col">
+              <div class="ba-label">BEFORE</div>
+              <ul>
+                <li>Custom homepage</li>
+                <li>Hardcoded content</li>
+                <li>Direct page edits</li>
+                <li>Presentation owns structure</li>
+              </ul>
+            </div>
+            <div class="ba-arrow">&rarr;</div>
+            <div class="ba-col ba-after">
+              <div class="ba-label ba-label-accent">AFTER</div>
+              <ul>
+                <li>Identity layer</li>
+                <li>Structured content</li>
+                <li>Generated routes</li>
+                <li>Astro build system</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 02 ARCHITECTURE -->
+      <section id="architecture" class="chapter reveal">
+        <h2 class="ch-kicker">02 &mdash; The Architecture</h2>
+        <h3 class="ch-heading">Static by design, not by limitation.</h3>
+        
+        <div class="sys-card reveal" data-tilt>
+          <div class="sys-card-inner">
+            <p class="arch-intro"><strong>Astro owns the structural layer of the site:</strong></p>
+            <div class="chip-row">
+              <span class="chip">routing</span>
+              <span class="chip">content collections</span>
+              <span class="chip">metadata</span>
+              <span class="chip">sitemap generation</span>
+            </div>
+          </div>
+        </div>
+
+        <p>The system can be understood as a sequence of transformations:</p>
+
+        <div class="sys-card reveal" data-tilt>
+          <div class="sys-card-inner flow-row">
+            <div class="flow-node">
+              <h4>AUTHORING</h4>
+              <span>Astro pages &middot; MDX content</span>
+            </div>
+            <div class="flow-sep">&rarr;</div>
+            <div class="flow-node flow-highlight">
+              <h4>SOURCE OF TRUTH</h4>
+              <span>Git repository</span>
+            </div>
+            <div class="flow-sep">&rarr;</div>
+            <div class="flow-node">
+              <h4>BUILD</h4>
+              <span>Astro build</span>
+            </div>
+            <div class="flow-sep">&rarr;</div>
+            <div class="flow-node">
+              <h4>OUTPUT</h4>
+              <span>dist/</span>
+            </div>
+            <div class="flow-sep">&rarr;</div>
+            <div class="flow-node">
+              <h4>VISITOR</h4>
+              <span>Cloudflare Edge</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 CONTENT -->
+      <section id="content" class="chapter reveal">
+        <h2 class="ch-kicker">03 &mdash; Content as a System</h2>
+        <h3 class="ch-heading">A new article should be a content file, not homepage surgery.</h3>
+        <p>Articles and projects are no longer treated as permanent fragments inside a large homepage. They live inside <code>src/content/</code> as structured collections, each governed by a Zod schema in <code>config.ts</code>.</p>
+
+        <div class="schema-row">
+          <div class="sys-card reveal" data-tilt>
+            <div class="sys-card-inner">
+              <h4 class="schema-title">ARTICLE SCHEMA</h4>
+              <pre><code>title: string
+slug: string
+date: date
+tags: array</code></pre>
+            </div>
+          </div>
+          <div class="sys-card reveal" data-tilt>
+            <div class="sys-card-inner">
+              <h4 class="schema-title">PROJECT SCHEMA</h4>
+              <pre><code>title: string
+slug: string
+status: string
+stack: array</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="sys-card reveal" data-tilt>
+          <div class="sys-card-inner pipeline">
+            <div class="pipe-node">MDX FILE</div>
+            <div class="pipe-sep">&darr;</div>
+            <div class="pipe-node">SCHEMA VALIDATION</div>
+            <div class="pipe-sep">&darr;</div>
+            <div class="pipe-node pipe-accent">STATIC PAGE</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 DELIVERY -->
+      <section id="delivery" class="chapter reveal">
+        <h2 class="ch-kicker">04 &mdash; From Commit to Production</h2>
+        <h3 class="ch-heading">One commit triggers one pipeline. One pipeline produces one artifact.</h3>
+        <p>The deployment pipeline has no manual gates. A push to <code>main</code> triggers GitHub Actions, which runs <code>npm run build</code>, produces <code>dist/</code>, and deploys to GitHub Pages. Cloudflare sits in front as the edge cache.</p>
+
+        <div class="sys-card reveal" data-tilt>
+          <div class="sys-card-inner flow-row">
+            <div class="flow-node">
+              <h4>COMMIT</h4>
+              <span>git push</span>
+            </div>
+            <div class="flow-sep">&rarr;</div>
+            <div class="flow-node flow-highlight">
+              <h4>GITHUB ACTIONS</h4>
+              <span>npm run build</span>
+            </div>
+            <div class="flow-sep">&rarr;</div>
+            <div class="flow-node">
+              <h4>ARTIFACT</h4>
+              <span>dist/</span>
+            </div>
+            <div class="flow-sep">&rarr;</div>
+            <div class="flow-node">
+              <h4>EDGE</h4>
+              <span>Cloudflare</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 INTERFACE -->
+      <section id="interface" class="chapter reveal">
+        <h2 class="ch-kicker">05 &mdash; The Interface Layer</h2>
+        <h3 class="ch-heading">Two layers, one page.</h3>
+        <p>The homepage is a cinematic identity layer: motion, parallax, terminal typewriter, 3D card tilt. The content pages are a structured reading layer: clean typography, schema-driven metadata, predictable layout.</p>
+
+        <div class="sys-card reveal" data-tilt>
+          <div class="sys-card-inner layer-stack">
+            <div class="layer-box layer-identity">
+              <h4>IDENTITY LAYER</h4>
+              <p>cinematic &middot; interactive &middot; motion-aware</p>
+            </div>
+            <div class="layer-sep">&updownarrow;</div>
+            <div class="layer-box layer-content">
+              <h4>CONTENT LAYER</h4>
+              <p>structured &middot; readable &middot; predictable</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 PROBLEMS -->
+      <section id="problems" class="chapter reveal">
+        <h2 class="ch-kicker">06 &mdash; What Broke Along the Way</h2>
+        <h3 class="ch-heading">Real migration logs, not hypothetical.</h3>
+
+        <div class="challenge-stack">
+          <div class="sys-card reveal" data-tilt>
+            <div class="sys-card-inner">
+              <h4 class="challenge-title">Challenge 01 &mdash; Migrating the Interface</h4>
+              <div class="pdr-grid">
+                <div class="pdr-label">PROBLEM</div>
+                <div class="pdr-value">Changing content without destroying identity.</div>
+                <div class="pdr-label pdr-decision">DECISION</div>
+                <div class="pdr-value">Preserve the visual layer and rebuild the architecture around it.</div>
+              </div>
+            </div>
+          </div>
+          <div class="sys-card reveal" data-tilt>
+            <div class="sys-card-inner">
+              <h4 class="challenge-title">Challenge 02 &mdash; Deployment Boundaries</h4>
+              <div class="pdr-grid">
+                <div class="pdr-label">PROBLEM</div>
+                <div class="pdr-value">Source is no longer the final output.</div>
+                <div class="pdr-label pdr-decision">DECISION</div>
+                <div class="pdr-value">Make <code>dist/</code> the explicit deployment artifact. Never deploy source directly.</div>
+              </div>
+            </div>
+          </div>
+          <div class="sys-card reveal" data-tilt>
+            <div class="sys-card-inner">
+              <h4 class="challenge-title">Challenge 03 &mdash; Build-time TypeScript</h4>
+              <div class="pdr-grid">
+                <div class="pdr-label">PROBLEM</div>
+                <div class="pdr-value">Astro 5 enforces strict TypeScript checks at build time. Implicit <code>any</code> types and incorrect API usage break the build.</div>
+                <div class="pdr-label pdr-decision">DECISION</div>
+                <div class="pdr-value">Type every variable explicitly. Validate locally before pushing.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 SECURITY -->
+      <section id="security" class="chapter reveal">
+        <h2 class="ch-kicker">07 &mdash; Security Through Less Surface</h2>
+        <h3 class="ch-heading">The best defense is what doesn't exist.</h3>
+        <p>A static site has no runtime server, no database, no admin panel, no session store. The attack surface is the CDN configuration and the client-side JavaScript.</p>
+
+        <div class="trust-row">
+          <div class="sys-card reveal" data-tilt>
+            <div class="sys-card-inner">
+              <h4 class="trust-title trust-exists">WHAT EXISTS</h4>
+              <ul class="trust-list">
+                <li>Git repository</li>
+                <li>CI/CD pipeline</li>
+                <li>Client JavaScript</li>
+                <li>CDN edge cache</li>
+              </ul>
+            </div>
+          </div>
+          <div class="sys-card reveal" data-tilt>
+            <div class="sys-card-inner">
+              <h4 class="trust-title trust-absent">WHAT DOES NOT EXIST</h4>
+              <ul class="trust-list">
+                <li>No runtime database</li>
+                <li>No admin login</li>
+                <li>No server sessions</li>
+                <li>No user-submitted data</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
 </BaseLayout>
+
+<style>
+/* ===================================================================
+   system.astro scoped styles
+   Design system: mirrors index.html card, cursor, canvas, tilt logic
+   =================================================================== */
+
+/* --- Cursor glow (same CSS as index.html .cursor-field/.cursor-dot) --- */
+.sys-cursor-field,
+.sys-cursor-dot {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 120;
+    pointer-events: none;
+    border-radius: 999px;
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0);
+    transition: opacity .25s ease;
+}
+.sys-cursor-field {
+    width: 21rem;
+    height: 21rem;
+    background: radial-gradient(circle, rgba(125,211,252,.14), rgba(57,255,136,.055) 36%, transparent 68%);
+    mix-blend-mode: screen;
+    filter: blur(2px);
+}
+.sys-cursor-dot {
+    width: .42rem;
+    height: .42rem;
+    background: rgba(186,230,253,.95);
+    box-shadow: 0 0 18px rgba(125,211,252,.85);
+}
+body.sys-pointer-ready .sys-cursor-field,
+body.sys-pointer-ready .sys-cursor-dot {
+    opacity: 1;
+}
+
+/* --- Ambient Canvas --- */
+.sys-ambient-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.32;
+    mix-blend-mode: screen;
+    contain: strict;
+    transform: translateZ(0);
+}
+
+/* --- Reveal animation (same as index.html) --- */
+.reveal {
+    opacity: 0;
+    transform: translateY(60px) scale(0.95);
+    transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* --- Hero --- */
+.sys-hero {
+    padding-top: 5rem;
+    padding-bottom: 3rem;
+    position: relative;
+    z-index: 2;
+}
+.hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+}
+@media (min-width: 1024px) {
+    .hero-grid {
+        grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+        align-items: center;
+        gap: 4rem;
+    }
+}
+.sys-title {
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 0.96;
+    letter-spacing: -0.065em;
+    font-weight: 700;
+    color: #fff;
+    margin: 1rem 0;
+}
+.sys-subtitle {
+    color: #dbeafe;
+    font-size: clamp(1.05rem, 2vw, 1.35rem);
+    line-height: 1.6;
+    font-weight: 300;
+}
+.narrative-text p {
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+    margin-top: 1.6rem;
+}
+.hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-top: 2.5rem;
+}
+
+/* --- Profile card specifics --- */
+.profile-card { width: 100%; }
+.profile-heading {
+    font: 700 .72rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--muted);
+    letter-spacing: .12em;
+    margin: 0 0 1.2rem 0;
+}
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: .9rem;
+}
+.profile-fact b {
+    display: block;
+    color: var(--muted);
+    font: 500 .68rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    margin-bottom: .25rem;
+}
+.profile-fact span {
+    color: #f8fafc;
+    font-size: .88rem;
+    font-weight: 500;
+}
+
+/* ===========================================================
+   .sys-card — exact replication of index.html .project-case
+   =========================================================== */
+.sys-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.35rem;
+    border: 1px solid rgba(148,163,184,.16);
+    background: linear-gradient(145deg, rgba(16,24,39,.72), rgba(2,6,14,.66));
+    backdrop-filter: blur(22px) saturate(145%);
+    -webkit-backdrop-filter: blur(22px) saturate(145%);
+    transition: transform .65s cubic-bezier(.16,1,.3,1),
+                border-color .45s ease,
+                box-shadow .65s cubic-bezier(.16,1,.3,1),
+                background .45s ease;
+    transform-style: preserve-3d;
+    will-change: transform;
+    --tilt-x: 0deg;
+    --tilt-y: 0deg;
+    --mx: 50%;
+    --my: 0%;
+}
+
+/* Mouse-tracking radial glow (::before) — same as .project-case::before */
+.sys-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at var(--mx) var(--my), rgba(125,211,252,.18), transparent 20rem);
+    opacity: 0;
+    transition: opacity .35s ease;
+}
+
+/* Inner sheen layer (::after) — same as .project-case::after */
+.sys-card::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+        linear-gradient(135deg, rgba(255,255,255,.08), transparent 28%, transparent 72%, rgba(125,211,252,.055)),
+        radial-gradient(circle at var(--mx) var(--my), rgba(57,255,136,.075), transparent 16rem);
+    opacity: .42;
+    transition: opacity .45s ease;
+}
+
+.sys-card:hover {
+    border-color: rgba(125,211,252,.30);
+    box-shadow: 0 30px 90px rgba(0,0,0,.46), 0 0 0 1px rgba(125,211,252,.05) inset;
+}
+.sys-card:hover::before { opacity: 1; }
+.sys-card:hover::after { opacity: .85; }
+
+/* 3D tilt transform — same logic as index.html */
+@media (pointer: fine) and (min-width: 1024px) {
+    .sys-card,
+    .sys-card:hover {
+        transform: perspective(1000px)
+            rotateX(var(--tilt-x))
+            rotateY(var(--tilt-y))
+            translateY(var(--lift, 0px))
+            scale(var(--card-scale, 1));
+    }
+    .sys-card:hover {
+        --lift: -4px;
+    }
+}
+
+.sys-card-inner {
+    position: relative;
+    z-index: 1;
+    padding: clamp(1.25rem, 3vw, 2.25rem);
+}
+
+/* --- Mobile Chapter Bar --- */
+.sys-glass-bar {
+    position: sticky;
+    top: 58px;
+    z-index: 40;
+    background: rgba(2, 5, 10, 0.62);
+    backdrop-filter: saturate(180%) blur(30px);
+    -webkit-backdrop-filter: saturate(180%) blur(30px);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.13);
+    padding: 0.75rem 1rem;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+.sys-glass-bar::-webkit-scrollbar { display: none; }
+.chapter-list-mobile {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1.5rem;
+}
+.chapter-list-mobile .ch-link {
+    color: var(--muted);
+    font: .8rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    padding: .3rem .6rem;
+    border-radius: 6px;
+    transition: all .3s ease;
+}
+.chapter-list-mobile .ch-link[aria-current="page"] {
+    color: #fff;
+    background: rgba(125,211,252,.15);
+    box-shadow: 0 0 18px rgba(125,211,252,.35);
+    border: 1px solid rgba(125,211,252,.25);
+}
+
+/* --- Two-column layout --- */
+.sys-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    padding-top: 2rem;
+    padding-bottom: 6rem;
+    position: relative;
+    z-index: 2;
+}
+.rail-wrapper { display: none; }
+@media (min-width: 1024px) {
+    .sys-body { flex-direction: row; }
+    .sys-lg-hidden { display: none !important; }
+    .rail-wrapper {
+        display: block;
+        width: 220px;
+        flex-shrink: 0;
+    }
+    .story-rail {
+        position: sticky;
+        top: 120px;
+        max-height: calc(100vh - 140px);
+        overflow-y: auto;
+    }
+}
+.rail-label {
+    font: .7rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--blue);
+    letter-spacing: .12em;
+    margin-bottom: 1.5rem;
+}
+.rail-track {
+    position: relative;
+    border-left: 1px solid rgba(148,163,184,.16);
+    padding-left: 1.25rem;
+}
+.rail-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+.rail-list .ch-link {
+    display: block;
+    color: var(--muted);
+    font-size: .9rem;
+    font-weight: 500;
+    transition: color .3s ease, transform .3s ease, text-shadow .3s ease;
+    position: relative;
+}
+.rail-list .ch-link:hover {
+    color: #fff;
+    transform: translateX(5px);
+}
+.rail-list .ch-link[aria-current="page"] {
+    color: #fff;
+    transform: translateX(8px);
+    text-shadow: 0 0 15px rgba(125,211,252,.8);
+}
+.rail-list .ch-link::before {
+    content: '';
+    position: absolute;
+    left: -1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    background: var(--blue);
+    border-radius: 4px;
+    box-shadow: 0 0 15px var(--blue);
+    transition: height .3s ease;
+}
+.rail-list .ch-link[aria-current="page"]::before {
+    height: 20px;
+}
+
+/* --- Story content --- */
+.story-main {
+    flex: 1;
+    max-width: 720px;
+}
+.chapter {
+    margin-bottom: 8rem;
+    scroll-margin-top: 140px;
+}
+.ch-kicker {
+    font: .9rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--blue);
+    letter-spacing: .05em;
+    margin: 0 0 1.2rem 0;
+}
+.ch-heading {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.3;
+    margin: 0 0 2rem 0;
+}
+.chapter p {
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+    font-size: 1.05rem;
+    font-weight: 300;
+}
+.chapter code {
+    color: var(--green);
+    background: rgba(57,255,136,.08);
+    border: 1px solid rgba(57,255,136,.14);
+    border-radius: .45rem;
+    padding: .1rem .35rem;
+    font: .88rem ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* --- Callout --- */
+.callout-block {
+    border-left: 3px solid var(--blue);
+    padding: 1.2rem 1.5rem;
+    margin: 2rem 0;
+    color: #dbeafe;
+    font-size: 1.1rem;
+    font-weight: 500;
+    background: linear-gradient(90deg, rgba(125,211,252,.08), transparent);
+    border-radius: 0 12px 12px 0;
+}
+
+/* --- Before/After block --- */
+.ba-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+}
+@media (min-width: 640px) {
+    .ba-grid { flex-direction: row; }
+}
+.ba-col {
+    flex: 1;
+    padding: 1.5rem;
+    border: 1px solid rgba(148,163,184,.12);
+    border-radius: 12px;
+    background: rgba(2,6,14,.32);
+}
+.ba-after {
+    border-color: rgba(125,211,252,.25);
+    background: rgba(125,211,252,.06);
+    box-shadow: 0 0 24px rgba(125,211,252,.08);
+}
+.ba-label {
+    font: 700 .72rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--muted);
+    letter-spacing: .1em;
+    margin-bottom: .9rem;
+}
+.ba-label-accent { color: var(--blue); }
+.ba-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.ba-col li {
+    color: #cbd5e1;
+    font-size: .9rem;
+    margin-bottom: .55rem;
+}
+.ba-after li { color: #f8fafc; }
+.ba-arrow {
+    font-size: 1.5rem;
+    color: var(--blue);
+    text-shadow: 0 0 12px var(--blue);
+}
+@media (max-width: 639px) {
+    .ba-arrow { transform: rotate(90deg); }
+}
+
+/* --- Architecture chip row --- */
+.arch-intro { color: #f8fafc; margin-bottom: 1rem; }
+.chip-row { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+/* --- Flow diagrams --- */
+.flow-row {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    align-items: center;
+}
+@media (min-width: 768px) {
+    .flow-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+}
+.flow-node {
+    text-align: center;
+    padding: 1rem 1.2rem;
+    border: 1px solid rgba(148,163,184,.12);
+    border-radius: 12px;
+    background: rgba(2,6,14,.32);
+    flex: 1;
+    min-width: 100px;
+}
+.flow-node h4 {
+    font: 700 .68rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--blue);
+    letter-spacing: .1em;
+    margin: 0 0 .5rem 0;
+}
+.flow-node span {
+    color: #f8fafc;
+    font-size: .85rem;
+}
+.flow-highlight {
+    border-color: rgba(125,211,252,.35);
+    background: rgba(125,211,252,.06);
+    box-shadow: 0 0 20px rgba(125,211,252,.08);
+}
+.flow-sep {
+    color: var(--blue);
+    font-size: 1.2rem;
+    text-shadow: 0 0 10px var(--blue);
+}
+@media (max-width: 767px) {
+    .flow-sep { transform: rotate(90deg); }
+}
+
+/* --- Schema blocks --- */
+.schema-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+}
+@media (min-width: 640px) {
+    .schema-row { grid-template-columns: 1fr 1fr; }
+}
+.schema-title {
+    font: 700 .72rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--muted);
+    letter-spacing: .1em;
+    margin: 0 0 1rem 0;
+    padding-bottom: .75rem;
+    border-bottom: 1px solid rgba(148,163,184,.12);
+}
+.sys-card pre {
+    margin: 0;
+    font: .82rem/1.7 ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--green);
+}
+
+/* --- Pipeline block --- */
+.pipeline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .4rem;
+}
+.pipe-node {
+    font: 700 .8rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: #f8fafc;
+    padding: .75rem 1.5rem;
+    border: 1px solid rgba(148,163,184,.12);
+    border-radius: 10px;
+    background: rgba(2,6,14,.32);
+}
+.pipe-accent {
+    border-color: rgba(125,211,252,.35);
+    background: rgba(125,211,252,.08);
+    color: var(--blue);
+    box-shadow: 0 0 18px rgba(125,211,252,.12);
+}
+.pipe-sep {
+    color: var(--blue);
+    font-size: 1.1rem;
+    text-shadow: 0 0 10px var(--blue);
+}
+
+/* --- Layer stack --- */
+.layer-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    text-align: center;
+}
+.layer-box {
+    padding: 2rem;
+    border: 1px solid rgba(148,163,184,.12);
+    border-radius: 12px;
+    background: rgba(2,6,14,.32);
+}
+.layer-identity {
+    border-color: rgba(125,211,252,.3);
+    background: rgba(125,211,252,.05);
+    box-shadow: inset 0 0 20px rgba(125,211,252,.06);
+}
+.layer-box h4 {
+    font: 700 .82rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--blue);
+    margin: 0 0 .6rem 0;
+}
+.layer-box p {
+    color: #f8fafc;
+    font-size: .92rem;
+    margin: 0;
+}
+.layer-content h4 { color: var(--muted); }
+.layer-content p { color: #cbd5e1; }
+.layer-sep {
+    font-size: 1.5rem;
+    color: var(--blue);
+    text-shadow: 0 0 12px var(--blue);
+}
+
+/* --- Challenge blocks --- */
+.challenge-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+.challenge-title {
+    font-size: 1.15rem;
+    color: #f8fafc;
+    font-weight: 600;
+    margin: 0 0 1.2rem 0;
+}
+.pdr-grid {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: .75rem 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(148,163,184,.10);
+}
+.pdr-label {
+    font: 700 .72rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--blue);
+}
+.pdr-decision { color: var(--green); }
+.pdr-value {
+    color: #cbd5e1;
+    font-size: .92rem;
+    line-height: 1.55;
+}
+
+/* --- Trust surface --- */
+.trust-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+@media (min-width: 640px) {
+    .trust-row { grid-template-columns: 1fr 1fr; }
+}
+.trust-title {
+    font: 700 .76rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: .1em;
+    margin: 0 0 1rem 0;
+}
+.trust-exists { color: var(--blue); }
+.trust-absent { color: var(--muted); }
+.trust-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.trust-list li {
+    color: #cbd5e1;
+    font-size: .92rem;
+    margin-bottom: .55rem;
+}
+
+/* --- Mobile adjustments --- */
+@media (max-width: 900px) {
+    .sys-card:hover {
+        transform: none;
+    }
+    .sys-cursor-field,
+    .sys-cursor-dot {
+        display: none;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .sys-cursor-field,
+    .sys-cursor-dot {
+        display: none;
+    }
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+</style>
+
+<script>
+  // === System page interactive effects ===
+  // Ported directly from index.html's DOMContentLoaded block.
+  document.addEventListener("DOMContentLoaded", function() {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobile = () => window.matchMedia("(max-width: 768px)").matches;
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+
+    // ---------- 1. Cursor glow (exact index.html logic) ----------
+    const pointer = {
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+      sx: window.innerWidth / 2,
+      sy: window.innerHeight / 2
+    };
+
+    if (!reducedMotion && finePointer) {
+      const cursorField = document.getElementById('sys-cursor-field');
+      const cursorDot = document.getElementById('sys-cursor-dot');
+      let cursorFrame: number | null = null;
+
+      const renderPointer = () => {
+        cursorFrame = null;
+        pointer.sx += (pointer.x - pointer.sx) * 0.16;
+        pointer.sy += (pointer.y - pointer.sy) * 0.16;
+        const x = `${pointer.sx}px`;
+        const y = `${pointer.sy}px`;
+        if (cursorField) cursorField.style.transform = `translate3d(${x}, ${y}, 0) translate(-50%, -50%)`;
+        if (cursorDot) cursorDot.style.transform = `translate3d(${pointer.x}px, ${pointer.y}px, 0) translate(-50%, -50%)`;
+        if (Math.abs(pointer.x - pointer.sx) > 0.1 || Math.abs(pointer.y - pointer.sy) > 0.1) {
+          cursorFrame = requestAnimationFrame(renderPointer);
+        }
+      };
+
+      window.addEventListener('pointermove', (e: PointerEvent) => {
+        pointer.x = e.clientX;
+        pointer.y = e.clientY;
+        document.body.classList.add('sys-pointer-ready');
+        if (cursorFrame === null) cursorFrame = requestAnimationFrame(renderPointer);
+      }, { passive: true });
+      window.addEventListener('pointerleave', () => document.body.classList.remove('sys-pointer-ready'), { passive: true });
+    }
+
+    // ---------- 2. Ambient particle canvas (exact index.html logic) ----------
+    const canvas = document.getElementById("sys-ambient") as HTMLCanvasElement | null;
+    if (canvas && !reducedMotion) {
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        let width = 0;
+        let height = 0;
+        let particles: Array<{x: number; y: number; vx: number; vy: number; r: number}> = [];
+        let raf: number | null = null;
+        let resizeFrame: number | null = null;
+
+        const resizeCanvas = () => {
+          const dpr = Math.min(window.devicePixelRatio || 1, isMobile() ? 1.25 : 2);
+          width = canvas.width = Math.floor(window.innerWidth * dpr);
+          height = canvas.height = Math.floor(window.innerHeight * dpr);
+          canvas.style.width = `${window.innerWidth}px`;
+          canvas.style.height = `${window.innerHeight}px`;
+          const count = isMobile() ? Math.min(34, Math.floor(window.innerWidth / 12)) : Math.min(80, Math.floor(window.innerWidth / 18));
+          particles = Array.from({ length: count }, () => ({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            vx: (Math.random() - 0.5) * 0.16 * dpr,
+            vy: (Math.random() - 0.5) * 0.16 * dpr,
+            r: (Math.random() * 0.8 + 0.55) * dpr
+          }));
+        };
+
+        const draw = () => {
+          if (document.hidden) { raf = null; return; }
+          ctx.clearRect(0, 0, width, height);
+          const scale = width / Math.max(1, window.innerWidth);
+          const px = pointer.sx * scale;
+          const py = pointer.sy * scale;
+          const glow = ctx.createRadialGradient(px, py, 0, px, py, 260 * scale);
+          glow.addColorStop(0, "rgba(125, 211, 252, 0.105)");
+          glow.addColorStop(0.42, "rgba(57, 255, 136, 0.045)");
+          glow.addColorStop(1, "rgba(125, 211, 252, 0)");
+          ctx.fillStyle = glow;
+          ctx.fillRect(0, 0, width, height);
+          ctx.fillStyle = "rgba(125, 211, 252, 0.38)";
+          ctx.strokeStyle = "rgba(125, 211, 252, 0.10)";
+          const linkDistance = (isMobile() ? 92 : 150) * Math.min(window.devicePixelRatio || 1, 2);
+          particles.forEach((p, index) => {
+            const mdx = px - p.x;
+            const mdy = py - p.y;
+            const md = Math.hypot(mdx, mdy);
+            if (finePointer && md < 220 * scale) {
+              const force = (1 - md / (220 * scale)) * 0.018;
+              p.vx += mdx * force / Math.max(md, 1);
+              p.vy += mdy * force / Math.max(md, 1);
+            }
+            p.vx *= 0.995;
+            p.vy *= 0.995;
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > width) p.vx *= -1;
+            if (p.y < 0 || p.y > height) p.vy *= -1;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+            for (let i = index + 1; i < particles.length; i++) {
+              const q = particles[i];
+              const dx = p.x - q.x;
+              const dy = p.y - q.y;
+              const distance = Math.hypot(dx, dy);
+              if (distance < linkDistance) {
+                ctx.globalAlpha = 1 - distance / linkDistance;
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(q.x, q.y);
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+              }
+            }
+          });
+          raf = requestAnimationFrame(draw);
+        };
+
+        const restartCanvas = () => {
+          if (raf !== null) cancelAnimationFrame(raf);
+          resizeCanvas();
+          draw();
+        };
+        restartCanvas();
+        window.addEventListener("resize", () => {
+          if (resizeFrame !== null) cancelAnimationFrame(resizeFrame);
+          resizeFrame = requestAnimationFrame(() => { resizeFrame = null; restartCanvas(); });
+        }, { passive: true });
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden && raf !== null) { cancelAnimationFrame(raf); raf = null; }
+          else if (!document.hidden && raf === null) { restartCanvas(); }
+        });
+      }
+    }
+
+    // ---------- 3. Card tilt + mouse glow (exact index.html logic) ----------
+    if (!reducedMotion && !isMobile()) {
+      document.querySelectorAll('[data-tilt]').forEach((card) => {
+        const el = card as HTMLElement;
+        el.addEventListener('mousemove', (e: Event) => {
+          const me = e as MouseEvent;
+          const r = el.getBoundingClientRect();
+          const x = me.clientX - r.left;
+          const y = me.clientY - r.top;
+          const rx = ((y / r.height) - 0.5) * -5;
+          const ry = ((x / r.width) - 0.5) * 5;
+          el.style.setProperty('--mx', `${(x / r.width) * 100}%`);
+          el.style.setProperty('--my', `${(y / r.height) * 100}%`);
+          el.style.setProperty('--tilt-x', `${rx}deg`);
+          el.style.setProperty('--tilt-y', `${ry}deg`);
+        });
+        el.addEventListener('mouseleave', () => {
+          el.style.setProperty('--tilt-x', '0deg');
+          el.style.setProperty('--tilt-y', '0deg');
+        });
+      });
+    }
+
+    // ---------- 4. Reveal animation (same IntersectionObserver as index.html) ----------
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('active');
+        revealObserver.unobserve(entry.target);
+      });
+    }, { root: null, rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // ---------- 5. ScrollSpy navigation ----------
+    const chapters = document.querySelectorAll('.chapter');
+    const navLinksDesktop = document.querySelectorAll('.rail-list .ch-link');
+    const navLinksMobile = document.querySelectorAll('.chapter-list-mobile .ch-link');
+
+    if (chapters.length) {
+      const updateNav = (id: string) => {
+        const updateList = (links: NodeListOf<Element>) => {
+          links.forEach((link: Element) => {
+            if (link.getAttribute('href') === `#${id}`) {
+              link.setAttribute('aria-current', 'page');
+              if (link.closest('.chapter-list-mobile')) {
+                const li = link.parentElement;
+                if (li) li.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+              }
+            } else {
+              link.removeAttribute('aria-current');
+            }
+          });
+        };
+        updateList(navLinksDesktop);
+        updateList(navLinksMobile);
+        if (history.replaceState) {
+          history.replaceState(null, "", `#${id}`);
+        }
+      };
+
+      const scrollObserver = new IntersectionObserver((entries) => {
+        const visibleEntry = entries.find(entry => entry.isIntersecting);
+        if (visibleEntry) updateNav(visibleEntry.target.id);
+      }, { root: null, rootMargin: '-20% 0px -60% 0px', threshold: 0 });
+
+      chapters.forEach(chapter => scrollObserver.observe(chapter));
+    }
+  });
+</script>
