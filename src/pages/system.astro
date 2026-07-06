@@ -1543,7 +1543,7 @@ body.sys-pointer-ready .sys-cursor-dot {
 <script>
   // === System page interactive effects ===
   // Ported directly from index.html's DOMContentLoaded block.
-  document.addEventListener("DOMContentLoaded", function() {
+  const initSystemEffects = () => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isMobile = () => window.matchMedia("(max-width: 768px)").matches;
     const finePointer = window.matchMedia("(pointer: fine)").matches;
@@ -1745,5 +1745,11 @@ body.sys-pointer-ready .sys-cursor-dot {
 
       chapters.forEach(chapter => scrollObserver.observe(chapter));
     }
-  });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSystemEffects);
+  } else {
+    initSystemEffects();
+  }
 </script>
