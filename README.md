@@ -148,3 +148,5 @@ public/            Static assets and local drafting tools
 astro.config.mjs   Astro, MDX, sitemap, and markdown config
 package.json       Build, check, preview, and dependency scripts
 ```
+
+<!-- AI Assistant connection test -->
