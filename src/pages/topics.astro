@@ -4,7 +4,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 const topics = [
   {
     group: "Identity",
-    items: ["Haitao Zheng", "Zheng Haitao", "郑海涛", "鄭海濤", "Tao Zheng", "Tao", "Jensen Zheng", "Jensen Zane", "jensenzheng", "jensenzane"]
+    items: ["Haitao Zheng", "Zheng Haitao", "郑海涛", "鄭海濤", "Tao Zheng", "jensenzheng"]
   },
   {
     group: "Cyber Security",
@@ -27,11 +27,28 @@ const topics = [
 const keywords = topics.flatMap((topic) => topic.items);
 const topicsSchema = {
   "@type": "CollectionPage",
-  "@id": "https://tzheng.dev/topics/#topics",
+  "@id": "https://tzheng.dev/topics/#webpage",
   name: "Haitao Zheng technical topics",
   description: "Technical topics connected to Haitao Zheng, including cyber security, IT systems, cloud security, blue team tooling, and static-first web engineering.",
   url: "https://tzheng.dev/topics/",
-  author: { "@id": "https://tzheng.dev/#haitao-zheng" },
+  author: { "@id": "https://tzheng.dev/#person" },
+  publisher: { "@id": "https://tzheng.dev/#person" },
+  mainEntity: {
+    "@type": "ItemList",
+    "itemListElement": topics.map((topic, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": topic.group,
+      "item": {
+        "@type": "DefinedTermSet",
+        "name": topic.group,
+        "hasDefinedTerm": topic.items.map(term => ({
+          "@type": "DefinedTerm",
+          "name": term
+        }))
+      }
+    }))
+  },
   about: keywords.map((name) => ({ "@type": "Thing", name }))
 };
 ---
@@ -70,13 +87,13 @@ const topicsSchema = {
         <h3>How these topics connect.</h3>
         <p>
           The site is built so search engines can connect one consistent identity with the same public technical surface:
-          the homepage, GitHub profile, article archive, project case studies, and system design documentation.
+          the <a href="/" class="text-sky-300 hover:underline hover:text-sky-200 transition-colors">homepage</a>, GitHub profile, <a href="/articles/" class="text-sky-300 hover:underline hover:text-sky-200 transition-colors">article archive</a>, <a href="/projects/" class="text-sky-300 hover:underline hover:text-sky-200 transition-colors">project case studies</a>, and <a href="/system/" class="text-sky-300 hover:underline hover:text-sky-200 transition-colors">system design documentation</a>.
           The goal is not to rank for every broad technology term immediately. The realistic goal is to make searches like
           “Haitao Zheng cyber security”, “郑海涛 网络安全”, “Tao Zheng cloud security”, or project-specific searches lead back
           to the same portfolio over time.
         </p>
         <p>
-          For broad keywords such as cyber security or IT technology, the strongest signal comes from useful technical writing,
+          For broad keywords such as cyber security or IT technology, the strongest signal comes from useful <a href="/articles/" class="text-sky-300 hover:underline hover:text-sky-200 transition-colors">technical writing</a>,
           public GitHub work, clear page titles, and repeated external references to the same domain. This page acts as a clean
           index for the terms this site actually covers.
         </p>

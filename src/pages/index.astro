@@ -47,17 +47,33 @@ let html = readFileSync(sourcePath, "utf8")
   .replace(/<link rel="icon"[^>]+>/, '<link rel="icon" href="/favicon.png" type="image/png">\n    <link rel="apple-touch-icon" href="/apple-touch-icon.png">')
   .replace(
     "<title>Haitao Zheng | Cyber Security</title>",
-    `<title>Haitao Zheng | Cyber Security Portfolio</title>
-    <meta name="description" content="Haitao Zheng, also known as Zheng Haitao, 郑海涛, 鄭海濤, Tao, Jensen Zheng, and Jensen Zane, is a Cyber Security & Privacy student building security tooling, cloud log analysis projects, IOC workflows, technical articles, and static-first web systems.">
-    <meta name="keywords" content="Haitao Zheng, Zheng Haitao, 郑海涛, 鄭海濤, Tao Zheng, Tao, Jensen Zheng, Jensen Zane, jensenzheng, jensenzane, Haitao Zheng cyber security, Haitao Zheng cybersecurity, 郑海涛 网络安全, 鄭海濤 網路安全, cyber security, cybersecurity portfolio, cloud security, blue team, IOC toolkit, security tooling, technical articles, developer portfolio, GitHub portfolio, Astro portfolio, Cloudflare Pages, Cyber Security Deutschland, Cybersecurity Germany, Cloud-Sicherheit, IT-Sicherheit">
+    `<title>Haitao Zheng | Cyber Security Portfolio & Engineering</title>
+    <meta name="description" content="Haitao Zheng (Zheng Haitao, 郑海涛, 鄭海濤), Cyber Security & Privacy student specializing in cloud security, blue team operations, IOC workflows, security tooling, Python, and static-first web systems architecture.">
+    <meta name="keywords" content="Haitao Zheng, Zheng Haitao, 郑海涛, 鄭海濤, Tao Zheng, jensenzheng, Haitao Zheng cyber security, Haitao Zheng cybersecurity, 郑海涛 网络安全, 鄭海濤 網路安全, cyber security student, cybersecurity portfolio, cloud security engineer, blue team analyst, IOC toolkit, security tooling developer, AWS CloudTrail analysis, Python security automation, Java secure coding, technical writing, Astro static portfolio, Cloudflare Pages deployment, Cyber Security Deutschland, Cybersecurity Germany, Cloud-Sicherheit, IT-Sicherheit, Informationssicherheit, Bonn Germany, security engineering case study, blue team notes">
     <meta name="author" content="Haitao Zheng">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="theme-color" content="#030712" />
     <link rel="canonical" href="https://tzheng.dev/">
-    <meta property="og:title" content="Haitao Zheng | Cyber Security Portfolio">
-    <meta property="og:description" content="Cyber security portfolio, technical articles, project case studies, and system design notes by Haitao Zheng.">
-    <meta property="og:type" content="website">
+    <!-- 针对核心流量区进行精准投放，不过度发散 -->
+    <link rel="alternate" hreflang="x-default" href="https://tzheng.dev/" />
+    <link rel="alternate" hreflang="en" href="https://tzheng.dev/" />
+    <link rel="alternate" hreflang="de" href="https://tzheng.dev/" />
+    <link rel="alternate" hreflang="zh" href="https://tzheng.dev/" />
+    <link rel="me" href="https://github.com/0xTaoZ">
+    <link rel="me" href="https://www.linkedin.com/in/haitaozheng/">
+    <meta property="og:title" content="Haitao Zheng | Cyber Security Portfolio & Engineering">
+    <meta property="og:description" content="Cyber security portfolio, technical articles, project case studies, and system design notes by Haitao Zheng. Specializing in cloud security and blue team workflows.">
+    <meta property="og:type" content="profile">
+    <meta property="profile:first_name" content="Haitao">
+    <meta property="profile:last_name" content="Zheng">
     <meta property="og:url" content="https://tzheng.dev/">
     <meta property="og:image" content="https://tzheng.dev/logo.png">
+    <meta property="og:image:width" content="800">
+    <meta property="og:image:height" content="800">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:creator" content="@0xTaoZ">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -66,11 +82,26 @@ let html = readFileSync(sourcePath, "utf8")
           "@type": "Person",
           "@id": "https://tzheng.dev/#person",
           "name": "Haitao Zheng",
-          "alternateName": ["Zheng Haitao", "郑海涛", "鄭海濤", "Tao", "Tao Zheng", "Jensen Zheng", "Jensen Zane", "jensenzheng", "jensenzane"],
+          "alternateName": ["Zheng Haitao", "郑海涛", "鄭海濤", "Tao Zheng", "jensenzheng"],
           "url": "https://tzheng.dev/",
-          "image": "https://tzheng.dev/logo.png",
-          "sameAs": ["https://github.com/0xTaoZ"],
-          "knowsAbout": ["Cyber Security", "Cloud Security", "Blue Team", "IOC Workflows", "Security Tooling", "CloudTrail", "Python", "Java", "TypeScript", "Static Websites", "Astro", "GitHub", "Cloudflare Pages", "网络安全", "網路安全", "Cloud-Sicherheit", "IT-Sicherheit"]
+          "image": {
+            "@type": "ImageObject",
+            "url": "https://tzheng.dev/logo.png",
+            "width": 800,
+            "height": 800
+          },
+          "jobTitle": "Cyber Security Student",
+          "knowsAbout": ["Cyber Security", "Cloud Security", "Blue Team", "IOC Workflows", "Security Tooling", "CloudTrail", "Python", "Java", "TypeScript", "Static Websites", "Astro", "GitHub", "Cloudflare Pages", "网络安全", "網路安全", "Cloud-Sicherheit", "IT-Sicherheit", "Informationssicherheit"],
+          "sameAs": ["https://github.com/0xTaoZ", "https://www.linkedin.com/in/haitaozheng/"]
+        },
+        {
+          "@type": "ProfilePage",
+          "@id": "https://tzheng.dev/#profile",
+          "url": "https://tzheng.dev/",
+          "mainEntity": { "@id": "https://tzheng.dev/#person" },
+          "name": "Haitao Zheng | Cyber Security Portfolio",
+          "description": "Personal cyber security portfolio, technical articles, project case studies, and system design notes by Haitao Zheng.",
+          "inLanguage": ["en", "zh-CN", "zh-TW", "de"]
         },
         {
           "@type": "WebSite",
@@ -79,7 +110,8 @@ let html = readFileSync(sourcePath, "utf8")
           "name": "Haitao Zheng | Cyber Security Portfolio",
           "alternateName": ["tzheng.dev", "郑海涛个人网站", "鄭海濤個人網站", "Tao Zheng Portfolio", "Jensen Zheng Cyber Security Portfolio"],
           "description": "Personal cyber security portfolio, technical articles, project case studies, and system design notes by Haitao Zheng.",
-          "inLanguage": ["en", "zh-CN", "zh-TW", "de"]
+          "inLanguage": ["en", "zh-CN", "zh-TW", "de"],
+          "publisher": { "@id": "https://tzheng.dev/#person" }
         }
       ]
     }
@@ -87,7 +119,7 @@ let html = readFileSync(sourcePath, "utf8")
   )
   .replace(
     '<a href="#" class="text-white tracking-widest font-semibold hover:opacity-70 transition duration-300 flex items-center gap-3"><span class="nav-dot"></span>HAITAO ZHENG</a>',
-    '<a href="#" class="text-white hover:opacity-80 transition duration-300 flex items-center" aria-label="Haitao Zheng home"><img src="/logo.png" alt="" class="w-8 h-8 rounded-xl object-cover border border-white/10 shadow-[0_0_24px_rgba(125,211,252,0.22)]"></a>'
+    '<a href="#" class="text-white hover:opacity-80 transition duration-300 flex items-center" aria-label="Haitao Zheng home"><img src="/logo.png" alt="" fetchpriority="high" decoding="sync" class="w-8 h-8 rounded-xl object-cover border border-white/10 shadow-[0_0_24px_rgba(125,211,252,0.22)]"></a>'
   )
   .replace(
     `<div class="hidden lg:flex space-x-8">
@@ -137,13 +169,13 @@ let html = readFileSync(sourcePath, "utf8")
                 <a href="/system/" class="primary-action w-full sm:w-auto justify-center px-7 py-3.5 rounded-full font-semibold text-sm flex items-center">View System Design</a>
                 <a href="#projects" class="primary-action w-full sm:w-auto justify-center px-7 py-3.5 rounded-full font-semibold text-sm flex items-center">View Projects</a>
                 <div class="flex items-center justify-center gap-3 w-full sm:w-auto mt-2 sm:mt-0">
-                    <a href="https://github.com/0xTaoZ" target="_blank" class="secondary-action w-12 h-12 rounded-full flex items-center justify-center transition hover:bg-white hover:text-black shrink-0" aria-label="GitHub">
+                    <a href="https://github.com/0xTaoZ" target="_blank" class="secondary-action w-12 h-12 rounded-full flex items-center justify-center transition hover:bg-white hover:text-black shrink-0" aria-label="Haitao Zheng GitHub Profile">
                         <svg class="w-5 h-5 opacity-90" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path></svg>
                     </a>
-                    <a href="https://www.linkedin.com/in/haitaozheng/" target="_blank" class="secondary-action w-12 h-12 rounded-full flex items-center justify-center transition hover:bg-white hover:text-black shrink-0" aria-label="LinkedIn">
+                    <a href="https://www.linkedin.com/in/haitaozheng/" target="_blank" class="secondary-action w-12 h-12 rounded-full flex items-center justify-center transition hover:bg-white hover:text-black shrink-0" aria-label="Haitao Zheng LinkedIn Profile">
                         <svg class="w-5 h-5 opacity-90" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
                     </a>
-                    <a href="mailto:h@tzheng.dev" onclick="window.handleEmailClick(this, event)" class="secondary-action w-12 h-12 rounded-full flex items-center justify-center transition hover:bg-white hover:text-black shrink-0" aria-label="Email">
+                    <a href="mailto:h@tzheng.dev" onclick="window.handleEmailClick(this, event)" class="secondary-action w-12 h-12 rounded-full flex items-center justify-center transition hover:bg-white hover:text-black shrink-0" aria-label="Email Haitao Zheng">
                         <svg class="w-5 h-5 opacity-90" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                     </a>
                 </div>

@@ -38,9 +38,43 @@ const articleSchema = {
   mainEntityOfPage: articleUrl,
   keywords: articleKeywords
 };
+
+const breadcrumbSchema = {
+  "@type": "BreadcrumbList",
+  "@id": `${articleUrl}#breadcrumb`,
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://tzheng.dev/"
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Articles",
+      item: "https://tzheng.dev/articles/"
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: article.data.title,
+      item: articleUrl
+    }
+  ]
+};
+
+const relatedArticles = all
+  .filter((item) => entrySlug(item) !== entrySlug(article) && item.data.tags.some(t => article.data.tags.includes(t)))
+  .sort((a, b) => {
+    const aMatches = a.data.tags.filter(t => article.data.tags.includes(t)).length;
+    const bMatches = b.data.tags.filter(t => article.data.tags.includes(t)).length;
+    return bMatches - aMatches || b.data.date.valueOf() - a.data.date.valueOf();
+  })
+  .slice(0, 3);
 ---
 
-<BaseLayout title={`${article.data.title} | Haitao Zheng`} description={article.data.excerpt} keywords={articleKeywords} structuredData={articleSchema}>
+<BaseLayout title={`${article.data.title} | Haitao Zheng`} description={article.data.excerpt} keywords={articleKeywords} structuredData={[articleSchema, breadcrumbSchema]}>
   <main class="article-body">
     <a class="button" href="/articles/">← Articles</a>
     <h1>{article.data.title}</h1>
@@ -62,5 +96,19 @@ const articleSchema = {
       {previous && <a class="card compact" href={`/articles/${entrySlug(previous)}/`}><span class="meta">Previous</span><h3>{previous.data.title}</h3></a>}
       {next && <a class="card compact" href={`/articles/${entrySlug(next)}/`}><span class="meta">Next</span><h3>{next.data.title}</h3></a>}
     </div>
+    
+    {relatedArticles.length > 0 && (
+      <div style="margin-top: 4rem;">
+        <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem; color: #fff;">Related Articles</h2>
+        <div class="grid">
+          {relatedArticles.map((rel) => (
+            <a class="card compact" href={`/articles/${entrySlug(rel)}/`}>
+              <span class="meta">{rel.data.category}</span>
+              <h3>{rel.data.title}</h3>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
   </main>
 </BaseLayout>

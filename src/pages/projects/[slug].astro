@@ -22,7 +22,7 @@ const projectKeywords = [
   "security engineering case study"
 ];
 const projectSchema = {
-  "@type": "CreativeWork",
+  "@type": "SoftwareSourceCode",
   "@id": `${projectUrl}#project`,
   name: project.data.title,
   description: project.data.excerpt,
@@ -32,11 +32,37 @@ const projectSchema = {
   publisher: { "@id": "https://tzheng.dev/#website" },
   keywords: projectKeywords,
   codeRepository: project.data.github,
+  programmingLanguage: project.data.stack,
   applicationCategory: project.data.type
+};
+
+const breadcrumbSchema = {
+  "@type": "BreadcrumbList",
+  "@id": `${projectUrl}#breadcrumb`,
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://tzheng.dev/"
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Projects",
+      item: "https://tzheng.dev/#projects"
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: project.data.title,
+      item: projectUrl
+    }
+  ]
 };
 ---
 
-<BaseLayout title={`${project.data.title} | Projects`} description={project.data.excerpt} keywords={projectKeywords} structuredData={projectSchema}>
+<BaseLayout title={`${project.data.title} | Projects`} description={project.data.excerpt} keywords={projectKeywords} structuredData={[projectSchema, breadcrumbSchema]}>
   <main class="article-body">
     <a class="button" href="/projects/">← Projects</a>
     <h1>{project.data.title}</h1>
