@@ -42,7 +42,7 @@ MDX content collections
 Static build in dist/
         |
         v
-GitHub Pages or Cloudflare Pages
+GitHub Pages
 ```
 
 Static output is a deliberate choice: it is fast, easy to deploy, simple to cache, and safer for a personal technical website than running a public login surface or unnecessary database.
@@ -87,12 +87,21 @@ This keeps content portable. It can be edited locally, in GitHub, through a futu
 
 ## Publishing Workflow
 
-Publishing is Git-based:
+Production publishing uses the existing GitHub Actions workflow in
+`.github/workflows/deploy.yml`:
 
 - content and code changes are committed to version control
-- updates are reviewable, traceable, and reversible
-- Astro builds the site into static files
-- deployment can run through GitHub Pages or Cloudflare Pages
+- a push to `main` runs `npm ci` and `npm run build`
+- the generated `dist` directory is uploaded as the Pages artifact
+- the workflow deploys that artifact to GitHub Pages
+- the exact commit, workflow run, deployment job, and production URL are
+  checked before publication is considered complete
+
+The deployment architecture is intentionally singular. Do not introduce a
+`gh-pages` branch, Jekyll, manual `dist` publication, a second deployment
+workflow, or a different Pages source as a generic recovery step. Diagnose
+failures at the source, build, artifact, deployment, or HTTP/runtime layer and
+change only the layer that failed.
 
 The local `admin.html` tool can remain a drafting aid, but the source of truth is the MDX content collection.
 
@@ -104,7 +113,7 @@ The public site is intentionally static-first:
 - no unnecessary database attack surface
 - no intentional advertising trackers
 - HTTPS-first deployment
-- Cloudflare nameservers for DNS and edge protection
+- version-controlled DNS and edge configuration
 - version-controlled content and code changes
 
 This fits the purpose of a personal cybersecurity and engineering website: publish clearly, keep the attack surface small, and avoid pretending that client-side password gates are real backend security.
