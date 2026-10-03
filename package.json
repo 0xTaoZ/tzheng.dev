@@ -1,6 +1,6 @@
 {
   "name": "tzheng-dev",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -10,14 +10,14 @@
     "dev": "astro dev",
     "build": "astro build",
     "check": "astro check",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "test": "node scripts/check-site.mjs"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/mdx": "^4.3.0",
+    "@astrojs/check": "0.9.10",
     "@astrojs/rss": "^4.0.12",
-    "@astrojs/sitemap": "^3.4.1",
-    "astro": "5.10.1",
+    "@astrojs/sitemap": "3.7.4",
+    "astro": "7.3.5",
     "typescript": "^5.8.3"
   }
 }

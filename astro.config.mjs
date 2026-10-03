@@ -1,13 +1,13 @@
 import { defineConfig } from "astro/config";
-import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
+  compressHTML: true,
   site: "https://tzheng.dev",
-  integrations: [mdx(), sitemap()],
+  integrations: [sitemap()],
   markdown: {
     shikiConfig: {
-      theme: "github-dark"
-    }
-  }
+      theme: "github-light",
+    },
+  },
 });

@@ -2,87 +2,71 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { entrySlug } from "../../lib/content";
-
 export async function getStaticPaths() {
-  const projects = await getCollection("projects");
-  return projects.map((project) => ({ params: { slug: entrySlug(project) }, props: { project } }));
+  return (await getCollection("projects")).map((project) => ({
+    params: { slug: entrySlug(project) },
+    props: { project },
+  }));
 }
-
 const { project } = Astro.props;
 const { Content, headings } = await render(project);
-const projectUrl = new URL(`/projects/${entrySlug(project)}/`, Astro.site).toString();
-const projectKeywords = [
-  project.data.title,
-  project.data.status,
-  project.data.type,
-  ...project.data.stack,
-  "Haitao Zheng project",
-  "郑海涛 项目",
-  "cyber security project",
-  "security engineering case study"
-];
-const projectSchema = {
-  "@type": "SoftwareSourceCode",
-  "@id": `${projectUrl}#project`,
+const url = new URL(`/projects/${entrySlug(project)}/`, Astro.site).toString();
+const schema = {
+  "@type": "CreativeWork",
   name: project.data.title,
   description: project.data.excerpt,
-  url: projectUrl,
-  dateCreated: project.data.date.toISOString(),
-  creator: { "@id": "https://tzheng.dev/#haitao-zheng" },
-  publisher: { "@id": "https://tzheng.dev/#website" },
-  keywords: projectKeywords,
-  codeRepository: project.data.github,
-  programmingLanguage: project.data.stack,
-  applicationCategory: project.data.type
-};
-
-const breadcrumbSchema = {
-  "@type": "BreadcrumbList",
-  "@id": `${projectUrl}#breadcrumb`,
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Home",
-      item: "https://tzheng.dev/"
-    },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: "Projects",
-      item: "https://tzheng.dev/#projects"
-    },
-    {
-      "@type": "ListItem",
-      position: 3,
-      name: project.data.title,
-      item: projectUrl
-    }
-  ]
+  url,
+  creator: { "@id": "https://tzheng.dev/#person" },
+  sameAs: project.data.github,
 };
 ---
 
-<BaseLayout title={`${project.data.title} | Projects`} description={project.data.excerpt} keywords={projectKeywords} structuredData={[projectSchema, breadcrumbSchema]}>
-  <main class="article-body">
-    <a class="button" href="/projects/">← Projects</a>
+<BaseLayout
+  title={`${project.data.title} — Work by Haitao Zheng`}
+  description={project.data.excerpt}
+  structuredData={schema}
+>
+  <article class="article-body">
+    <a class="text-link" href="/projects/">
+      ← All work
+    </a>
     <h1>{project.data.title}</h1>
     <div class="meta">
-      <span>{project.data.status}</span>
       <span>{project.data.type}</span>
-      <span>{project.data.date.toLocaleDateString("en", { month: "long", year: "numeric" })}</span>
+      <span>{project.data.stack.join(" / ")}</span>
     </div>
-    <p>{project.data.excerpt}</p>
-    <div class="meta">{project.data.stack.map((item) => <span class="chip">{item}</span>)}</div>
+    <p class="lead">{project.data.excerpt}</p>
+    {project.data.outcome && <p>{project.data.outcome}</p>}
     <div class="actions">
-      {project.data.github && <a class="button primary" href={project.data.github} target="_blank">GitHub ↗</a>}
-      {project.data.demo && <a class="button" href={project.data.demo} target="_blank">Demo ↗</a>}
+      {project.data.github && (
+        <a class="button primary" href={project.data.github}>
+          Inspect the source <span aria-hidden="true">↗</span>
+        </a>
+      )}
+      {project.data.demo && (
+        <a class="button" href={project.data.demo}>
+          Visit project ↗
+        </a>
+      )}
     </div>
     {headings.length > 0 && (
-      <nav class="toc" aria-label="Table of contents">
-        <strong>Contents</strong>
-        {headings.map((heading) => <a href={`#${heading.slug}`}>{heading.text}</a>)}
+      <nav class="toc" aria-label="On this page">
+        <strong>On this page</strong>
+        {headings
+          .filter((h) => h.depth === 2)
+          .map((h) => (
+            <a href={`#${h.slug}`}>{h.text}</a>
+          ))}
       </nav>
     )}
     <Content />
-  </main>
+    <div class="article-pager">
+      <a href="/projects/">
+        <span>Continue exploring</span>All projects ←
+      </a>
+      <a href="/contributions/">
+        <span>Accepted upstream work</span>Open-source record →
+      </a>
+    </div>
+  </article>
 </BaseLayout>

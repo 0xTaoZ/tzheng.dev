@@ -1,0 +1,138 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="About — Haitao Zheng"
+  description="Haitao Zheng: Cyber Security & Privacy student at H-BRS, open-source contributor and builder of security tools in Germany."
+>
+  <div class="shell page-content">
+    <header class="page-header">
+      <span class="eyebrow">
+        About / <span lang="zh">郑海涛</span>
+      </span>
+      <h1>
+        A student.
+        <br />A working practice.
+      </h1>
+      <p>
+        I’m Haitao, also known as Tao. I study cyber security in Germany and
+        learn by building tools, reading existing systems and contributing
+        changes upstream.
+      </p>
+    </header>
+    <div class="profile-grid">
+      <aside class="profile-aside">
+        <img
+          src="/portrait-small.webp"
+          alt="Haitao Zheng"
+          width="480"
+          height="600"
+          loading="lazy"
+        />
+        <p class="note">Germany / English · German · Mandarin</p>
+        <a class="text-link" href="https://github.com/0xTaoZ">
+          GitHub / 0xTaoZ ↗
+        </a>
+      </aside>
+      <div class="profile-copy">
+        <h2>Security meets infrastructure.</h2>
+        <p>
+          I am interested in the places where those fields overlap:
+          authentication boundaries, cloud configuration, useful audit evidence
+          and the tools people use to investigate problems.
+        </p>
+        <p>
+          My accepted upstream work includes SSH behavior in pyinfra,
+          CloudFormation validation in cfn-lint, and security checks in Prowler.
+          My own projects let me make the product and implementation decisions
+          together.
+        </p>
+        <p>
+          I’m early in my career. The code, tests, reviews and case studies on
+          this site show the work I can already do and the areas I’m developing
+          next.
+        </p>
+        <a class="text-link" href="mailto:h@tzheng.dev">
+          Talk about an opportunity <span aria-hidden="true">↗</span>
+        </a>
+        <section class="timeline" id="education">
+          <span class="eyebrow">Education & foundations</span>
+          <div class="timeline-item">
+            <span class="meta">October 2025 – Present / Germany</span>
+            <h3>Hochschule Bonn-Rhein-Sieg</h3>
+            <p>
+              B.Sc. Cyber Security & Privacy. Programming, systems, networking,
+              mathematics and privacy form the foundation underneath my project
+              work.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <span class="meta">December 2024 – June 2025 / Bielefeld</span>
+            <h3>FHM / University preparation</h3>
+            <p>
+              Completed the university preparatory pathway and
+              Feststellungsprüfung. Developed academic German to C1 during the
+              transition to studying in Germany.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <span class="meta">2024 / Online coursework</span>
+            <h3>CS50x / Computer science foundations</h3>
+            <p>
+              Completed the CS50x course: algorithms, data structures, C,
+              Python, SQL and a final programming project.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <span class="meta">2021 – 2024 / Xiamen, China</span>
+            <h3>Jimei Middle School</h3>
+            <p>Completed secondary education before moving to Germany.</p>
+          </div>
+        </section>
+        <section class="timeline" id="toolkit">
+          <span class="eyebrow">Tools in context</span>
+          <div class="timeline-item">
+            <h3>Python & Linux</h3>
+            <p>
+              Local log tools, parsing and upstream infrastructure fixes. See{" "}
+              <a href="/projects/cloudtrail-quickscan/">CloudTrail Quickscan</a>{" "}
+              and the <a href="/contributions/">contribution record</a>.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <h3>TypeScript & web systems</h3>
+            <p>
+              React, Worker APIs, typed domain rules and SQL persistence in{" "}
+              <a href="/projects/studypulse/">StudyPulse</a>. Astro and static
+              publishing for this site.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <h3>Java, C & SQL</h3>
+            <p>
+              Coursework and focused tools:{" "}
+              <a href="/projects/java-web-log-triage/">
+                Java access-log review
+              </a>
+              , <a href="/projects/socket-state-triage/">C socket inspection</a>{" "}
+              and database-backed application work.
+            </p>
+          </div>
+        </section>
+        <section class="timeline">
+          <span class="eyebrow">Beyond the keyboard</span>
+          <p>
+            I photograph portraits, everyday life and landscapes with a Nikon
+            D750. Cycling, strength training and team sports give me another way
+            to stay curious and consistent.
+          </p>
+          <p>
+            I work in English and German, speak Mandarin and Hokkien, and have
+            basic Japanese.
+          </p>
+        </section>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

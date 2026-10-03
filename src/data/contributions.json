@@ -1,0 +1,155 @@
+{
+  "verifiedAt": "2026-10-03",
+  "merged": [
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1958,
+      "title": "docs: fix connectors index link",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1958"
+    },
+    {
+      "repository": "aws-cloudformation/cfn-lint",
+      "number": 4704,
+      "title": "fix: reject Fn::Select lifecycle policies without transform",
+      "url": "https://github.com/aws-cloudformation/cfn-lint/pull/4704"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1955,
+      "title": "fix(connectors.ssh): retry NFSv4 ACL handover",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1955"
+    },
+    {
+      "repository": "aws-cloudformation/cfn-lint",
+      "number": 4686,
+      "title": "Avoid maxProperties warnings for single-property schemas",
+      "url": "https://github.com/aws-cloudformation/cfn-lint/pull/4686"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1950,
+      "title": "fix(connectors.ssh): support sudo passwords with rsync",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1950"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1945,
+      "title": "fix(connectors.ssh): trust known_hosts certificate authorities",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1945"
+    },
+    {
+      "repository": "aws-cloudformation/cfn-lint",
+      "number": 4677,
+      "title": "Allow Fn::GetAZs in Fn::Join values",
+      "url": "https://github.com/aws-cloudformation/cfn-lint/pull/4677"
+    },
+    {
+      "repository": "prowler-cloud/prowler",
+      "number": 12700,
+      "title": "fix(sdk): report all-users 2sv override failures",
+      "url": "https://github.com/prowler-cloud/prowler/pull/12700"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1941,
+      "title": "docs(operations.server): mention shell executable",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1941"
+    },
+    {
+      "repository": "aws-cloudformation/cfn-lint",
+      "number": 4665,
+      "title": "Allow GetAtt outputs on SAM applications",
+      "url": "https://github.com/aws-cloudformation/cfn-lint/pull/4665"
+    },
+    {
+      "repository": "aws-cloudformation/cfn-lint",
+      "number": 4628,
+      "title": "fix(functions): allow FindInMap DefaultValue without transform",
+      "url": "https://github.com/aws-cloudformation/cfn-lint/pull/4628"
+    },
+    {
+      "repository": "aws-cloudformation/cfn-lint",
+      "number": 4622,
+      "title": "Validate Fn::Select negative indexes",
+      "url": "https://github.com/aws-cloudformation/cfn-lint/pull/4622"
+    },
+    {
+      "repository": "aws-cloudformation/cfn-lint",
+      "number": 4620,
+      "title": "Warn for ignored SAM resource attributes",
+      "url": "https://github.com/aws-cloudformation/cfn-lint/pull/4620"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1916,
+      "title": "fix(operations.bsdinit): enable OpenBSD services with rcctl",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1916"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1913,
+      "title": "fix(operations.dnf): install pinned package versions",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1913"
+    },
+    {
+      "repository": "prowler-cloud/prowler",
+      "number": 12217,
+      "title": "fix(sdk): skip undescribed ECS task definitions",
+      "url": "https://github.com/prowler-cloud/prowler/pull/12217"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1892,
+      "title": "fix(cli): parse literal list arguments",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1892"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1891,
+      "title": "chore: deduplicate shellcheck lint command",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1891"
+    },
+    {
+      "repository": "ansible/ansible-lint",
+      "number": 5110,
+      "title": "fix: var-naming for register projections",
+      "url": "https://github.com/ansible/ansible-lint/pull/5110"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1884,
+      "title": "fix(cli): preserve Windows paths in module errors",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1884"
+    },
+    {
+      "repository": "aquasecurity/trivy",
+      "number": 10939,
+      "title": "feat(java): read Jenkins plugin manifest licenses",
+      "url": "https://github.com/aquasecurity/trivy/pull/10939"
+    },
+    {
+      "repository": "aws-cloudformation/cfn-lint",
+      "number": 4572,
+      "title": "Fix shared pricing defaults",
+      "url": "https://github.com/aws-cloudformation/cfn-lint/pull/4572"
+    },
+    {
+      "repository": "prowler-cloud/prowler",
+      "number": 11837,
+      "title": "feat(kubernetes): add hostPath volume check",
+      "url": "https://github.com/prowler-cloud/prowler/pull/11837"
+    },
+    {
+      "repository": "trailofbits/graphtage",
+      "number": 120,
+      "title": "Add INI filetype support",
+      "url": "https://github.com/trailofbits/graphtage/pull/120"
+    },
+    {
+      "repository": "DataDog/guarddog",
+      "number": 797,
+      "title": "Show PyPI Inspector link for remote PyPI findings",
+      "url": "https://github.com/DataDog/guarddog/pull/797"
+    }
+  ]
+}

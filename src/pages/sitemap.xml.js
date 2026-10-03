@@ -11,7 +11,10 @@ const xmlEscape = (value) =>
     .replaceAll('"', "&quot;");
 
 export async function GET() {
-  const articles = await getCollection("articles", ({ data }) => data.status === "published");
+  const articles = await getCollection(
+    "articles",
+    ({ data }) => data.status === "published",
+  );
   const projects = await getCollection("projects");
   const urls = [
     "/",
@@ -20,8 +23,10 @@ export async function GET() {
     "/projects/",
     ...projects.map((project) => `/projects/${entrySlug(project)}/`),
     "/system/",
+    "/about/",
+    "/contributions/",
     "/topics/",
-    "/legal/"
+    "/legal/",
   ];
 
   return new Response(
@@ -31,8 +36,8 @@ ${urls.map((url) => `  <url><loc>${xmlEscape(new URL(url, site).toString())}</lo
 </urlset>`,
     {
       headers: {
-        "Content-Type": "application/xml; charset=utf-8"
-      }
-    }
+        "Content-Type": "application/xml; charset=utf-8",
+      },
+    },
   );
 }

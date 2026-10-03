@@ -2,7 +2,7 @@
 title: "How I use Astro Content Collections for my portfolio"
 slug: "astro-content-system-notes"
 date: 2026-07-08
-updated: 2026-07-08
+updated: 2026-10-03
 excerpt: "Astro Content Collections helped me turn my portfolio into a static-first content system with typed metadata, generated pages, sitemap, RSS, and a smaller attack surface."
 tags: ["astro", "frontend", "content-system", "cloudflare", "seo"]
 category: "Frontend"
@@ -44,19 +44,19 @@ I also added SEO-related output around the content system. The site now has gene
 
 For example, a technical article about CloudTrail or IOC extraction should have its own URL. It should not be hidden inside a modal or one giant page. A separate URL makes it easier to share, index, and revisit later.
 
-Cloudflare Pages fits this architecture well. The build step turns the Astro source into static output, and Cloudflare serves it from the edge. The deployment model is simple:
+The current publishing workflow uses GitHub Actions and GitHub Pages. Cloudflare provides the domain’s edge layer. The build turns the Astro source into a static artifact:
 
 ```text
 Git repository
   -> Astro build
   -> static dist output
-  -> Cloudflare Pages
+  -> GitHub Pages
 ```
 
 This is also good for performance. Most pages can be delivered as prebuilt files. The browser does not need a lot of client-side JavaScript just to read an article. Motion and interaction can still exist on the homepage, but the content pages should stay fast and readable.
 
 One design decision I care about is keeping the homepage feeling premium while making the content system more maintainable behind it. A site can have strong visual design and still have a clean content architecture. Those two things should support each other.
 
-There are still things I want to improve. I want better tag pages, stronger article search, richer code highlighting, and maybe custom Open Graph images for important posts. But the base is now much better: content files, typed metadata, generated routes, static deployment, and search-friendly URLs.
+The October renewal adds a searchable article archive, shared editorial layouts and a locally served social preview image. Since the current articles and cases need no embedded components, the source files now use plain Markdown with the same typed metadata and stable URLs. But the base is now much better: content files, typed metadata, generated routes, static deployment, and search-friendly URLs.
 
 This migration taught me that frontend engineering is not only about UI. It is also about content modeling, build pipelines, deployment, SEO, performance, and security trade-offs. For my portfolio, Astro is useful because it lets me keep the site static while still treating the content like a real system.

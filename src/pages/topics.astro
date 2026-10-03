@@ -1,103 +1,60 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-
 const topics = [
   {
-    group: "Identity",
-    items: ["Haitao Zheng", "Zheng Haitao", "郑海涛", "鄭海濤", "Tao Zheng", "jensenzheng"]
+    name: "Cloud investigation",
+    description: "Audit logs, permissions and exposure changes.",
+    href: "/projects/cloudtrail-quickscan/",
   },
   {
-    group: "Cyber Security",
-    items: ["cyber security", "cybersecurity", "网络安全", "網路安全", "IT security", "IT-Sicherheit", "blue team", "cloud security", "Cloud-Sicherheit", "security tooling"]
+    name: "Infrastructure correctness",
+    description: "SSH trust, connectors and deployment validation.",
+    href: "/contributions/",
   },
   {
-    group: "Systems & Cloud",
-    items: ["CloudTrail", "cloud logs", "IOC workflows", "incident investigation", "static-first architecture", "Cloudflare Pages", "GitHub workflow", "version-controlled publishing"]
+    name: "Evidence and product rules",
+    description:
+      "A learning product with explicit grading and reward boundaries.",
+    href: "/projects/studypulse/",
   },
   {
-    group: "Engineering Stack",
-    items: ["Python", "Java", "C", "SQL", "TypeScript", "Astro", "MDX", "Markdown", "CSS", "GitHub"]
+    name: "Data inspection",
+    description: "Field gaps, schema drift and useful grouping signals.",
+    href: "/projects/jsonl-lens/",
   },
   {
-    group: "Writing Themes",
-    items: ["technical articles", "learning notes", "project case studies", "security study log", "IT technology", "IT 技术", "technical portfolio", "developer portfolio"]
-  }
+    name: "Local security tools",
+    description: "Access logs, authentication events, IOCs and socket state.",
+    href: "/projects/",
+  },
 ];
-
-const keywords = topics.flatMap((topic) => topic.items);
-const topicsSchema = {
-  "@type": "CollectionPage",
-  "@id": "https://tzheng.dev/topics/#webpage",
-  name: "Haitao Zheng technical topics",
-  description: "Technical topics connected to Haitao Zheng, including cyber security, IT systems, cloud security, blue team tooling, and static-first web engineering.",
-  url: "https://tzheng.dev/topics/",
-  author: { "@id": "https://tzheng.dev/#person" },
-  publisher: { "@id": "https://tzheng.dev/#person" },
-  mainEntity: {
-    "@type": "ItemList",
-    "itemListElement": topics.map((topic, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "name": topic.group,
-      "item": {
-        "@type": "DefinedTermSet",
-        "name": topic.group,
-        "hasDefinedTerm": topic.items.map(term => ({
-          "@type": "DefinedTerm",
-          "name": term
-        }))
-      }
-    }))
-  },
-  about: keywords.map((name) => ({ "@type": "Thing", name }))
-};
 ---
 
 <BaseLayout
-  title="Topics | Haitao Zheng"
-  description="Technical topics connected to Haitao Zheng: cyber security, IT technology, cloud security, blue team tooling, project writing, and static-first engineering."
-  keywords={keywords}
-  structuredData={topicsSchema}
+  title="Topics — Haitao Zheng"
+  description="Explore the work by technical question: cloud investigation, infrastructure correctness, product evidence and data inspection."
 >
-  <main class="shell">
-    <section>
-      <div class="section-head">
-        <span class="eyebrow">Search identity / technical direction / project language</span>
-        <h2>Topics.</h2>
-        <p>
-          This page connects Haitao Zheng, also written as Zheng Haitao, 郑海涛, and 鄭海濤, with the technical areas documented on this site:
-          cyber security, IT systems, cloud security, blue team workflows, security tooling, and static-first web engineering.
-        </p>
-      </div>
-
-      <div class="grid">
-        {topics.map((topic, index) => (
-          <article class:list={["card", index === 0 && "featured", index > 0 && "compact"]}>
-            <div class="meta"><span>{topic.group}</span></div>
-            <h3>{topic.group}</h3>
-            <div class="meta">
-              {topic.items.map((item) => <span class="chip">{item}</span>)}
-            </div>
-          </article>
-        ))}
-      </div>
-
-      <article class="card featured" style="margin-top:2rem">
-        <div class="meta"><span>Discoverability model</span></div>
-        <h3>How these topics connect.</h3>
-        <p>
-          The site is built so search engines can connect one consistent identity with the same public technical surface:
-          the <a href="/" class="text-sky-300 hover:underline hover:text-sky-200 transition-colors">homepage</a>, GitHub profile, <a href="/articles/" class="text-sky-300 hover:underline hover:text-sky-200 transition-colors">article archive</a>, <a href="/projects/" class="text-sky-300 hover:underline hover:text-sky-200 transition-colors">project case studies</a>, and <a href="/system/" class="text-sky-300 hover:underline hover:text-sky-200 transition-colors">system design documentation</a>.
-          The goal is not to rank for every broad technology term immediately. The realistic goal is to make searches like
-          “Haitao Zheng cyber security”, “郑海涛 网络安全”, “Tao Zheng cloud security”, or project-specific searches lead back
-          to the same portfolio over time.
-        </p>
-        <p>
-          For broad keywords such as cyber security or IT technology, the strongest signal comes from useful <a href="/articles/" class="text-sky-300 hover:underline hover:text-sky-200 transition-colors">technical writing</a>,
-          public GitHub work, clear page titles, and repeated external references to the same domain. This page acts as a clean
-          index for the terms this site actually covers.
-        </p>
-      </article>
-    </section>
-  </main>
+  <div class="shell page-content">
+    <header class="page-header">
+      <span class="eyebrow">Topics / a route through the work</span>
+      <h1>Follow a question.</h1>
+      <p>
+        Different entry points into the same practice: understand the system,
+        inspect the evidence, make a useful change.
+      </p>
+    </header>
+    <div class="topic-list">
+      {topics.map((topic) => (
+        <a href={topic.href}>
+          <div>
+            {topic.name}
+            <p style="font-size:14px;margin-top:10px;color:var(--muted)">
+              {topic.description}
+            </p>
+          </div>
+          <span aria-hidden="true">↗</span>
+        </a>
+      ))}
+    </div>
+  </div>
 </BaseLayout>

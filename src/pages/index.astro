@@ -1,315 +1,251 @@
 ---
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
-
-const sourcePath = join(process.cwd(), "index.html");
-const divider = '<div class="divider max-w-6xl mx-auto"></div>';
-
-const takeBlock = (input: string, start: string, end: string) => {
-  const startIndex = input.indexOf(start);
-  const endIndex = input.indexOf(end, startIndex);
-  if (startIndex === -1 || endIndex === -1) return { html: input, block: "" };
-  return {
-    html: input.slice(0, startIndex) + input.slice(endIndex),
-    block: input.slice(startIndex, endIndex).trim()
-  };
-};
-
-const systemEntry = `
-<!-- System Design gateway -->
-<section id="system-entry" class="py-28 px-6 max-w-7xl mx-auto">
-    <div class="pro-card reveal p-8 md:p-12 overflow-hidden">
-        <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center">
-            <div>
-                <p class="section-kicker mb-4">Behind this site</p>
-                <h2 class="text-4xl md:text-6xl font-bold text-white mb-5 tracking-tight">System Design.</h2>
-                <p class="text-lg text-gray-300 leading-relaxed font-light max-w-3xl">A deep look at how this portfolio is engineered: static-first architecture, MDX content, Cloudflare Pages deployment, privacy-conscious defaults, and a maintainable publishing workflow.</p>
-                <div class="flex flex-wrap gap-3 mt-7">
-                    <span class="chip">Astro</span>
-                    <span class="chip">MDX</span>
-                    <span class="chip">Git workflow</span>
-                    <span class="chip">Cloudflare Pages</span>
-                    <span class="chip">Static-first security</span>
-                </div>
-                <a href="/system/" class="case-link mt-8">Read the architecture <span>↗</span></a>
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-                <div class="case-fact"><b>Content</b><span>Articles and project case studies are managed through structured files instead of hard-coded page data.</span></div>
-                <div class="case-fact"><b>Deploy</b><span>GitHub commits trigger Cloudflare Pages builds, publishing the generated static site from dist.</span></div>
-                <div class="case-fact"><b>Security</b><span>No public login surface, no unnecessary database, and a smaller attack surface by default.</span></div>
-                <div class="case-fact"><b>Growth</b><span>The system can add RSS, search, Open Graph previews, and a Git-based CMS without changing the public model.</span></div>
-            </div>
-        </div>
-    </div>
-</section>`;
-
-let html = readFileSync(sourcePath, "utf8")
-  .replace(/<link rel="icon"[^>]+>/, '<link rel="icon" href="/favicon.png" type="image/png">\n    <link rel="apple-touch-icon" href="/apple-touch-icon.png">')
-  .replace(
-    "<title>Haitao Zheng | Cyber Security</title>",
-    `<title>Haitao Zheng | Cyber Security Portfolio & Engineering</title>
-    <meta name="description" content="Haitao Zheng (Zheng Haitao, 郑海涛, 鄭海濤), Cyber Security & Privacy student specializing in cloud security, blue team operations, IOC workflows, security tooling, Python, and static-first web systems architecture.">
-    <meta name="keywords" content="Haitao Zheng, Zheng Haitao, 郑海涛, 鄭海濤, Tao Zheng, jensenzheng, Haitao Zheng cyber security, Haitao Zheng cybersecurity, 郑海涛 网络安全, 鄭海濤 網路安全, cyber security student, cybersecurity portfolio, cloud security engineer, blue team analyst, IOC toolkit, security tooling developer, AWS CloudTrail analysis, Python security automation, Java secure coding, technical writing, Astro static portfolio, Cloudflare Pages deployment, Cyber Security Deutschland, Cybersecurity Germany, Cloud-Sicherheit, IT-Sicherheit, Informationssicherheit, Bonn Germany, security engineering case study, blue team notes">
-    <meta name="author" content="Haitao Zheng">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="theme-color" content="#030712" />
-    <link rel="canonical" href="https://tzheng.dev/">
-    <!-- 针对核心流量区进行精准投放，不过度发散 -->
-    <link rel="alternate" hreflang="x-default" href="https://tzheng.dev/" />
-    <link rel="alternate" hreflang="en" href="https://tzheng.dev/" />
-    <link rel="alternate" hreflang="de" href="https://tzheng.dev/" />
-    <link rel="alternate" hreflang="zh" href="https://tzheng.dev/" />
-    <link rel="me" href="https://github.com/0xTaoZ">
-    <link rel="me" href="https://www.linkedin.com/in/haitaozheng/">
-    <meta property="og:title" content="Haitao Zheng | Cyber Security Portfolio & Engineering">
-    <meta property="og:description" content="Cyber security portfolio, technical articles, project case studies, and system design notes by Haitao Zheng. Specializing in cloud security and blue team workflows.">
-    <meta property="og:type" content="profile">
-    <meta property="profile:first_name" content="Haitao">
-    <meta property="profile:last_name" content="Zheng">
-    <meta property="og:url" content="https://tzheng.dev/">
-    <meta property="og:image" content="https://tzheng.dev/logo.png">
-    <meta property="og:image:width" content="800">
-    <meta property="og:image:height" content="800">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:creator" content="@0xTaoZ">
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Person",
-          "@id": "https://tzheng.dev/#person",
-          "name": "Haitao Zheng",
-          "alternateName": ["Zheng Haitao", "郑海涛", "鄭海濤", "Tao Zheng", "jensenzheng"],
-          "url": "https://tzheng.dev/",
-          "image": {
-            "@type": "ImageObject",
-            "url": "https://tzheng.dev/logo.png",
-            "width": 800,
-            "height": 800
-          },
-          "jobTitle": "Cyber Security Student",
-          "knowsAbout": ["Cyber Security", "Cloud Security", "Blue Team", "IOC Workflows", "Security Tooling", "CloudTrail", "Python", "Java", "TypeScript", "Static Websites", "Astro", "GitHub", "Cloudflare Pages", "网络安全", "網路安全", "Cloud-Sicherheit", "IT-Sicherheit", "Informationssicherheit"],
-          "sameAs": ["https://github.com/0xTaoZ", "https://www.linkedin.com/in/haitaozheng/"]
-        },
-        {
-          "@type": "ProfilePage",
-          "@id": "https://tzheng.dev/#profile",
-          "url": "https://tzheng.dev/",
-          "mainEntity": { "@id": "https://tzheng.dev/#person" },
-          "name": "Haitao Zheng | Cyber Security Portfolio",
-          "description": "Personal cyber security portfolio, technical articles, project case studies, and system design notes by Haitao Zheng.",
-          "inLanguage": ["en", "zh-CN", "zh-TW", "de"]
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://tzheng.dev/#website",
-          "url": "https://tzheng.dev/",
-          "name": "Haitao Zheng | Cyber Security Portfolio",
-          "alternateName": ["tzheng.dev", "郑海涛个人网站", "鄭海濤個人網站", "Tao Zheng Portfolio", "Jensen Zheng Cyber Security Portfolio"],
-          "description": "Personal cyber security portfolio, technical articles, project case studies, and system design notes by Haitao Zheng.",
-          "inLanguage": ["en", "zh-CN", "zh-TW", "de"],
-          "publisher": { "@id": "https://tzheng.dev/#person" }
-        }
-      ]
-    }
-    </script>`
-  )
-  .replace(
-    '<a href="#" class="text-white tracking-widest font-semibold hover:opacity-70 transition duration-300 flex items-center gap-3"><span class="nav-dot"></span>HAITAO ZHENG</a>',
-    '<a href="#" class="text-white hover:opacity-80 transition duration-300 flex items-center" aria-label="Haitao Zheng home"><img src="/logo.png" alt="" fetchpriority="high" decoding="sync" class="w-8 h-8 rounded-xl object-cover border border-white/10 shadow-[0_0_24px_rgba(125,211,252,0.22)]"></a>'
-  )
-  .replace(
-    `<div class="hidden lg:flex space-x-8">
-            <a href="#projects" class="hover:text-white transition duration-300">Projects</a>
-            <a href="#education" class="hover:text-white transition duration-300">Education</a>
-            <a href="#toolkit" class="hover:text-white transition duration-300">Toolkit</a>
-            <a href="./articles.html" class="hover:text-white transition duration-300">Articles</a>
-            <a href="#about" class="hover:text-white transition duration-300">About</a>
-        </div>`,
-    `<div class="hidden lg:flex space-x-8">
-            <a href="#projects" class="hover:text-white transition duration-300">Projects</a>
-            <a href="/system/" class="hover:text-white transition duration-300">System Design</a>
-            <a href="/articles/" class="hover:text-white transition duration-300">Articles</a>
-            <a href="#toolkit" class="hover:text-white transition duration-300">Toolkit</a>
-            <a href="#education" class="hover:text-white transition duration-300">Education</a>
-            <a href="#about" class="hover:text-white transition duration-300">About</a>
-        </div>`
-  )
-  .replace(
-    `<a href="#projects">Projects <span>↘</span></a>
-    <a href="#education">Education <span>↘</span></a>
-    <a href="#toolkit">Toolkit <span>↘</span></a>
-    <a href="./articles.html">Articles <span>↗</span></a>
-    <a href="#about">About <span>↘</span></a>`,
-    `<a href="#projects">Projects <span>↘</span></a>
-    <a href="/system/">System Design <span>↗</span></a>
-    <a href="/articles/">Articles <span>↗</span></a>
-    <a href="#toolkit">Toolkit <span>↘</span></a>
-    <a href="#education">Education <span>↘</span></a>
-    <a href="#about">About <span>↘</span></a>`
-  )
-  .replaceAll("./articles.html", "/articles/")
-  .replaceAll("./legal.html", "/legal/")
-  .replaceAll("./IMG_1419.jpg", "/IMG_1419.jpg")
-  .replaceAll("hbrs-logo.png", "/hbrs-logo.png")
-  .replaceAll("fhm-logo.png", "/fhm-logo.png")
-  .replaceAll("harvard-logo.png", "/harvard-logo.png")
-  .replaceAll("jimei-logo.png", "/jimei-logo.png")
-  .replace(
-    `<div class="mission-actions flex flex-wrap justify-center lg:justify-start gap-4 mt-8">
-                <a href="#projects" class="primary-action px-7 py-3.5 rounded-full font-semibold text-sm flex items-center">View Projects</a>
-                <a href="/articles/" class="primary-action px-7 py-3.5 rounded-full font-semibold text-sm flex items-center">Read Articles</a>
-                <a href="mailto:h@tzheng.dev" class="secondary-action px-7 py-3.5 rounded-full font-medium text-sm flex items-center">h@tzheng.dev</a>
-                <a href="https://github.com/0xTaoZ" target="_blank" class="secondary-action px-7 py-3.5 rounded-full font-medium text-sm flex items-center">GitHub</a>
-            </div>`,
-    `<div class="mission-actions flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-4 mt-8 w-full sm:w-auto">
-                <a href="/system/" class="primary-action w-full sm:w-auto justify-center px-7 py-3.5 rounded-full font-semibold text-sm flex items-center">View System Design</a>
-                <a href="#projects" class="primary-action w-full sm:w-auto justify-center px-7 py-3.5 rounded-full font-semibold text-sm flex items-center">View Projects</a>
-                <div class="flex items-center justify-center gap-3 w-full sm:w-auto mt-2 sm:mt-0">
-                    <a href="https://github.com/0xTaoZ" target="_blank" class="secondary-action w-12 h-12 rounded-full flex items-center justify-center transition hover:bg-white hover:text-black shrink-0" aria-label="Haitao Zheng GitHub Profile">
-                        <svg class="w-5 h-5 opacity-90" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path></svg>
-                    </a>
-                    <a href="https://www.linkedin.com/in/haitaozheng/" target="_blank" class="secondary-action w-12 h-12 rounded-full flex items-center justify-center transition hover:bg-white hover:text-black shrink-0" aria-label="Haitao Zheng LinkedIn Profile">
-                        <svg class="w-5 h-5 opacity-90" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                    </a>
-                    <a href="mailto:h@tzheng.dev" onclick="window.handleEmailClick(this, event)" class="secondary-action w-12 h-12 rounded-full flex items-center justify-center transition hover:bg-white hover:text-black shrink-0" aria-label="Email Haitao Zheng">
-                        <svg class="w-5 h-5 opacity-90" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                    </a>
-                </div>
-            </div>`
-  )
-  .replace(
-    `<div class="flex items-center justify-between gap-4">
-                        <p class="text-[11px] uppercase tracking-[0.18em] text-sky-200 font-mono">active file</p>
-                        <span class="chip">live</span>
-                    </div>
-                    <h2 class="mt-3 text-lg font-semibold text-white tracking-tight">Security engineering portfolio</h2>
-                    <p class="mt-2 text-sm text-gray-400 leading-relaxed">Compact work around logs, IOCs, AWS, and reviewable engineering.</p>
-                    <div class="dossier-line">
-                        <span class="text-gray-500">latest</span>
-                        <span class="text-gray-200">cfn-lint PR #4566</span>
-                    </div>
-                    <div class="dossier-line">
-                        <span class="text-gray-500">stack</span>
-                        <span class="text-gray-200">Python / Java / C / SQL</span>
-                    </div>`,
-    `<div class="flex items-center justify-between gap-4">
-                        <p class="text-[11px] uppercase tracking-[0.18em] text-sky-200 font-mono">ENGINEERING PROFILE</p>
-                        <span class="chip">live</span>
-                    </div>
-                    <h2 class="mt-3 text-lg font-semibold text-white tracking-tight">Security tooling, cloud logs, IOC workflows, and static-first web systems.</h2>
-                    <div class="dossier-line">
-                        <span class="text-gray-500">focus</span>
-                        <span class="text-gray-200">blue-team / cloud-security / systems</span>
-                    </div>
-                    <div class="dossier-line">
-                        <span class="text-gray-500">stack</span>
-                        <span class="text-gray-200">Python / Java / C / SQL / TypeScript</span>
-                    </div>
-                    <div class="dossier-line">
-                        <span class="text-gray-500">web</span>
-                        <span class="text-gray-200">Astro / CSS / Markdown / GitHub / Cloudflare</span>
-                    </div>`
-  )
-  .replace(
-    `const lines = [
-                    '$ whoami',
-                    'haitao.zheng',
-                    '',
-                    '$ focus --area',
-                    'blue-team / cloud-security / systems',
-                    '',
-                    '$ projects --featured',
-                    '01  cloudtrail-quickscan',
-                    '02  cfn-lint contribution',
-                    '03  Sentinel-IOC-Toolkit',
-                    '',
-                    '$ status',
-                    'building small, reviewable security tools'
-                ];`,
-    `const lines = [
-                    '$ whoami',
-                    'haitao.zheng / tao',
-                    '',
-                    '$ focus --area',
-                    'cloud-security / blue-team / systems',
-                    '',
-                    '$ build --featured',
-                    '01  cloudtrail-quickscan',
-                    '02  Sentinel-IOC-Toolkit',
-                    '03  cfn-lint contribution',
-                    '04  tzheng.dev',
-                    '',
-                    '$ principles',
-                    'static-first / minimal surface / reviewable code'
-                ];`
-  )
-  .replace(
-    `const delay = isMobile() ? (text[i - 2] === '\\n' ? 56 : 12) : (text[i - 2] === '\\n' ? 34 : 7);`,
-    `const delay = isMobile() ? (text[i - 2] === '\\n' ? 42 : 9) : (text[i - 2] === '\\n' ? 16 : 3);`
-  )
-  .replace(
-    `<p class="mt-3 text-xs text-gray-600 font-mono max-w-xl">
-                    Cloudflare edge protected · HTTPS-first · no intentional tracking pixels · static attack surface kept clean.
-                </p>`,
-    `<p class="mt-4 max-w-3xl rounded-2xl border border-sky-300/20 bg-sky-300/5 px-4 py-3 text-xs text-sky-100/90 font-mono leading-relaxed shadow-[0_0_34px_rgba(125,211,252,0.08)]">
-                    This website is protected by Cloudflare Edge, delivered exclusively over HTTPS, built with a static architecture to minimize the attack surface, and designed with privacy by default.
-                </p>`
-  )
-  .replace(
-    '<a href="mailto:h@tzheng.dev"><span>Contact by email</span><span>↗</span></a>',
-    '<a href="/system/"><span>System Design</span><span>↗</span></a>\n                <a href="/topics/"><span>Topics</span><span>↗</span></a>\n                <a href="mailto:h@tzheng.dev"><span>Contact by email</span><span>↗</span></a>'
-  )
-  .replace(
-    '<a href="/legal/" class="hover:text-white transition">Legal</a>',
-    '<a href="/legal/" class="hover:text-white transition">Legal</a>\n                <a href="/system/" class="hover:text-white transition">System Design</a>\n                <a href="/topics/" class="hover:text-white transition">Topics</a>'
-  );
-
-const notes = takeBlock(html, '<!-- 学习笔记', `${divider}\n<!-- 语言与兴趣`);
-html = notes.html;
-html = html.replace(
-  `${divider}\n<!-- 教育经历`,
-  `${divider}
-${systemEntry}
-
-${divider}
-${notes.block}
-
-${divider}
-<!-- 教育经历`
-);
-const emailScript = `
-<script>
-window.handleEmailClick = function(el, e) {
-    e.preventDefault();
-    if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
-        window.location.href = 'mailto:h@tzheng.dev';
-        return;
-    }
-    navigator.clipboard.writeText('h@tzheng.dev');
-    let b = el.querySelector('.email-tooltip');
-    if (!b) {
-        b = document.createElement('div');
-        b.className = 'email-tooltip absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[11px] font-semibold py-1.5 px-3 rounded-full shadow-xl whitespace-nowrap transition-all duration-300 opacity-0 transform translate-y-1 pointer-events-none z-50 border border-gray-700';
-        b.innerText = 'Copied to clipboard!';
-        el.style.position = 'relative';
-        el.appendChild(b);
-    }
-    requestAnimationFrame(() => {
-        b.classList.remove('opacity-0', 'translate-y-1');
-        b.classList.add('opacity-100', 'translate-y-0');
-    });
-    setTimeout(() => {
-        b.classList.remove('opacity-100', 'translate-y-0');
-        b.classList.add('opacity-0', 'translate-y-1');
-    }, 2000);
-};
-</script>
-`;
-html = html.replace('</body>', emailScript + '\n</body>');
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectRow from "../components/ProjectRow.astro";
+import { entrySlug } from "../lib/content";
+import {
+  mergedCount,
+  repositoryCount,
+  contributionCases,
+  verifiedAt,
+} from "../lib/contributions";
+const projects = (await getCollection("projects", ({ data }) => data.featured))
+  .sort((a, b) => a.data.priority - b.data.priority)
+  .slice(0, 3);
+const articles = (
+  await getCollection("articles", ({ data }) => data.status === "published")
+)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
 ---
 
-<Fragment set:html={html} />
+<BaseLayout title="Haitao Zheng — Security tooling & cloud infrastructure">
+  <div class="shell">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-topline">
+        <span class="kicker">
+          An engineering portfolio / <span lang="zh">郑海涛</span>
+        </span>
+        <span class="location">
+          <span class="status-dot"></span>Based in Germany
+        </span>
+      </div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <h1 id="hero-title">
+            Haitao<span>Zheng.</span>
+          </h1>
+          <p class="hero-role">
+            Security tools &<br />
+            cloud infrastructure.
+          </p>
+          <p class="hero-description">
+            I study Cyber Security & Privacy at H-BRS, build tools for
+            investigation, and contribute fixes to the open-source systems
+            engineers depend on.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="/projects/">
+              Explore the work <span aria-hidden="true">↗</span>
+            </a>
+            <a class="text-link" href="/contributions/">
+              See the contributions <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+        <figure class="portrait">
+          <img
+            src="/portrait.webp"
+            srcset="/portrait-small.webp 480w, /portrait.webp 800w"
+            sizes="(max-width:560px) calc(100vw - 40px), (max-width:800px) 40vw, 375px"
+            alt="Portrait of Haitao Zheng"
+            width="800"
+            height="1000"
+            fetchpriority="high"
+          />
+          <span class="portrait-tag">
+            Student by title.
+            <br />
+            Contributor by practice.
+          </span>
+          <figcaption>
+            <span>Haitao Zheng / Tao</span>
+            <span>Security & systems</span>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="proof-strip">
+        <p>Work accepted in projects beyond my own repositories.</p>
+        <div class="proof-item">
+          <strong>{mergedCount}</strong>
+          <span>Merged upstream PRs</span>
+        </div>
+        <div class="proof-item">
+          <strong>{repositoryCount}</strong>
+          <span>Upstream projects</span>
+        </div>
+        <div class="proof-item">
+          <strong style="font-size:30px">H-BRS</strong>
+          <span>B.Sc. Cyber Security & Privacy</span>
+        </div>
+      </div>
+      <p class="note">
+        GitHub snapshot · {verifiedAt} · Includes code, tests and documentation.{" "}
+        <a href="/contributions/#record">Inspect the record ↗</a>
+      </p>
+    </section>
+    <section class="section" id="contributions">
+      <div class="section-heading">
+        <span class="section-number">01 / Beyond my own code</span>
+        <div class="section-title-row">
+          <div>
+            <h2>
+              Small patches.
+              <br />
+              Real boundaries.
+            </h2>
+            <p>
+              Selected merged work where correctness matters: authentication,
+              deployment validation and security evidence.
+            </p>
+          </div>
+          <a class="text-link" href="/contributions/">
+            The full record <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+      <div class="contribution-list">
+        {contributionCases.map((item) => (
+          <article class="contribution-row">
+            <div>
+              <span class="meta">{item.area}</span>
+              <h3>{item.repository}</h3>
+              <span class="merge-label">Merged · #{item.number}</span>
+            </div>
+            <div>
+              <h3>{item.title}</h3>
+              <p style="margin-top:12px">{item.lesson}</p>
+            </div>
+            <a
+              class="text-link"
+              href={item.url}
+              aria-label={`Read merged ${item.repository} pull request ${item.number}`}
+            >
+              <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
+    <section class="section" id="projects">
+      <div class="section-heading">
+        <span class="section-number">02 / Selected builds</span>
+        <div class="section-title-row">
+          <div>
+            <h2>Built to be useful.</h2>
+            <p>
+              A working product, a cloud-log scanner and a data inspection tool.
+              Each solves a different problem.
+            </p>
+          </div>
+          <a class="text-link" href="/projects/">
+            All projects <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+      <div class="work-list">
+        {projects.map((project, index) => (
+          <ProjectRow project={project} index={index} />
+        ))}
+      </div>
+    </section>
+    <section class="section" id="notes">
+      <div class="section-heading">
+        <span class="section-number">03 / Field notes</span>
+        <div class="section-title-row">
+          <div>
+            <h2>
+              The reasoning
+              <br />
+              behind the work.
+            </h2>
+            <p>Decisions, failure modes and lessons from the code.</p>
+          </div>
+          <a class="text-link" href="/articles/">
+            All writing <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+      <div class="writing-list">
+        {articles.map((article) => (
+          <a class="writing-row" href={`/articles/${entrySlug(article)}/`}>
+            <time datetime={article.data.date.toISOString()}>
+              {article.data.date.toLocaleDateString("en-GB", {
+                month: "short",
+                year: "numeric",
+                timeZone: "UTC",
+              })}
+            </time>
+            <div>
+              <h3>{article.data.title}</h3>
+              <p>{article.data.excerpt}</p>
+            </div>
+            <span aria-hidden="true">↗</span>
+          </a>
+        ))}
+      </div>
+    </section>
+    <section class="section" id="about">
+      <div class="about-summary">
+        <div>
+          <span class="eyebrow">04 / The person</span>
+          <h2>
+            Curious about
+            <br />
+            the whole system.
+          </h2>
+        </div>
+        <div>
+          <p>
+            My work sits between security and infrastructure: understanding what
+            a system actually does, finding where its assumptions break, and
+            making the result easier to inspect.
+          </p>
+          <p>
+            Outside the code, I photograph people and places with a Nikon D750,
+            cycle and train. Different ways to pay attention.
+          </p>
+          <a class="text-link" href="/about/">
+            More about me <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <dl class="about-facts">
+          <div id="education">
+            <dt>Currently</dt>
+            <dd>
+              B.Sc. Cyber Security & Privacy
+              <br />
+              Hochschule Bonn-Rhein-Sieg
+            </dd>
+          </div>
+          <div id="toolkit">
+            <dt>Working languages</dt>
+            <dd>
+              Python · TypeScript · Java
+              <br />
+              Linux · SQL · Git
+            </dd>
+          </div>
+          <div>
+            <dt>Spoken languages</dt>
+            <dd>
+              English · German · Mandarin
+              <br />
+              Hokkien · Japanese (basic)
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

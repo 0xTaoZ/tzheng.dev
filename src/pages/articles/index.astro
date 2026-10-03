@@ -2,61 +2,109 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { entrySlug } from "../../lib/content";
-
-const articles = (await getCollection("articles", ({ data }) => data.status === "published"))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const tags = [...new Set(articles.flatMap((article) => article.data.tags))];
-const months = new Set(articles.map((article) => article.data.date.toISOString().slice(0, 7))).size;
-const minutes = articles.reduce((sum, article) => sum + Number.parseInt(article.data.readingTime, 10), 0);
-const articleListKeywords = [
-  "Haitao Zheng articles",
-  "郑海涛 技术博客",
-  "鄭海濤 技術文章",
-  "cyber security blog",
-  "cloud security notes",
-  "blue team learning",
-  ...tags
-];
-const articleListSchema = {
-  "@type": "CollectionPage",
-  "@id": "https://tzheng.dev/articles/#collection",
-  name: "Articles by Haitao Zheng",
-  description: "Technical articles, security notes, and engineering learning logs by Haitao Zheng.",
-  url: "https://tzheng.dev/articles/",
-  author: { "@id": "https://tzheng.dev/#haitao-zheng" },
-  hasPart: articles.map((article) => ({
-    "@type": "Article",
-    headline: article.data.title,
-    url: new URL(`/articles/${entrySlug(article)}/`, Astro.site).toString()
-  }))
-};
+const articles = (
+  await getCollection("articles", ({ data }) => data.status === "published")
+).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const categories = [...new Set(articles.map((a) => a.data.category))].sort();
 ---
 
-<BaseLayout title="Articles | Haitao Zheng" description="Technical articles and learning notes by Haitao Zheng." keywords={articleListKeywords} structuredData={articleListSchema}>
-  <main class="shell">
-    <section>
-      <div class="section-head">
-        <span class="eyebrow">Security notes / learning log / small systems</span>
-        <h2>Articles.</h2>
-        <p>MDX-backed writing system with tags, categories, RSS, SEO metadata, and generated detail pages.</p>
-      </div>
-      <div class="grid" style="margin-bottom:2rem">
-        <div class="card compact"><h3>{articles.length}</h3><p>articles published</p></div>
-        <div class="card compact"><h3>{tags.length}</h3><p>topics covered</p></div>
-        <div class="card compact"><h3>{months}</h3><p>active months</p></div>
-        <div class="card compact"><h3>{minutes}</h3><p>minutes in archive</p></div>
-      </div>
-      <div class="grid">
-        {articles.map((article, index) => (
-          <article class:list={["card", index === 0 && "featured", index > 0 && "compact"]}>
-            <div class="meta"><span>{article.data.date.toLocaleDateString("en", { month: "long", year: "numeric" })}</span><span>{article.data.category}</span><span>{article.data.readingTime}</span></div>
+<BaseLayout
+  title="Writing — Haitao Zheng"
+  description="Notes on security engineering, cloud investigation and the design choices behind the projects."
+>
+  <div class="shell page-content">
+    <header class="page-header">
+      <span class="eyebrow">Writing / engineering notes</span>
+      <h1>Keep the reasoning.</h1>
+      <p>
+        What failed, what changed, and what I learned. Notes from cloud
+        security, infrastructure work and building small tools.
+      </p>
+    </header>
+    <div class="filter-bar" id="archive-filters" hidden>
+      <label for="search">
+        Search the archive
+        <input
+          id="search"
+          type="search"
+          placeholder="Try SSH, CloudTrail, evidence…"
+        />
+      </label>
+      <label for="category">
+        Topic
+        <select id="category">
+          <option value="">All topics</option>
+          {categories.map((category) => (
+            <option value={category}>{category}</option>
+          ))}
+        </select>
+      </label>
+      <output id="result-count" aria-live="polite">
+        {articles.length} notes
+      </output>
+    </div>
+    <div class="archive-list">
+      {articles.map((article) => (
+        <a
+          class="writing-row"
+          id={entrySlug(article)}
+          href={`/articles/${entrySlug(article)}/`}
+          data-search={`${article.data.title} ${article.data.excerpt} ${article.data.tags.join(" ")}`.toLowerCase()}
+          data-category={article.data.category}
+        >
+          <time datetime={article.data.date.toISOString()}>
+            {article.data.date.toLocaleDateString("en-GB", {
+              month: "short",
+              year: "numeric",
+              timeZone: "UTC",
+            })}
+          </time>
+          <div>
             <h3>{article.data.title}</h3>
             <p>{article.data.excerpt}</p>
-            <div class="meta">{article.data.tags.map((tag) => <span class="chip">{tag}</span>)}</div>
-            <a class="link" href={`/articles/${entrySlug(article)}/`}>Read article ↗</a>
-          </article>
-        ))}
-      </div>
-    </section>
-  </main>
+            <div class="meta">
+              {article.data.category} / {article.data.readingTime}
+            </div>
+          </div>
+          <span aria-hidden="true">↗</span>
+        </a>
+      ))}
+    </div>
+    <p class="empty-state" id="no-results" hidden>
+      No notes match. Try a shorter search or choose all topics.
+    </p>
+    <p class="note">
+      Prefer a feed? <a href="/rss.xml">Subscribe via RSS ↗</a>
+    </p>
+  </div>
 </BaseLayout>
+<script>
+  const filters = document.querySelector<HTMLElement>("#archive-filters");
+  const search = document.querySelector<HTMLInputElement>("#search");
+  const category = document.querySelector<HTMLSelectElement>("#category");
+  const count = document.querySelector<HTMLOutputElement>("#result-count");
+  const empty = document.querySelector<HTMLElement>("#no-results");
+  const rows = [
+    ...document.querySelectorAll<HTMLAnchorElement>(
+      ".archive-list .writing-row",
+    ),
+  ];
+  if (filters && search && category && count && empty) {
+    filters.hidden = false;
+    const update = () => {
+      const query = search.value.trim().toLowerCase();
+      let visible = 0;
+      rows.forEach((row) => {
+        const match =
+          (row.dataset.search ?? "").includes(query) &&
+          (!category.value || row.dataset.category === category.value);
+        row.hidden = !match;
+        if (match) visible++;
+      });
+      count.textContent = `${visible} ${visible === 1 ? "note" : "notes"}`;
+      empty.hidden = visible !== 0;
+    };
+    search.addEventListener("input", update);
+    category.addEventListener("change", update);
+  }
+</script>
