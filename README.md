@@ -1,60 +1,22 @@
 # tzheng.dev
 
-[Haitao Zheng’s engineering portfolio](https://tzheng.dev): security tooling,
-cloud infrastructure, accepted upstream work and technical writing.
+[Haitao Zheng’s portfolio](https://tzheng.dev): security tooling, cloud
+infrastructure, project case studies and technical writing.
 
-## Run
+## Development
 
-Use Node.js 24 and npm.
+Use Node.js 24 and npm. Run `npm ci`, then `npm run dev`.
+Verify with `npm run check` and `npm run build`.
 
-```sh
-npm ci
-npm run dev
-```
+## Content and presentation
 
-## Verify
+The homepage uses the original HTML presentation in `index.html`, assembled by
+`src/pages/index.astro`. Supporting pages use the original shared layout and
+dark styles. Articles and project case studies use typed Markdown collections;
+existing detail URLs are preserved. The contribution snapshot lives in
+`src/data/contributions.json`; refresh verified records and the date together.
 
-```sh
-npm run check
-npm run build
-npm test
-```
+## Publishing
 
-The built-site check verifies headings, skip-link targets, local assets,
-internal routes, fragment links and structured identity references.
-
-## Structure
-
-- `src/pages/`: homepage, indexes, generated detail pages and supporting routes
-- `src/content/projects/`: project scope, decisions, evidence and limits
-- `src/content/articles/`: published notes and drafts
-- `src/content.config.ts`: typed Content Layer collections
-- `src/data/contributions.json`: dated merged-upstream snapshot
-- `src/lib/contributions.ts`: derived totals and selected technical cases
-- `src/layouts/BaseLayout.astro`: navigation, metadata and footer
-- `src/styles/global.css`: shared editorial design and responsive rules
-- `public/`: local font, images and static delivery assets
-
-The homepage reads the same project and article collections as their indexes.
-The contribution counts are derived from the snapshot record. Refresh the date
-and the verified list together; exclude own-repository PRs and unmerged work.
-
-## Interface
-
-Warm paper, ink, copper and restrained green. Source Serif 4 Display is served
-locally under the SIL Open Font License; its license is in `public/fonts/`.
-The body uses system fonts. The portrait is served in two WebP sizes.
-
-The archive adds a small search/filter script. The complete archive and native
-mobile navigation work without JavaScript. Reduced-motion and print styles
-are included. There is no application backend or analytics script.
-
-## Publish
-
-Production uses `.github/workflows/deploy.yml`. A push to `main` installs from
-the lockfile, checks the project, builds, verifies generated pages and deploys
-the static artifact to GitHub Pages. Cloudflare supplies the domain’s edge layer.
-
-Keep this single publication path. No `gh-pages` branch, manual `dist` publishing
-or second hosting workflow is needed. Check the workflow, deployment and
-production URL before considering a release complete.
+A push to `main` uses `.github/workflows/deploy.yml` to check, build and deploy
+the static artifact to GitHub Pages. Keep this single deployment path.

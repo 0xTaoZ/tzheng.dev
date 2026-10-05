@@ -2,57 +2,53 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { entrySlug } from "../../lib/content";
-const projects = (await getCollection("projects")).sort(
-  (a, b) => a.data.priority - b.data.priority,
-);
+
+const projects = (await getCollection("projects")).sort((a, b) => a.data.priority - b.data.priority);
+const featured = projects.filter((project) => project.data.featured);
+const projectKeywords = [
+  "Haitao Zheng projects",
+  "郑海涛 项目",
+  "鄭海濤 專案",
+  "cyber security projects",
+  "cloud security projects",
+  "security engineering portfolio",
+  "blue team tools",
+  ...new Set(featured.flatMap((project) => project.data.stack))
+];
+const projectCollectionSchema = {
+  "@type": "CollectionPage",
+  "@id": "https://tzheng.dev/projects/#collection",
+  name: "Projects by Haitao Zheng",
+  description: "Curated security, open-source, and engineering case studies by Haitao Zheng.",
+  url: "https://tzheng.dev/projects/",
+  author: { "@id": "https://tzheng.dev/#haitao-zheng" },
+  hasPart: featured.map((project) => ({
+    "@type": "CreativeWork",
+    name: project.data.title,
+    url: new URL(`/projects/${entrySlug(project)}/`, Astro.site).toString()
+  }))
+};
 ---
 
-<BaseLayout
-  title="Work — Haitao Zheng"
-  description="Security tools, a full-stack learning product and accepted upstream engineering. Project decisions, source code and limits."
->
-  <div class="shell page-content">
-    <header class="page-header">
-      <span class="eyebrow">Work / projects & case studies</span>
-      <h1>
-        Useful problems.
-        <br />
-        Inspectable work.
-      </h1>
-      <p>
-        Some projects are small on purpose. Others need a full application.
-        These notes explain the problem, the engineering choices and the limits.
-      </p>
-    </header>
-    <div class="index-list">
-      {projects.map((project, index) => (
-        <article class="work-row" id={entrySlug(project)}>
-          <span class="section-number">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <div class="work-info">
-            <span class="meta">{project.data.type}</span>
-            <h3 style="margin-top:12px">
-              <a href={`/projects/${entrySlug(project)}/`}>
-                {project.data.title}
-              </a>
-            </h3>
-            <div class="work-stack">
-              {project.data.stack.map((item) => (
-                <span>{item}</span>
-              ))}
-            </div>
-          </div>
-          <p>{project.data.excerpt}</p>
-          <a class="text-link" href={`/projects/${entrySlug(project)}/`}>
-            Case study <span aria-hidden="true">↗</span>
-          </a>
-        </article>
-      ))}
-    </div>
-    <p class="note">
-      Tools are presented at their actual scope. Repository links include the
-      code, examples and verification commands.
-    </p>
-  </div>
+<BaseLayout title="Projects | Haitao Zheng" description="Curated security, open-source, and portfolio projects by Haitao Zheng." keywords={projectKeywords} structuredData={projectCollectionSchema}>
+  <main class="shell">
+    <section>
+      <div class="section-head">
+        <span class="eyebrow">Curated project system</span>
+        <h2>Projects.</h2>
+        <p>Featured projects only, stored as MDX files with status, stack, GitHub links, and case-study body content.</p>
+      </div>
+      <div class="grid">
+        {featured.map((project, index) => (
+          <article class:list={["card", index === 0 && "featured", index > 0 && "compact"]}>
+            <div class="meta"><span>{project.data.status}</span><span>{project.data.type}</span></div>
+            <h3>{project.data.title}</h3>
+            <p>{project.data.excerpt}</p>
+            <div class="meta">{project.data.stack.map((item) => <span class="chip">{item}</span>)}</div>
+            <a class="link" href={`/projects/${entrySlug(project)}/`}>Open case study ↗</a>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
 </BaseLayout>

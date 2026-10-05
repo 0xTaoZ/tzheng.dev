@@ -57,6 +57,6 @@ This is also good for performance. Most pages can be delivered as prebuilt files
 
 One design decision I care about is keeping the homepage feeling premium while making the content system more maintainable behind it. A site can have strong visual design and still have a clean content architecture. Those two things should support each other.
 
-The October renewal adds a searchable article archive, shared editorial layouts and a locally served social preview image. Since the current articles and cases need no embedded components, the source files now use plain Markdown with the same typed metadata and stable URLs. But the base is now much better: content files, typed metadata, generated routes, static deployment, and search-friendly URLs.
+The current site preserves the original homepage and shared dark presentation. Since the current articles and cases need no embedded components, the source files now use plain Markdown with the same typed metadata and stable URLs. But the base is now much better: content files, typed metadata, generated routes, static deployment, and search-friendly URLs.
 
 This migration taught me that frontend engineering is not only about UI. It is also about content modeling, build pipelines, deployment, SEO, performance, and security trade-offs. For my portfolio, Astro is useful because it lets me keep the site static while still treating the content like a real system.
