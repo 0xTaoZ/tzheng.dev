@@ -49,32 +49,24 @@ const projectCollectionSchema = {
           validation and the limits of each case.
         </p>
       </div>
-      <div class="grid">
-        {projects.map((project, index) => (
-          <article
-            class:list={[
-              "card",
-              index === 0 && "featured",
-              index > 0 && "compact",
-            ]}
-          >
-            <div class="meta">
-              <span>{project.data.status}</span>
-              <span>{project.data.type}</span>
-            </div>
-            <h3>{project.data.title}</h3>
-            <p>{project.data.excerpt}</p>
-            <div class="meta">
-              {project.data.stack.map((item) => (
-                <span class="chip">{item}</span>
-              ))}
-            </div>
-            <a class="link" href={`/projects/${entrySlug(project)}/`}>
-              Open case study ↗
+      <ol class="project-index">
+        {projects.map((project) => (
+          <li>
+            <a class="project-row" href={`/projects/${entrySlug(project)}/`}>
+              <span class="project-type">{project.data.type}</span>
+              <span class="project-main">
+                <span class="project-name">{project.data.title}</span>
+                <span class="project-summary">{project.data.excerpt}</span>
+                {project.data.outcome && <span class="project-outcome">{project.data.outcome}</span>}
+              </span>
+              <span class="project-stack">
+                {project.data.stack.map((item) => <span class="chip">{item}</span>)}
+              </span>
+              <span class="project-go" aria-hidden="true">→</span>
             </a>
-          </article>
+          </li>
         ))}
-      </div>
+      </ol>
     </section>
   </main>
 </BaseLayout>

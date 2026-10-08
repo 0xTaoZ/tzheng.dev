@@ -73,48 +73,54 @@ const breadcrumbSchema = {
   ogImageAlt={project.data.title}
   structuredData={[projectSchema, breadcrumbSchema]}
 >
+  <div class="reading-progress" aria-hidden="true"><span></span></div>
   <main id="main-content" tabindex="-1" class="article-body">
-    <a class="button" href="/projects/">
-      ← Projects
-    </a>
-    <h1>{project.data.title}</h1>
-    <div class="meta">
-      <span>{project.data.status}</span>
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span aria-hidden="true">/</span>
+      <a href="/projects/">Projects</a>
+      <span aria-hidden="true">/</span>
       <span>{project.data.type}</span>
-      <span>
-        {project.data.date.toLocaleDateString("en", {
-          month: "long",
-          year: "numeric",
-        })}
-      </span>
-    </div>
-    <p>{project.data.excerpt}</p>
-    <div class="meta">
-      {project.data.stack.map((item) => (
-        <span class="chip">{item}</span>
-      ))}
-    </div>
-    <div class="actions">
-      {project.data.github && (
-        <a class="button primary" href={project.data.github} target="_blank">
-          GitHub ↗
-        </a>
+    </nav>
+    <header class="article-header">
+      <h1>{project.data.title}</h1>
+      <p class="article-lede">{project.data.excerpt}</p>
+      {project.data.homepageFacts.length > 0 && (
+        <dl class="project-facts">
+          {project.data.homepageFacts.map((fact) => (
+            <div><dt>{fact.label}</dt><dd>{fact.text}</dd></div>
+          ))}
+        </dl>
       )}
-      {project.data.demo && (
-        <a class="button" href={project.data.demo} target="_blank">
-          Demo ↗
-        </a>
-      )}
-    </div>
-    {headings.length > 0 && (
+      <div class="meta">
+        <span>{project.data.type}</span>
+        <span>{project.data.status}</span>
+        <span>Case study updated {project.data.date.toLocaleDateString("en", { month: "long", year: "numeric", timeZone: "UTC" })}</span>
+      </div>
+      <div class="meta tag-row">
+        {project.data.stack.map((item) => <span class="chip">{item}</span>)}
+      </div>
+      {project.data.outcome && <p class="note">{project.data.outcome}</p>}
+      <div class="actions">
+        {project.data.github && (
+          <a class="button primary" href={project.data.github}>
+            {project.data.github.includes("/pull/") ? "Read the merged PR ↗" : "Source on GitHub ↗"}
+          </a>
+        )}
+        {project.data.demo && <a class="button" href={project.data.demo}>Demo ↗</a>}
+      </div>
+    </header>
+    {headings.filter((heading) => heading.depth <= 3).length > 1 && (
       <nav class="toc" aria-label="Table of contents">
         <strong>Contents</strong>
-        {headings.map((heading) => (
-          <a href={`#${heading.slug}`}>{heading.text}</a>
+        {headings.filter((heading) => heading.depth <= 3).map((heading) => (
+          <a class:list={[heading.depth === 3 && "toc-sub"]} href={`#${heading.slug}`}>{heading.text}</a>
         ))}
       </nav>
     )}
+    <div class="article-content">
     <Content />
+    </div>
     {notes.length > 0 && (
       <section class="related" aria-labelledby="project-notes">
         <h2 id="project-notes">Notes about this project</h2>
@@ -130,4 +136,7 @@ const breadcrumbSchema = {
       </section>
     )}
   </main>
+  <script>
+    import "../../scripts/article.js";
+  </script>
 </BaseLayout>

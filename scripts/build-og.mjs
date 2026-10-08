@@ -66,7 +66,7 @@ const background = `
       <stop offset="1" stop-color="#000" stop-opacity="0.55"/>
     </linearGradient>
   </defs>
-  <rect width="${width}" height="${height}" fill="#020305"/>
+  <rect width="${width}" height="${height}" fill="#07090c"/>
   <rect width="${width}" height="${height}" fill="url(#grid)"/>
   <rect width="${width}" height="${height}" fill="url(#glowA)"/>
   <rect width="${width}" height="${height}" fill="url(#glowB)"/>

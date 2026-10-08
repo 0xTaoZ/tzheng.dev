@@ -1,0 +1,14 @@
+{
+  "name": "Haitao Zheng",
+  "short_name": "tzheng.dev",
+  "description": "Security tooling, open-source contributions and technical notes by Haitao Zheng.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#07090c",
+  "theme_color": "#07090c",
+  "icons": [
+    { "src": "/img/logo-64.png", "sizes": "64x64", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/img/logo-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
