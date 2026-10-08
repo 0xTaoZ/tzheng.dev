@@ -1,9 +1,14 @@
 ---
 import {
+  combinedStars,
+  compactNumber,
   contributionCases,
   mergedPRs,
   mergedCount,
+  monthlyMerged,
+  openCount,
   repositoryCount,
+  upstreamRepositories,
   verifiedAt,
 } from "../../lib/contributions";
 const priority = ["cfn-lint", "pyinfra", "Prowler"];
@@ -14,9 +19,15 @@ const countFor = (url: string) => {
   const repository = new URL(url).pathname.split("/").slice(1, 3).join("/");
   return mergedPRs.filter((pr) => pr.repository === repository).length;
 };
+const peak = Math.max(...monthlyMerged.map((month) => month.count));
+const mostMerged = upstreamRepositories[0].merged;
+const verifiedLabel = new Date(`${verifiedAt}T00:00:00Z`).toLocaleDateString(
+  "en",
+  { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" },
+);
 ---
 
-<section id="contributions" class="py-32 px-6 max-w-7xl mx-auto">
+<section id="contributions" class="home-section py-32 px-6 max-w-7xl mx-auto">
   <div class="mb-14 reveal">
     <p class="section-kicker mb-4">Accepted upstream work</p>
     <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
@@ -34,12 +45,75 @@ const countFor = (url: string) => {
         About the work &amp; all PRs <span>↗</span>
       </a>
     </div>
-    <div class="flex flex-wrap gap-3 mt-7">
-      <span class="chip">{mergedCount} merged upstream PRs</span>
-      <span class="chip">{repositoryCount} repositories</span>
-      <span class="chip">Verified {verifiedAt}</span>
-    </div>
   </div>
+
+  <dl class="proof-stats reveal" aria-label="Contribution summary">
+    <div>
+      <dt>Merged upstream PRs</dt>
+      <dd>{mergedCount}</dd>
+    </div>
+    <div>
+      <dt>Upstream repositories</dt>
+      <dd>{repositoryCount}</dd>
+    </div>
+    <div>
+      <dt>Combined GitHub stars</dt>
+      <dd>{compactNumber(combinedStars)}</dd>
+    </div>
+    <div>
+      <dt>Open PRs in review</dt>
+      <dd>{openCount}</dd>
+    </div>
+  </dl>
+
+  <div class="upstream-board reveal">
+    <div class="upstream-list">
+      <p class="board-label">
+        <span>Merged into</span>
+        <span>PRs · stars</span>
+      </p>
+      <ol>
+        {upstreamRepositories.map((repository) => (
+          <li>
+            <a href={repository.url}>
+              <span class="repo-name">
+                <span class="repo-owner">{repository.owner}/</span>
+                {repository.repo}
+              </span>
+              <span class="repo-bar" aria-hidden="true">
+                <span style={`--share:${(repository.merged / mostMerged) * 100}%`}></span>
+              </span>
+              <span class="repo-count">{repository.merged}</span>
+              <span class="repo-stars">★ {compactNumber(repository.stars)}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+    <figure class="merge-chart">
+      <p class="board-label">
+        <span>Merged per month</span>
+        <span>{monthlyMerged[0].label}–{monthlyMerged.at(-1)!.label} {verifiedAt.slice(0, 4)}</span>
+      </p>
+      <div class="merge-bars">
+        {monthlyMerged.map((month) => (
+          <div class="merge-bar">
+            <span class="merge-value">{month.count}</span>
+            <span
+              class="merge-fill"
+              style={`--height:${Math.max(4, (month.count / peak) * 100)}%`}
+            ></span>
+            <span class="merge-month">{month.label}</span>
+          </div>
+        ))}
+      </div>
+      <figcaption>
+        Snapshot verified {verifiedLabel}. Merged pull requests by
+        0xTaoZ outside personal repositories; stars as of the same date.
+      </figcaption>
+    </figure>
+  </div>
+
   <div class="notes-grid-final">
     {cases.map((item) => (
       <article

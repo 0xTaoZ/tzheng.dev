@@ -1,8 +1,23 @@
 ---
+import { getCollection } from "astro:content";
+import { mergedCount, mergedPRs, upstreamRepositories } from "../../lib/contributions";
 interface Props {
   terminalLines: string[];
 }
 const { terminalLines } = Astro.props;
+const articleCount = (
+  await getCollection("articles", ({ data }) => data.status === "published")
+).length;
+const cfnLintCount = mergedPRs.filter(
+  (pr) => pr.repository === "aws-cloudformation/cfn-lint",
+).length;
+const byStars = [...upstreamRepositories].sort((a, b) => b.stars - a.stars);
+const named = byStars.slice(0, 4).map((repository) => repository.label);
+const others = byStars.length - named.length;
+const projectList =
+  others > 0
+    ? `${named.join(", ")} and ${others} more upstream projects`
+    : `${named.slice(0, -1).join(", ")} and ${named.at(-1)}`;
 ---
 
 <section class="hero-bg hero-shell flex items-center justify-center overflow-hidden">
@@ -23,6 +38,11 @@ const { terminalLines } = Astro.props;
       <p class="hero-subtitle text-gray-200 font-medium tracking-wide mt-6 drop-shadow-lg text-center lg:text-left max-w-3xl">
         Cyber Security & Privacy <span class="text-gray-500">|</span> Systems &
         Infrastructure Engineering
+      </p>
+      <p class="hero-proof text-center lg:text-left">
+        <span class="proof-dot" aria-hidden="true"></span>
+        <a href="#contributions">{mergedCount} merged pull requests</a> to
+        {projectList}. B.Sc. Cyber Security &amp; Privacy at H-BRS, Germany.
       </p>
 
       <div
@@ -50,20 +70,20 @@ const { terminalLines } = Astro.props;
       </div>
 
       <div class="hero-feature-strip max-w-3xl mx-auto lg:mx-0">
-        <a href="#projects" class="hero-mini-card">
+        <a href="/projects/cloudtrail-quickscan/" class="hero-mini-card">
           <p class="num">project / tool</p>
           <p class="title">cloudtrail-quickscan</p>
           <p class="meta">AWS logs · detection checks</p>
         </a>
-        <a href="#contributions" class="hero-mini-card">
+        <a href="/projects/cfn-lint-contribution/" class="hero-mini-card">
           <p class="num">open source / PR</p>
           <p class="title">cfn-lint contribution</p>
-          <p class="meta">CloudFormation · PR</p>
+          <p class="meta">CloudFormation · {cfnLintCount} merged PRs</p>
         </a>
         <a href="/articles/" class="hero-mini-card">
           <p class="num">writing / blog</p>
           <p class="title">Technical Articles</p>
-          <p class="meta">security notes · learning log</p>
+          <p class="meta">{articleCount} notes · monthly archive</p>
         </a>
       </div>
 
@@ -135,20 +155,33 @@ const { terminalLines } = Astro.props;
     <div class="portrait-stage reveal delay-200">
       <div class="portrait-orbit" aria-hidden="true"></div>
       <div class="portrait-card" data-tilt>
-        <img
-          src="/IMG_1419.jpg"
-          alt="Haitao Zheng"
-          loading="lazy"
-          decoding="async"
-          fetchpriority="low"
-          class="object-cover object-right transition-transform duration-700 hover:scale-[1.015] avatar-mask"
-        />
+        <picture>
+          <source
+            type="image/avif"
+            srcset="/img/portrait-480.avif 480w, /img/portrait-720.avif 720w, /img/portrait-1122.avif 1122w"
+            sizes="(max-width: 768px) 76vw, 34rem"
+          />
+          <source
+            type="image/webp"
+            srcset="/img/portrait-480.webp 480w, /img/portrait-720.webp 720w, /img/portrait-1122.webp 1122w"
+            sizes="(max-width: 768px) 76vw, 34rem"
+          />
+          <img
+            src="/img/portrait-720.jpg"
+            alt="Haitao Zheng"
+            width="1122"
+            height="1402"
+            decoding="async"
+            fetchpriority="high"
+            class="object-cover object-right transition-transform duration-700 hover:scale-[1.015] avatar-mask"
+          />
+        </picture>
         <div class="portrait-caption text-left">
           <div class="flex items-center justify-between gap-4">
             <p class="text-[11px] uppercase tracking-[0.18em] text-sky-200 font-mono">
               ENGINEERING PROFILE
             </p>
-            <span class="chip">live</span>
+            <span class="chip">Germany</span>
           </div>
           <h2 class="mt-3 text-lg font-semibold text-white tracking-tight">
             Security tooling, cloud logs, IOC workflows, and static-first web

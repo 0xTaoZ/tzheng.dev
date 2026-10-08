@@ -7,6 +7,11 @@ interface Props {
   description?: string;
   keywords?: string | string[];
   ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: "website" | "article" | "profile";
+  publishedTime?: Date;
+  modifiedTime?: Date;
+  tags?: string[];
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 ---
@@ -22,7 +27,7 @@ interface Props {
     </a>
     <nav class="nav">
       <a class="brand logo-only" href="/" aria-label="Back to tzheng.dev home">
-        <img src="/logo.png" alt="" />
+        <img src="/img/logo-64.webp" alt="" width="32" height="32" />
       </a>
       <div class="nav-links">
         <a href="/#contributions">Contributions</a>
@@ -31,7 +36,7 @@ interface Props {
         <a href="/articles/">Articles</a>
         <a href="/#toolkit">Toolkit</a>
         <a href="/#education">Education</a>
-        <a href="/#about">About</a>
+        <a href="/about/">About</a>
         <a href="/legal/">Legal</a>
       </div>
     </nav>

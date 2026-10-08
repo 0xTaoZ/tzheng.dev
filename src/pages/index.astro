@@ -4,7 +4,12 @@ import "../styles/home-utilities.css";
 import { getCollection } from "astro:content";
 import { entrySlug, selectHomepageProjects } from "../lib/content";
 import SiteHead from "../components/SiteHead.astro";
-import { mergedCount, repositoryCount, verifiedAt } from "../lib/contributions";
+import {
+  mergedCount,
+  repositoryCount,
+  upstreamRepositories,
+  verifiedAt,
+} from "../lib/contributions";
 import HomeNavigation from "../components/home/Navigation.astro";
 import HomeHero from "../components/home/Hero.astro";
 import HomeContributions from "../components/home/Contributions.astro";
@@ -15,6 +20,7 @@ import HomeEducation from "../components/home/Education.astro";
 import HomeToolkit from "../components/home/Toolkit.astro";
 import HomeAbout from "../components/home/About.astro";
 import HomeFooter from "../components/home/Footer.astro";
+import HomeContact from "../components/home/Contact.astro";
 const projects = selectHomepageProjects(await getCollection("projects"));
 const terminalLines = [
   "$ whoami",
@@ -32,15 +38,31 @@ const terminalLines = [
   "$ upstream --merged",
   `${mergedCount} PRs / ${repositoryCount} projects / ${verifiedAt}`,
 ];
+const leading = [...upstreamRepositories]
+  .sort((a, b) => b.stars - a.stars)
+  .slice(0, 4)
+  .map((repository) => repository.label);
+const description = `Haitao Zheng (Tao) studies Cyber Security & Privacy at H-BRS in Germany: ${mergedCount} merged open-source PRs to ${leading.join(", ")} and more, security tools and technical notes.`;
+const profileSchema = {
+  "@type": "ProfilePage",
+  "@id": "https://tzheng.dev/#profile",
+  url: "https://tzheng.dev/",
+  name: "Haitao Zheng",
+  mainEntity: { "@id": "https://tzheng.dev/#person" },
+  dateModified: `${verifiedAt}T00:00:00Z`,
+};
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <SiteHead
-      title="Haitao Zheng | Cyber Security Portfolio & Engineering"
-      description="Cyber Security & Privacy student at H-BRS. Security tools, cloud infrastructure contributions and technical notes."
+      title="Haitao Zheng (郑海涛) | Cyber Security & Open Source"
+      description={description}
+      ogType="profile"
+      structuredData={profileSchema}
     />
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
     <noscript>
       <style>
         .reveal {
@@ -86,12 +108,11 @@ const terminalLines = [
       <HomeToolkit />
 
       <div class="divider max-w-6xl mx-auto"></div>
-
-      <div class="divider max-w-6xl mx-auto"></div>
       <!-- 语言与兴趣 (Languages & Interests) -->
       <HomeAbout />
 
-      <!-- 底部版权 (包含预留空链接) -->
+      <div class="divider max-w-6xl mx-auto"></div>
+      <HomeContact />
     </main>
     <HomeFooter />
     <script>

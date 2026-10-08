@@ -4,6 +4,58 @@ export const verifiedAt = snapshot.verifiedAt;
 export const mergedCount = mergedPRs.length;
 export const repositoryCount = new Set(mergedPRs.map((pr) => pr.repository))
   .size;
+export const openCount = snapshot.openCount;
+const stars: Record<string, { stars: number }> = snapshot.repositories;
+const displayNames: Record<string, string> = {
+  "aquasecurity/trivy": "Trivy",
+  "prowler-cloud/prowler": "Prowler",
+  "DataDog/guarddog": "GuardDog",
+  "trailofbits/graphtage": "Graphtage",
+};
+
+// Upstream repositories ordered by merged pull requests, then by stars.
+export const upstreamRepositories = Object.entries(
+  Object.groupBy(mergedPRs, (pr) => pr.repository),
+)
+  .map(([name, prs = []]) => ({
+    name,
+    owner: name.split("/")[0],
+    repo: name.split("/")[1],
+    label: displayNames[name] ?? name.split("/")[1],
+    url: `https://github.com/${name}`,
+    merged: prs.length,
+    stars: stars[name]?.stars ?? 0,
+    latest: prs.map((pr) => pr.mergedAt).sort().at(-1)!,
+  }))
+  .sort((a, b) => b.merged - a.merged || b.stars - a.stars);
+export const combinedStars = upstreamRepositories.reduce(
+  (sum, repository) => sum + repository.stars,
+  0,
+);
+export const compactNumber = (value: number) =>
+  new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 })
+    .format(value)
+    .replace("K", "k");
+
+// Merged pull requests per calendar month, from the first merge to the
+// snapshot date, including months without a merge.
+export const monthlyMerged = (() => {
+  const counts = Object.groupBy(mergedPRs, (pr) => pr.mergedAt.slice(0, 7));
+  const months: { month: string; label: string; count: number }[] = [];
+  const first = mergedPRs.map((pr) => pr.mergedAt).sort()[0].slice(0, 7);
+  const cursor = new Date(`${first}-01T00:00:00Z`);
+  const end = verifiedAt.slice(0, 7);
+  while (cursor.toISOString().slice(0, 7) <= end) {
+    const month = cursor.toISOString().slice(0, 7);
+    months.push({
+      month,
+      label: cursor.toLocaleDateString("en", { month: "short", timeZone: "UTC" }),
+      count: counts[month]?.length ?? 0,
+    });
+    cursor.setUTCMonth(cursor.getUTCMonth() + 1);
+  }
+  return months;
+})();
 export const contributionCases = [
   {
     repository: "pyinfra",

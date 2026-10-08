@@ -17,7 +17,7 @@ const articles = defineCollection({
     category: z.string(),
     featured: z.boolean().default(false),
     status: z.enum(["draft", "published", "archived"]).default("published"),
-    readingTime: z.string(),
+    readingTime: z.string().optional(),
   }),
 });
 
