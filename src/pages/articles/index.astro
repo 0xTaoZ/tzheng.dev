@@ -39,14 +39,15 @@ const schema = {
       <div id="article-archive">
         {months.map(month => <section id={`month-${month}`} class="archive-group" data-archive-month={month}>
           <h2>{monthLabel(month)}</h2>
-          <div class="grid">
-            {articles.filter(article => articleMonth(article) === month).map(article => <article class="card" data-article-card data-category={article.data.category} data-title={article.data.title.toLowerCase()} data-tags={article.data.tags.join(" ").toLowerCase()} data-excerpt={`${article.data.category} ${article.data.excerpt}`.toLowerCase()} data-search={(article.body ?? "").replace(/\s+/g, " ").toLowerCase()}>
-              <div class="meta"><span>{article.data.category}</span><span>{readingTime(article)}</span></div>
-              <h3><a href={`/articles/${entrySlug(article)}/`}>{article.data.title}</a></h3>
-              <p>{article.data.excerpt}</p>
-              <p class="meta">Published <time datetime={article.data.date.toISOString().slice(0,10)}>{formatDate(article.data.date, "short")}</time>{article.data.seriesMonth && <span> · Series: {monthLabel(month)}</span>}</p>
-              <div class="meta">{article.data.tags.map(tag => <span class="chip">{tag}</span>)}</div>
-              <a class="link" href={`/articles/${entrySlug(article)}/`}>Read article ↗</a>
+          <div class="grid archive-list">
+            {articles.filter(article => articleMonth(article) === month).map(article => <article class="archive-item" data-article-card data-category={article.data.category} data-title={article.data.title.toLowerCase()} data-tags={article.data.tags.join(" ").toLowerCase()} data-excerpt={`${article.data.category} ${article.data.excerpt}`.toLowerCase()} data-search={(article.body ?? "").replace(/\s+/g, " ").toLowerCase()}>
+              <time datetime={article.data.date.toISOString().slice(0,10)}>{formatDate(article.data.date, "short")}</time>
+              <div class="archive-body">
+                <h3><a href={`/articles/${entrySlug(article)}/`}>{article.data.title}</a></h3>
+                <p>{article.data.excerpt}</p>
+                <div class="meta">{article.data.tags.map(tag => <span class="chip">{tag}</span>)}{article.data.seriesMonth && <span>Series: {monthLabel(month)}</span>}</div>
+              </div>
+              <p class="archive-kind">{article.data.category}<br />{readingTime(article)}</p>
             </article>)}
           </div>
         </section>)}

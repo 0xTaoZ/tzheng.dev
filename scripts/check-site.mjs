@@ -172,6 +172,21 @@ const record = pages.get(path.join(root, "contributions/index.html"));
 for (const pr of snapshot.merged)
   assert(record.includes(pr.url), `Missing contribution ${pr.url}`);
 assert((await stat(path.join(root, "haitao-zheng-resume.pdf"))).size > 0, "Résumé PDF is missing.");
+// The Pages artifact includes hidden files for /.well-known; nothing else may be hidden.
+const hidden = [];
+const findHidden = async (directory) => {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const file = path.join(directory, entry.name);
+    if (entry.name.startsWith(".") && path.relative(root, file) !== ".well-known") hidden.push(file);
+    if (entry.isDirectory()) await findHidden(file);
+  }
+};
+await findHidden(root);
+assert.deepEqual(hidden, [], "Unexpected hidden files in dist.");
+const securityTxt = await readFile(path.join(root, ".well-known/security.txt"), "utf8");
+const expires = new Date(securityTxt.match(/^Expires: (.+)$/m)?.[1] ?? "");
+assert(/^Contact: /m.test(securityTxt), "security.txt needs a Contact field.");
+assert(expires > new Date(Date.now() + 30 * 864e5), "security.txt expires within 30 days; renew it.");
 const sitemapIndex = await readFile(
   path.join(root, "sitemap-index.xml"),
   "utf8",

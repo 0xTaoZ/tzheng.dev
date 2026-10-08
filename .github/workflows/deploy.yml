@@ -48,6 +48,8 @@ jobs:
         uses: actions/upload-pages-artifact@v5
         with:
           path: dist
+          # Publishes /.well-known/security.txt; dist contains no other dotfiles.
+          include-hidden-files: true
 
   deploy:
     environment:
