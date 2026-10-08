@@ -1,5 +1,6 @@
 ---
 import "../styles/home.css";
+import "../styles/motion.css";
 import { getCollection } from "astro:content";
 import { entrySlug, selectHomepageProjects } from "../lib/content";
 import SiteHead from "../components/SiteHead.astro";
@@ -89,6 +90,7 @@ const profileSchema = {
     <HomeFooter />
     <script>
       import "../scripts/home.js";
+      import "../scripts/motion.js";
     </script>
   </body>
 </html>

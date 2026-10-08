@@ -61,9 +61,22 @@ code, kbd, pre, samp { font-family: var(--font-mono); }
 }
 .skip-link:focus { transform: none; }
 
+/* Page turns between pages (cross-document view transitions). The navigation
+   bar keeps its place; going back turns the page the other way. */
 @media (prefers-reduced-motion: no-preference) {
   @view-transition { navigation: auto; }
+  .nav, .site-nav { view-transition-name: site-nav; }
+  ::view-transition-group(root) { animation-duration: .7s; }
+  ::view-transition-old(root) { transform-origin: 0 50%; animation: page-turn-out .7s cubic-bezier(.65, 0, .35, 1) both; }
+  ::view-transition-new(root) { transform-origin: 100% 50%; animation: page-turn-in .7s cubic-bezier(.65, 0, .35, 1) both; }
+  html:active-view-transition-type(back)::view-transition-old(root) { transform-origin: 100% 50%; animation-name: page-turn-back-out; }
+  html:active-view-transition-type(back)::view-transition-new(root) { transform-origin: 0 50%; animation-name: page-turn-back-in; }
+  ::view-transition-group(site-nav) { animation-duration: .4s; }
 }
+@keyframes page-turn-out { to { transform: perspective(2000px) rotateY(-28deg) translateX(-4%); opacity: 0; filter: brightness(.55); } }
+@keyframes page-turn-in { from { transform: perspective(2000px) rotateY(16deg) translateX(6%); opacity: 0; } }
+@keyframes page-turn-back-out { to { transform: perspective(2000px) rotateY(28deg) translateX(4%); opacity: 0; filter: brightness(.55); } }
+@keyframes page-turn-back-in { from { transform: perspective(2000px) rotateY(-16deg) translateX(-6%); opacity: 0; } }
 
 /* Code shows the characters that were typed: no programming ligatures. */
 code, kbd, pre, samp { font-variant-ligatures: none; font-feature-settings: "calt" 0, "liga" 0; }

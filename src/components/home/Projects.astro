@@ -10,13 +10,12 @@ const [featured, ...rest] = projects;
   <div class="container">
     <SectionHeader
       index="02"
-      label="Selected work"
       title="Projects"
-      link={{ href: "/projects/", label: "All project cases" }}
+      link={{ href: "/projects/", label: "All projects" }}
     >
       <p class="section-lede">
-        Small security tools I can explain line by line, a study product built
-        for my own semester, and the engineering behind this site.
+        Command-line tools for log and host review, and the study app I built
+        for my own semester.
       </p>
     </SectionHeader>
 
@@ -40,7 +39,7 @@ const [featured, ...rest] = projects;
       </dl>
     </article>
 
-    <div class="project-grid">
+    <div class="project-grid" data-spotlight>
       {rest.map((project) => (
         <article class="project-card reveal">
           <p class="case-meta"><span>{project.data.type}</span></p>

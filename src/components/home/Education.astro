@@ -52,12 +52,7 @@ const schools = [
 
 <section id="education" class="section">
   <div class="container">
-    <SectionHeader index="04" label="Education" title="Education">
-      <p class="section-lede">
-        Computing, systems and privacy, from secondary school in Xiamen to a
-        cyber security degree in Germany.
-      </p>
-    </SectionHeader>
+    <SectionHeader index="04" title="Education" />
     <ol class="edu-timeline">
       {schools.map((school) => (
         <li class:list={["edu-item", "reveal", school.current && "current"]}>

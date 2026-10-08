@@ -23,7 +23,7 @@ img { max-width: 100%; height: auto; display: block; }
   background: rgba(7, 9, 12, .85);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
+
 }
 .nav-inner {
   max-width: calc(var(--container) + 2 * var(--gutter));

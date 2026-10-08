@@ -108,3 +108,61 @@ export const contributionCases = [
       "The check can only evaluate volumes that the collector has kept in the Pod model.",
   },
 ];
+
+// Excerpts from the merged diffs, shown beside each case on the homepage.
+// Lines are copied from the pull request; "…" marks omitted lines.
+export const caseExcerpts: Record<string, { file: string; lang: string; code: string }> = {
+  pyinfra: {
+    file: "src/pyinfra/connectors/sshuserclient/client.py",
+    lang: "python",
+    code: `def _host_certificate_is_trusted(client, hostname: str, key: PKey) -> bool:
+    …
+    cert_type = message.get_int()
+    if cert_type != 2:  # SSH2_CERT_TYPE_HOST
+        return False
+
+    message.get_text()  # key id
+    principals = Message(message.get_string())
+    valid_after = message.get_int64()
+    valid_before = message.get_int64()
+    …
+    now = int(time())
+    if now < valid_after or now > valid_before:
+        return False
+
+    if not any(principal == hostname for principal in _iter_certificate_principals(principals)):
+        return False`,
+  },
+  "cfn-lint": {
+    file: "src/cfnlint/rules/resources/CreationPolicy.py",
+    lang: "python",
+    code: `function, _ = is_function(instance)
+if (
+    function == "Fn::Select"
+    and not validator.context.transforms.has_language_extensions_transform()
+):
+    yield ValidationError(
+        f"{instance!r} is not of type 'object'",
+        rule=self,
+        validator="type",
+    )
+    return`,
+  },
+  Prowler: {
+    file: "prowler/providers/kubernetes/services/core/core_service.py",
+    lang: "python",
+    code: `@staticmethod
+def _build_volumes(volumes) -> List[dict]:
+    pod_volumes = []
+    for volume in volumes or []:
+        pod_volumes.append(
+            {
+                "name": volume.name,
+                "host_path": (
+                    volume.host_path.to_dict() if volume.host_path else None
+                ),
+            }
+        )
+    return pod_volumes`,
+  },
+};

@@ -126,6 +126,15 @@ const graph = {
   title="Haitao Zheng: articles"
   href="/rss.xml"
 />
+<script is:inline>
+  // Tell the page-turn transition which way to turn on history navigation.
+  addEventListener("pagereveal", (event) => {
+    const activation = window.navigation && navigation.activation;
+    if (!event.viewTransition || !activation) return;
+    const back = activation.navigationType === "traverse" && activation.from && activation.entry && activation.entry.index < activation.from.index;
+    event.viewTransition.types.add(back ? "back" : "forward");
+  });
+</script>
 <script
   is:inline
   type="application/ld+json"

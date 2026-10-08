@@ -28,14 +28,17 @@ const projectList =
 
 <section class="hero" id="top">
   <div class="hero-backdrop" aria-hidden="true"></div>
+  <canvas class="starfield" aria-hidden="true"></canvas>
   <div class="container hero-grid">
     <div class="hero-copy reveal">
       <p class="hero-eyebrow">
         <span class="status-dot" aria-hidden="true"></span>
-        Cyber Security &amp; Privacy · <span class="nowrap">H-BRS</span> · Bonn, Germany
+        <span>Cyber Security &amp; Privacy · <span class="nowrap">H-BRS</span> · Bonn, Germany</span>
       </p>
       <h1 class="hero-title">
-        Haitao Zheng <span class="hero-alias">(Tao)</span>
+        <span class="word"><span>Haitao</span></span>
+        <span class="word"><span>Zheng</span></span>
+        <span class="hero-alias">(Tao)</span>
       </h1>
       <p class="hero-role">
         Blue team, cloud security <span aria-hidden="true">·</span> Systems &amp;
@@ -46,10 +49,10 @@ const projectList =
         the projects I use: {mergedCount} merged pull requests to {projectList}.
       </p>
       <dl class="hero-stats">
-        <div><dt>merged upstream PRs</dt><dd>{mergedCount}</dd></div>
-        <div><dt>upstream repositories</dt><dd>{upstreamRepositories.length}</dd></div>
-        <div><dt>combined stars</dt><dd>{compactNumber(combinedStars)}</dd></div>
-        <div><dt>technical articles</dt><dd>{articleCount}</dd></div>
+        <div><dt>merged upstream PRs</dt><dd data-count>{mergedCount}</dd></div>
+        <div><dt>upstream repositories</dt><dd data-count>{upstreamRepositories.length}</dd></div>
+        <div><dt>combined stars</dt><dd data-count>{compactNumber(combinedStars)}</dd></div>
+        <div><dt>technical articles</dt><dd data-count>{articleCount}</dd></div>
       </dl>
       <div class="hero-actions">
         <a href="#contributions" class="btn btn-primary">View contributions</a>
@@ -114,7 +117,7 @@ const projectList =
       <pre id="terminal-output" class="terminal-output" data-lines={JSON.stringify(terminalLines)}>{terminalLines.join("\n")}</pre>
       <span class="terminal-cursor" aria-hidden="true"></span>
     </div>
-    <nav class="start-here reveal delay-1" aria-label="Start here">
+    <nav class="start-here reveal delay-1" aria-label="Start here" data-spotlight>
       <p class="label">Start here</p>
       <a href="/projects/cloudtrail-quickscan/">
         <span class="start-kind">project / tool</span>

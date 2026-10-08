@@ -23,14 +23,10 @@ const months = [...new Set(all.map(articleMonth))].sort().reverse();
   <div class="container">
     <SectionHeader
       index="03"
-      label="Technical writing"
-      title="Articles"
+      title="Writing"
       link={{ href: "/articles/", label: `All ${all.length} articles` }}
     >
-      <p class="section-lede">
-        Notes from my projects, open-source fixes and study: what broke, what
-        changed, how it was tested, and what the result does not prove.
-      </p>
+      <p class="section-lede">Notes from my projects, open-source fixes and study.</p>
     </SectionHeader>
 
     <div class="writing-grid">

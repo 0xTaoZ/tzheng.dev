@@ -1,0 +1,56 @@
+---
+import { Code } from "astro:components";
+import { caseExcerpts, contributionCases, mergedPRs } from "../../lib/contributions";
+const priority = ["cfn-lint", "pyinfra", "Prowler"];
+const cases = [...contributionCases].sort(
+  (a, b) => priority.indexOf(a.repository) - priority.indexOf(b.repository),
+);
+const countFor = (url: string) => {
+  const repository = new URL(url).pathname.split("/").slice(1, 3).join("/");
+  return mergedPRs.filter((pr) => pr.repository === repository).length;
+};
+---
+
+<div class="case-story" data-case-story>
+  <ol class="case-steps-list">
+    {cases.map((item, index) => (
+      <li class="case-step" data-step={index} data-upstream-case={item.repository}>
+        <p class="case-meta">
+          <span>{String(index + 1).padStart(2, "0")} / {item.area}</span>
+          <span>{countFor(item.url)} merged</span>
+        </p>
+        <h3>{item.repository}</h3>
+        {"context" in item && <p class="case-context">{item.context}</p>}
+        <p class="case-title">{item.title}</p>
+        <dl class="case-flow">
+          <div><dt>Problem</dt><dd>{item.problem}</dd></div>
+          <div><dt>Change</dt><dd>{item.change}</dd></div>
+          <div><dt>Why</dt><dd>{item.lesson}</dd></div>
+        </dl>
+        <p class="case-evidence">{item.evidence}</p>
+        <a class="text-link" href={item.url}>Merged patch #{item.number} <span aria-hidden="true">↗</span></a>
+        <figure class="code-window inline-code" aria-hidden="true">
+          <figcaption>{caseExcerpts[item.repository].file}</figcaption>
+          <Code code={caseExcerpts[item.repository].code} lang="python" theme="vitesse-dark" />
+        </figure>
+      </li>
+    ))}
+  </ol>
+  <div class="case-stage" aria-hidden="true">
+    <div class="case-stage-inner">
+      {cases.map((item, index) => (
+        <figure class:list={["code-window", index === 0 && "is-active"]} data-panel={index}>
+          <figcaption>
+            <span class="window-dots"><i></i><i></i><i></i></span>
+            {caseExcerpts[item.repository].file}
+            <span class="window-pr">#{item.number}</span>
+          </figcaption>
+          <Code code={caseExcerpts[item.repository].code} lang="python" theme="vitesse-dark" />
+        </figure>
+      ))}
+      <div class="case-progress">
+        {cases.map((item, index) => <span class:list={[index === 0 && "is-active"]} data-dot={index}>{item.repository}</span>)}
+      </div>
+    </div>
+  </div>
+</div>

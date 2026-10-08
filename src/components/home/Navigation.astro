@@ -4,7 +4,7 @@ const links = [
   { href: "#projects", label: "Projects" },
   { href: "#notes", label: "Writing" },
   { href: "#education", label: "Education" },
-  { href: "#toolkit", label: "Skills" },
+  { href: "#toolkit", label: "Toolkit" },
   { href: "#contact", label: "Contact" },
 ];
 ---
@@ -42,6 +42,7 @@ const links = [
       </button>
     </div>
   </div>
+  <span class="nav-progress" aria-hidden="true"></span>
   <nav id="mobile-menu" class="mobile-menu" aria-label="Sections" aria-hidden="true">
     {links.map((link) => <a href={link.href}>{link.label}</a>)}
     <a href="/articles/">Articles</a>

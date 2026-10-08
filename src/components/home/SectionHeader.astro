@@ -1,15 +1,14 @@
 ---
 interface Props {
   index: string;
-  label: string;
   title: string;
   link?: { href: string; label: string };
 }
-const { index, label, title, link } = Astro.props;
+const { index, title, link } = Astro.props;
 ---
 
 <header class="section-head reveal">
-  <p class="section-index"><span>{index}</span>{label}</p>
+  <p class="section-index"><span>{index}</span></p>
   <div class="section-title-row">
     <div>
       <h2>{title}</h2>
