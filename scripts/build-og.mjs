@@ -152,6 +152,7 @@ const pages = [
   { file: "articles", kicker: "tzheng.dev / articles", title: "Security engineering notes and case analyses", command: "$ ls notes/ | wc -l", meta: `${articleCount} articles · monthly archive · RSS` },
   { file: "projects", kicker: "tzheng.dev / projects", title: "Security tools, a study product and upstream work", command: "$ ls projects/", meta: "Case studies with source, tests and limits" },
   { file: "system", kicker: "tzheng.dev / system design", title: "How this site is built, checked and delivered", command: "$ astro build && npm test", meta: "Astro · typed content · GitHub Pages" },
+  { file: "resume", kicker: "tzheng.dev / resume", title: "Haitao Zheng: one-page résumé", command: "$ cat resume.md", meta: "Cyber Security & Privacy · H-BRS · open source" },
   { file: "topics", kicker: "tzheng.dev / topics", title: "Browse the work by technical area", command: "$ grep -r topic", meta: "Cloud · infrastructure · logs · learning · publishing" },
 ];
 for (const page of pages) {

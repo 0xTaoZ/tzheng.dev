@@ -4,7 +4,8 @@ export const verifiedAt = snapshot.verifiedAt;
 export const mergedCount = mergedPRs.length;
 export const repositoryCount = new Set(mergedPRs.map((pr) => pr.repository))
   .size;
-export const openCount = snapshot.openCount;
+export const openPRs = snapshot.open;
+export const openCount = openPRs.length;
 const stars: Record<string, { stars: number }> = snapshot.repositories;
 const displayNames: Record<string, string> = {
   "aquasecurity/trivy": "Trivy",

@@ -22,7 +22,7 @@ const searchQuery = `
       issueCount
       nodes {
         ... on PullRequest {
-          number title url mergedAt
+          number title url mergedAt createdAt
           repository { nameWithOwner stargazerCount owner { login } }
         }
       }
@@ -58,6 +58,15 @@ const repositories = Object.fromEntries(
 const snapshot = {
   verifiedAt: new Date().toISOString().slice(0, 10),
   openCount: open.length,
+  open: open
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    .map((pr) => ({
+      repository: pr.repository.nameWithOwner,
+      number: pr.number,
+      title: pr.title,
+      url: pr.url,
+      openedAt: pr.createdAt.slice(0, 10),
+    })),
   repositories,
   merged: merged.map((pr) => ({
     repository: pr.repository.nameWithOwner,

@@ -1,0 +1,171 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { entrySlug } from "../lib/content";
+import {
+  combinedStars,
+  compactNumber,
+  contributionCases,
+  mergedCount,
+  openCount,
+  repositoryCount,
+  upstreamRepositories,
+  verifiedAt,
+} from "../lib/contributions";
+
+const projects = (await getCollection("projects"))
+  .filter((project) => project.data.status !== "open-source")
+  .sort((a, b) => a.data.priority - b.data.priority)
+  .slice(0, 6);
+const articleCount = (
+  await getCollection("articles", ({ data }) => data.status === "published")
+).length;
+const verifiedLabel = new Date(`${verifiedAt}T00:00:00Z`).toLocaleDateString(
+  "en",
+  { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" },
+);
+const schema = {
+  "@type": "ProfilePage",
+  "@id": "https://tzheng.dev/resume/#profile",
+  url: "https://tzheng.dev/resume/",
+  name: "Haitao Zheng résumé",
+  mainEntity: { "@id": "https://tzheng.dev/#person" },
+  dateModified: `${verifiedAt}T00:00:00Z`,
+};
+---
+
+<BaseLayout
+  title="Résumé | Haitao Zheng, Cyber Security & Privacy student"
+  description={`One-page résumé of Haitao Zheng: B.Sc. Cyber Security & Privacy at H-BRS, ${mergedCount} merged upstream pull requests, security tools and languages.`}
+  ogType="profile"
+  ogImage="/og/resume.png"
+  structuredData={schema}
+>
+  <main id="main-content" tabindex="-1" class="resume">
+    <div class="resume-tools" data-print-hide>
+      <p class="note">Generated from the same records as the rest of this site. Last verified {verifiedLabel}.</p>
+      <button class="button primary" type="button" data-print>Print or save as PDF</button>
+    </div>
+
+    <header class="resume-head">
+      <div>
+        <h1>Haitao Zheng</h1>
+        <p class="resume-role">Cyber Security &amp; Privacy student · open-source contributor</p>
+        <p class="resume-alt"><span lang="zh">郑海涛</span> · Tao · Bonn, Germany</p>
+      </div>
+      <ul class="resume-contact">
+        <li><a href="mailto:h@tzheng.dev">h@tzheng.dev</a></li>
+        <li><a href="https://tzheng.dev/">tzheng.dev</a></li>
+        <li><a href="https://github.com/0xTaoZ">github.com/0xTaoZ</a></li>
+        <li><a href="https://www.linkedin.com/in/haitaozheng/">linkedin.com/in/haitaozheng</a></li>
+      </ul>
+    </header>
+
+    <section class="resume-section">
+      <h2>Profile</h2>
+      <p>
+        I study cyber security in Germany and learn by building small security
+        tools, reading existing systems and contributing fixes upstream. My
+        interest is where security and infrastructure overlap: authentication
+        boundaries, cloud configuration, useful audit evidence and the tools
+        people use to investigate problems.
+      </p>
+    </section>
+
+    <section class="resume-section">
+      <h2>Education</h2>
+      <dl class="resume-timeline">
+        <div>
+          <dt>Oct 2025 – present</dt>
+          <dd>
+            <b>Hochschule Bonn-Rhein-Sieg (H-BRS)</b>, B.Sc. Cyber Security &amp; Privacy.
+            Java, Linux, networking protocols, SQL databases, mathematics,
+            Technische Informatik; GDPR and privacy by design.
+          </dd>
+        </div>
+        <div>
+          <dt>Dec 2024 – Jun 2025</dt>
+          <dd>
+            <b>FHM University of Applied Sciences</b>, Bielefeld. University
+            preparation and Feststellungsprüfung (FSP); certified German C1.
+          </dd>
+        </div>
+        <div>
+          <dt>2024</dt>
+          <dd>
+            <b>Harvard CS50x</b> (online). Algorithms, data structures, C,
+            Python, SQL, web development and a final project.
+          </dd>
+        </div>
+        <div>
+          <dt>Sep 2021 – Jun 2024</dt>
+          <dd><b>Xiamen Jimei Middle School</b>, Xiamen. Science-focused secondary education and Gaokao.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="resume-section">
+      <h2>Open-source contributions</h2>
+      <p class="resume-figures">
+        <strong>{mergedCount}</strong> merged pull requests ·
+        <strong>{repositoryCount}</strong> upstream repositories ·
+        <strong>{compactNumber(combinedStars)}</strong> combined GitHub stars ·
+        <strong>{openCount}</strong> in review
+      </p>
+      <ul class="resume-list">
+        {contributionCases.map((item) => (
+          <li>
+            <b>{item.repository}</b> ({item.area}): {item.title}{" "}
+            {item.change} <a href={item.url}>#{item.number}</a>
+          </li>
+        ))}
+      </ul>
+      <p class="resume-repos">
+        {upstreamRepositories.map((repository) => (
+          <span>{repository.name} <em>{repository.merged}</em></span>
+        ))}
+      </p>
+      <p class="note">Full, linked record: <a href="/contributions/">tzheng.dev/contributions</a></p>
+    </section>
+
+    <section class="resume-section">
+      <h2>Projects</h2>
+      <ul class="resume-list">
+        {projects.map((project) => (
+          <li>
+            <b><a href={`/projects/${entrySlug(project)}/`}>{project.data.title}</a></b>
+            <span class="resume-stack">{project.data.stack.join(" · ")}</span>
+            <br />
+            {project.data.excerpt}
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <div class="resume-columns">
+      <section class="resume-section">
+        <h2>Technical skills</h2>
+        <ul class="resume-skills">
+          <li><b>Languages</b> Python, Java, C, SQL, TypeScript</li>
+          <li><b>Systems</b> Linux, SSH, networking</li>
+          <li><b>Cloud &amp; security</b> AWS CloudTrail, CloudFormation, Kubernetes checks, IOC extraction</li>
+          <li><b>Delivery</b> Git, GitHub Actions, Cloudflare Workers, D1, Astro</li>
+          <li><b>Practice</b> regression tests, code review, technical writing ({articleCount} articles)</li>
+        </ul>
+      </section>
+      <section class="resume-section">
+        <h2>Languages</h2>
+        <ul class="resume-skills">
+          <li><b>English</b> C2</li>
+          <li><b>German</b> C1</li>
+          <li><b>Mandarin</b> native</li>
+          <li><b>Hokkien</b> fluent</li>
+          <li><b>Japanese</b> A2</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+  <script>
+    document.querySelector("[data-print]")?.addEventListener("click", () => window.print());
+  </script>
+</BaseLayout>

@@ -10,6 +10,7 @@ import {
   combinedStars,
   compactNumber,
   openCount,
+  openPRs,
   upstreamRepositories,
 } from "../lib/contributions";
 import { entrySlug, formatDate } from "../lib/content";
@@ -172,6 +173,46 @@ const schema = {
                 );
               }),
             )}
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="section" style="border-bottom:0" id="in-review">
+      <span class="eyebrow">In review / {verifiedAt}</span>
+      <h2>Open pull requests.</h2>
+      <p class="note">
+        Proposals waiting for maintainer review. They are not counted above
+        until they are merged, and some may be closed without merging.
+      </p>
+      <div class="table-scroll">
+        <table class="pr-ledger">
+          <caption class="note" style="text-align:left;margin-bottom:15px">
+            {openCount} open pull requests authored by 0xTaoZ in upstream repositories.
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Repository</th>
+              <th scope="col">Proposed change</th>
+              <th scope="col">Opened</th>
+              <th scope="col">Record</th>
+            </tr>
+          </thead>
+          <tbody>
+            {openPRs.map((pr) => (
+              <tr>
+                <td>
+                  {pr.repository}
+                  <span class="merge-label">Open</span>
+                </td>
+                <td>{pr.title}</td>
+                <td class="nowrap">
+                  <time datetime={pr.openedAt}>{formatDate(new Date(`${pr.openedAt}T00:00:00Z`), "short")}</time>
+                </td>
+                <td>
+                  <a href={pr.url}>#{pr.number} ↗</a>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

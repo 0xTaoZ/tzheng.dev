@@ -1,6 +1,134 @@
 {
   "verifiedAt": "2026-10-08",
   "openCount": 18,
+  "open": [
+    {
+      "repository": "certtools/intelmq",
+      "number": 2729,
+      "title": "Use bigint for PostgreSQL ASN fields",
+      "url": "https://github.com/certtools/intelmq/pull/2729",
+      "openedAt": "2026-09-29"
+    },
+    {
+      "repository": "certtools/intelmq",
+      "number": 2728,
+      "title": "Handle bracketed URL netloc sanitization",
+      "url": "https://github.com/certtools/intelmq/pull/2728",
+      "openedAt": "2026-09-29"
+    },
+    {
+      "repository": "certtools/intelmq",
+      "number": 2727,
+      "title": "Allow ASN database update to create missing file",
+      "url": "https://github.com/certtools/intelmq/pull/2727",
+      "openedAt": "2026-09-29"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1983,
+      "title": "fix(api): omit variadic kwargs from auto labels",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1983",
+      "openedAt": "2026-09-29"
+    },
+    {
+      "repository": "bridgecrewio/checkov",
+      "number": 7706,
+      "title": "fix(kubernetes): correlate secret rules with resourceNames",
+      "url": "https://github.com/bridgecrewio/checkov/pull/7706",
+      "openedAt": "2026-09-29"
+    },
+    {
+      "repository": "semgrep/semgrep-rules",
+      "number": 4070,
+      "title": "fix(java): avoid eqeq false positives on null checks",
+      "url": "https://github.com/semgrep/semgrep-rules/pull/4070",
+      "openedAt": "2026-09-29"
+    },
+    {
+      "repository": "semgrep/semgrep-rules",
+      "number": 4069,
+      "title": "fix(java): catch permissive file permission APIs",
+      "url": "https://github.com/semgrep/semgrep-rules/pull/4069",
+      "openedAt": "2026-09-29"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1982,
+      "title": "fix(operations.git): allow chowned repo pulls",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1982",
+      "openedAt": "2026-09-29"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1981,
+      "title": "fix(api): strip su password prompt from fact output",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1981",
+      "openedAt": "2026-09-29"
+    },
+    {
+      "repository": "prowler-cloud/prowler",
+      "number": 12902,
+      "title": "fix(sdk): skip M365 outbound preset policies",
+      "url": "https://github.com/prowler-cloud/prowler/pull/12902",
+      "openedAt": "2026-09-29"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1980,
+      "title": "fix(connectors.ssh): preserve nested ProxyJump sockets",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1980",
+      "openedAt": "2026-09-29"
+    },
+    {
+      "repository": "aws-cloudformation/cfn-lint",
+      "number": 4730,
+      "title": "fix: handle SAM RestApi stage references",
+      "url": "https://github.com/aws-cloudformation/cfn-lint/pull/4730",
+      "openedAt": "2026-09-29"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1979,
+      "title": "docs(operations.files): warn rsync deletes extra files",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1979",
+      "openedAt": "2026-09-29"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1971,
+      "title": "fix(connectors.ssh): match host CAs on custom ports",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1971",
+      "openedAt": "2026-09-22"
+    },
+    {
+      "repository": "Yelp/detect-secrets",
+      "number": 974,
+      "title": "Include py.typed in source distribution manifest",
+      "url": "https://github.com/Yelp/detect-secrets/pull/974",
+      "openedAt": "2026-07-16"
+    },
+    {
+      "repository": "nteract/papermill",
+      "number": 900,
+      "title": "Suppress kernel startup stdout during execution",
+      "url": "https://github.com/nteract/papermill/pull/900",
+      "openedAt": "2026-07-11"
+    },
+    {
+      "repository": "Yelp/detect-secrets",
+      "number": 973,
+      "title": "Fix UTF-8 scans under non-UTF-8 locales",
+      "url": "https://github.com/Yelp/detect-secrets/pull/973",
+      "openedAt": "2026-07-10"
+    },
+    {
+      "repository": "PyCQA/bandit",
+      "number": 1457,
+      "title": "Detect unsafe tarfile extract calls",
+      "url": "https://github.com/PyCQA/bandit/pull/1457",
+      "openedAt": "2026-07-08"
+    }
+  ],
   "repositories": {
     "aquasecurity/trivy": {
       "stars": 38286
