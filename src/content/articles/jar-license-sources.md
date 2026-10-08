@@ -7,6 +7,7 @@ excerpt: "Trivy #10939 adds the Plugin-License-Name manifest attribute as a JAR 
 tags: ["open-source", "testing", "validation"]
 category: "Open Source"
 featured: false
+homepageOrder: 2
 status: "published"
 ---
 

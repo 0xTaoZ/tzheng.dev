@@ -9,7 +9,6 @@ category: "Networking"
 featured: true
 status: "published"
 readingTime: "2 min"
-homepageOrder: 2
 ---
 
 I added wildcard-bind handling to socket-state-triage on 3 October. The tool reads socket listings and prints counts and rows worth reviewing. The change handles addresses written as `*:PORT`.

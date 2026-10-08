@@ -9,7 +9,6 @@ category: "Open Source"
 featured: true
 status: "published"
 readingTime: "2 min"
-homepageOrder: 3
 ---
 
 I work on my own small security tools and also send changes to open-source projects. They give me different kinds of practice. In my own project I can choose the design. In an existing project I need to understand the code and keep other users' behavior working.

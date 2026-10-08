@@ -7,6 +7,7 @@ excerpt: "Prowler #12217: an ECS task definition that could not be described loo
 tags: ["aws", "open-source", "testing", "evidence"]
 category: "Cloud Security"
 featured: false
+homepageOrder: 1
 status: "published"
 ---
 

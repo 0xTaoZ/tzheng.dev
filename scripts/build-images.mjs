@@ -15,6 +15,13 @@ const jobs = [
     { src: "IMG_1419.jpg", name: `portrait-${width}.webp`, width, format: "webp", quality: 74 },
   ]),
   { src: "IMG_1419.jpg", name: "portrait-720.jpg", width: 720, format: "jpeg", quality: 78 },
+  // Homepage backdrop: "Earth at night" by NASA on Unsplash (Unsplash License),
+  // self-hosted so visitors make no third-party request.
+  ...[1100, 2200].flatMap((width) => [
+    { src: "../src/assets/earth-nasa-unsplash.jpg", name: `earth-${width}.avif`, width, format: "avif", quality: 50 },
+    { src: "../src/assets/earth-nasa-unsplash.jpg", name: `earth-${width}.webp`, width, format: "webp", quality: 62 },
+    { src: "../src/assets/earth-nasa-unsplash.jpg", name: `earth-${width}.jpg`, width, format: "jpeg", quality: 68 },
+  ]),
   // Navigation mark is displayed at 32 CSS pixels.
   { src: "logo.png", name: "logo-64.webp", width: 64, format: "webp", quality: 82 },
   { src: "logo.png", name: "logo-64.png", width: 64, format: "png" },

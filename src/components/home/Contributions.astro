@@ -1,17 +1,7 @@
 ---
 import SectionHeader from "./SectionHeader.astro";
-import {
-  combinedStars,
-  compactNumber,
-  contributionCases,
-  mergedPRs,
-  mergedCount,
-  monthlyMerged,
-  openCount,
-  repositoryCount,
-  upstreamRepositories,
-  verifiedAt,
-} from "../../lib/contributions";
+import ContributionBoard from "../ContributionBoard.astro";
+import { contributionCases, mergedPRs } from "../../lib/contributions";
 const priority = ["cfn-lint", "pyinfra", "Prowler"];
 const cases = [...contributionCases].sort(
   (a, b) => priority.indexOf(a.repository) - priority.indexOf(b.repository),
@@ -20,12 +10,6 @@ const countFor = (url: string) => {
   const repository = new URL(url).pathname.split("/").slice(1, 3).join("/");
   return mergedPRs.filter((pr) => pr.repository === repository).length;
 };
-const peak = Math.max(...monthlyMerged.map((month) => month.count));
-const mostMerged = upstreamRepositories[0].merged;
-const verifiedLabel = new Date(`${verifiedAt}T00:00:00Z`).toLocaleDateString(
-  "en",
-  { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" },
-);
 ---
 
 <section id="contributions" class="section">
@@ -43,49 +27,7 @@ const verifiedLabel = new Date(`${verifiedAt}T00:00:00Z`).toLocaleDateString(
       </p>
     </SectionHeader>
 
-    <dl class="stat-row reveal" aria-label="Contribution summary">
-      <div><dt>Merged upstream PRs</dt><dd>{mergedCount}</dd></div>
-      <div><dt>Upstream repositories</dt><dd>{repositoryCount}</dd></div>
-      <div><dt>Combined GitHub stars</dt><dd>{compactNumber(combinedStars)}</dd></div>
-      <div><dt>Open PRs in review</dt><dd>{openCount}</dd></div>
-    </dl>
-
-    <div class="upstream-board reveal">
-      <div class="panel upstream-list">
-        <p class="panel-label"><span>Merged into</span><span>PRs · stars</span></p>
-        <ol>
-          {upstreamRepositories.map((repository) => (
-            <li>
-              <a href={repository.url}>
-                <span class="repo-name"><span class="repo-owner">{repository.owner}/</span>{repository.repo}</span>
-                <span class="repo-bar" aria-hidden="true"><span style={`--share:${(repository.merged / mostMerged) * 100}%`}></span></span>
-                <span class="repo-count">{repository.merged}</span>
-                <span class="repo-stars">★ {compactNumber(repository.stars)}</span>
-              </a>
-            </li>
-          ))}
-        </ol>
-      </div>
-      <figure class="panel merge-chart">
-        <p class="panel-label">
-          <span>Merged per month</span>
-          <span>{monthlyMerged[0].label}–{monthlyMerged.at(-1)!.label} {verifiedAt.slice(0, 4)}</span>
-        </p>
-        <div class="merge-bars">
-          {monthlyMerged.map((month) => (
-            <div class:list={["merge-bar", month.partial && "partial"]}>
-              <span class="merge-value">{month.count}</span>
-              <span class="merge-fill" style={`--height:${Math.max(4, (month.count / peak) * 100)}%`}></span>
-              <span class="merge-month">{month.label}{month.partial && <small>to date</small>}</span>
-            </div>
-          ))}
-        </div>
-        <figcaption>
-          Snapshot verified {verifiedLabel}: merged pull requests by 0xTaoZ
-          outside personal repositories; stars as of the same date.
-        </figcaption>
-      </figure>
-    </div>
+    <ContributionBoard />
 
     <div class="case-grid">
       {cases.map((item) => (

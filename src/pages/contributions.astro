@@ -1,13 +1,12 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ContributionBoard from "../components/ContributionBoard.astro";
 import {
   mergedPRs,
   mergedCount,
-  repositoryCount,
   verifiedAt,
   contributionCases,
-  combinedStars,
   compactNumber,
   openCount,
   openPRs,
@@ -50,180 +49,112 @@ const schema = {
   ogImage="/og/contributions.png"
   structuredData={schema}
 >
-  <main id="main-content" tabindex="-1" class="article-body">
-    <header class="page-header">
+  <main id="main-content" tabindex="-1" class="shell contrib">
+    <header class="page-header contrib-intro">
       <span class="eyebrow">Open source / accepted work</span>
       <h1>Open-source work</h1>
       <p>
         Accepted fixes to cloud, security and infrastructure projects, with the
         reported failure, patch and review linked below.
       </p>
+      <p class="note">
+        Snapshot verified {verifiedAt}. Includes code, tests and documentation.
+        Own repositories, unmerged proposals and closed PRs are excluded.{" "}
+        <a href="https://github.com/search?q=author%3A0xTaoZ+is%3Apr+is%3Amerged+-user%3A0xTaoZ&type=pullrequests">Check the live GitHub record ↗</a>
+      </p>
     </header>
-    <div class="meta">
-      <div>
-        <strong>{mergedCount}</strong>
-        <span>Merged upstream pull requests</span>
-      </div>
-      <div>
-        <strong>{repositoryCount}</strong>
-        <span>Upstream repositories</span>
-      </div>
-      <div>
-        <strong>{compactNumber(combinedStars)}</strong>
-        <span>Combined GitHub stars</span>
-      </div>
-      <div>
-        <strong>{openCount}</strong>
-        <span>Open PRs in review</span>
+
+    <ContributionBoard />
+
+    <div class="contrib-columns">
+      <section id="why" class="contrib-why">
+        <h2>Why contribute upstream?</h2>
+        <p>I contribute fixes to open-source security and infrastructure tools.
+          Returning a fix to the project lets other users receive it too, instead
+          of keeping the same workaround in their own copy.</p>
+        <p>The work includes reading existing code, reproducing the problem,
+          adding tests and going through review. The cases below link to the
+          accepted patch so the change can be checked directly.</p>
+        <a class="link" href="/articles/why-contribute-upstream/">Read the contribution approach ↗</a>
+      </section>
+      <div class="contrib-cases">
+        {contributionCases.map((item) => (
+          <section id={item.repository.toLowerCase()} class="card case">
+            <span class="eyebrow">{item.area}</span>
+            <h2>{item.repository} <span class="case-number">#{item.number}</span></h2>
+            {"context" in item && <p class="meta">{item.context}</p>}
+            <h3>{item.title}</h3>
+            <dl class="case-steps">
+              <div><dt>Problem</dt><dd>{item.problem}</dd></div>
+              <div><dt>Change</dt><dd>{item.change}</dd></div>
+              <div><dt>Reason</dt><dd>{item.lesson}</dd></div>
+            </dl>
+            <p class="note">{item.evidence}</p>
+            <a class="link" href={item.url}>Read the patch and review <span aria-hidden="true">↗</span></a>
+          </section>
+        ))}
       </div>
     </div>
-    <p class="note" style="margin-bottom:35px">
-      Snapshot verified {verifiedAt}. Includes code, tests and documentation.
-      Own repositories, unmerged proposals and closed PRs are excluded.{" "}
-      <a href="https://github.com/search?q=author%3A0xTaoZ+is%3Apr+is%3Amerged+-user%3A0xTaoZ&type=pullrequests">
-        Check the live GitHub record ↗
-      </a>
-    </p>
-    <section id="why" class="card" style="margin:2rem 0">
-      <h2>Why contribute upstream?</h2>
-      <p>I contribute fixes to open-source security and infrastructure tools.
-        Returning a fix to the project lets other users receive it too, instead
-        of keeping the same workaround in their own copy.</p>
-      <p>The work includes reading existing code, reproducing the problem,
-        adding tests and going through review. The cases below link to the
-        accepted patch so the change can be checked directly.</p>
-      <a class="link" href="/articles/why-contribute-upstream/">Read the contribution approach ↗</a>
-    </section>
-    {contributionCases.map((item) => (
-      <section
-        id={item.repository.toLowerCase()}
-        class="card"
-        style="margin:2rem 0"
-      >
-        <div>
-          <span class="eyebrow">{item.area}</span>
-          <h2>{item.repository}</h2>
-          {"context" in item && <p>{item.context}</p>}
-          <p class="meta">#{item.number} / Merged</p>
-        </div>
-        <div>
-          <h3>{item.title}</h3>
-          <p>
-            <strong>Problem.</strong> {item.problem}
-          </p>
-          <p>
-            <strong>Change.</strong> {item.change}
-          </p>
-          <p>
-            <strong>Reason.</strong> {item.lesson}
-          </p>
-          <p class="note">{item.evidence}</p>
-          <a class="link" href={item.url}>
-            Read the patch and review <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </section>
-    ))}
-    <section class="section" style="border-bottom:0" id="record">
+
+    <section class="ledger" id="record">
       <span class="eyebrow">The merged record / {verifiedAt}</span>
       <h2>Merged pull requests</h2>
-      <p style="margin:22px 0 35px;color:var(--muted)">
+      <p class="note">
         A count is only useful if it can be checked. Every entry below links to
-        a merged upstream pull request.
+        a merged upstream pull request, grouped by repository.
       </p>
-      <div class="table-scroll">
-        <table class="pr-ledger">
-          <caption class="note" style="text-align:left;margin-bottom:15px">
-            Merged pull requests authored by 0xTaoZ, grouped by upstream
-            repository.
-          </caption>
-          <thead>
-            <tr>
-              <th scope="col">Repository</th>
-              <th scope="col">Change</th>
-              <th scope="col">Merged</th>
-              <th scope="col">Record</th>
-            </tr>
-          </thead>
-          <tbody>
-            {repositoryGroups.flatMap((group) =>
-              group.prs.map((pr) => {
-                const article = writeUp(pr.url);
-                return (
-                  <tr>
-                    <td>
-                      {group.name}
-                      <span class="merge-label">★ {compactNumber(group.stars)} · Merged</span>
-                    </td>
-                    <td>
-                      {pr.title}
-                      {article && (
-                        <a class="writeup" href={`/articles/${entrySlug(article)}/`}>
-                          Write-up: {article.data.title}
-                        </a>
-                      )}
-                    </td>
-                    <td class="nowrap">
-                      <time datetime={pr.mergedAt}>{formatDate(new Date(`${pr.mergedAt}T00:00:00Z`), "short")}</time>
-                    </td>
-                    <td>
-                      <a href={pr.url}>#{pr.number} ↗</a>
-                    </td>
-                  </tr>
-                );
-              }),
-            )}
-          </tbody>
-        </table>
-      </div>
+      {repositoryGroups.map((group) => (
+        <section class="ledger-group" id={`repo-${group.repo}`}>
+          <header class="ledger-head">
+            <h3><a href={group.url}><span class="repo-owner">{group.owner}/</span>{group.repo}</a></h3>
+            <p class="meta">{group.prs.length} merged · ★ {compactNumber(group.stars)}</p>
+          </header>
+          <ol class="ledger-list">
+            {group.prs.map((pr) => {
+              const article = writeUp(pr.url);
+              return (
+                <li>
+                  <time datetime={pr.mergedAt}>{formatDate(new Date(`${pr.mergedAt}T00:00:00Z`), "short")}</time>
+                  <span class="ledger-title">
+                    <a href={pr.url}>{pr.title}</a>
+                    {article && (
+                      <a class="writeup" href={`/articles/${entrySlug(article)}/`}>Write-up: {article.data.title}</a>
+                    )}
+                  </span>
+                  <a class="ledger-number" href={pr.url}>#{pr.number}</a>
+                </li>
+              );
+            })}
+          </ol>
+        </section>
+      ))}
     </section>
-    <section class="section" style="border-bottom:0" id="in-review">
+
+    <section class="ledger" id="in-review">
       <span class="eyebrow">In review / {verifiedAt}</span>
       <h2>Open pull requests</h2>
       <p class="note">
-        Proposals waiting for maintainer review. They are not counted above
-        until they are merged, and some may be closed without merging.
+        {openCount} proposals waiting for maintainer review. They are not counted
+        above until they are merged, and some may be closed without merging.
       </p>
-      <div class="table-scroll">
-        <table class="pr-ledger">
-          <caption class="note" style="text-align:left;margin-bottom:15px">
-            {openCount} open pull requests authored by 0xTaoZ in upstream repositories.
-          </caption>
-          <thead>
-            <tr>
-              <th scope="col">Repository</th>
-              <th scope="col">Proposed change</th>
-              <th scope="col">Opened</th>
-              <th scope="col">Record</th>
-            </tr>
-          </thead>
-          <tbody>
-            {openPRs.map((pr) => (
-              <tr>
-                <td>
-                  {pr.repository}
-                  <span class="merge-label">Open</span>
-                </td>
-                <td>{pr.title}</td>
-                <td class="nowrap">
-                  <time datetime={pr.openedAt}>{formatDate(new Date(`${pr.openedAt}T00:00:00Z`), "short")}</time>
-                </td>
-                <td>
-                  <a href={pr.url}>#{pr.number} ↗</a>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <ol class="ledger-list open">
+        {openPRs.map((pr) => (
+          <li>
+            <time datetime={pr.openedAt}>{formatDate(new Date(`${pr.openedAt}T00:00:00Z`), "short")}</time>
+            <span class="ledger-title">
+              <a href={pr.url}>{pr.title}</a>
+              <span class="ledger-repo">{pr.repository}</span>
+            </span>
+            <a class="ledger-number" href={pr.url}>#{pr.number}</a>
+          </li>
+        ))}
+      </ol>
     </section>
-    <p class="note">
+
+    <p class="note contrib-disclaimer">
       I am a contributor to these projects, not their maintainer or an employee
       of the organizations behind them. Work still under review is visible on{" "}
-      <a href="https://github.com/search?q=author%3A0xTaoZ+is%3Apr+is%3Aopen+-user%3A0xTaoZ&type=pullrequests">
-        GitHub ↗
-      </a>
-      .
+      <a href="https://github.com/search?q=author%3A0xTaoZ+is%3Apr+is%3Aopen+-user%3A0xTaoZ&type=pullrequests">GitHub ↗</a>.
     </p>
   </main>
 </BaseLayout>

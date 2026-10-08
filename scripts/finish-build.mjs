@@ -15,7 +15,7 @@ const policy = (hashes) =>
     "default-src 'self'",
     `script-src 'self' 'inline-speculation-rules'${hashes.map((hash) => ` '${hash}'`).join("")}`,
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: https://images.unsplash.com",
+    "img-src 'self' data:",
     "font-src 'self'",
     "connect-src 'self'",
     "object-src 'none'",

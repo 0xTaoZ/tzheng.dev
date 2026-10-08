@@ -7,9 +7,9 @@ excerpt: "The event, the affected identity and the tests behind one rule in clou
 tags: ["aws", "cloudtrail", "blue-team"]
 category: "Cloud Security"
 featured: true
+homepageOrder: 3
 status: "published"
 readingTime: "2 min"
-homepageOrder: 1
 project: "cloudtrail-quickscan"
 ---
 

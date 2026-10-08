@@ -89,13 +89,6 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   font: .7rem/1.5 var(--font-mono);
 }
 
-.panel {
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-}
-.panel-label { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: .8rem; text-transform: uppercase; letter-spacing: .1em; }
-
 /* ---------- Navigation ---------- */
 .site-nav {
   position: fixed;
@@ -168,12 +161,12 @@ kbd {
 .hero { position: relative; padding: 7.5rem 0 4.5rem; isolation: isolate; overflow: hidden; }
 .hero-backdrop {
   position: absolute; inset: 0; z-index: -1;
-  /* Same Unsplash photograph, sized for the viewport instead of 3272px. */
-  background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=70&w=2200&fm=jpg&fit=crop');
+  /* "Earth at night" by NASA on Unsplash, self-hosted in three formats. */
+  background-image: url('/img/earth-2200.jpg');
   background-image: image-set(
-    url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=60&w=2200&fm=avif&fit=crop') type('image/avif'),
-    url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=65&w=2200&fm=webp&fit=crop') type('image/webp'),
-    url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=70&w=2200&fm=jpg&fit=crop') type('image/jpeg')
+    url('/img/earth-2200.avif') type('image/avif'),
+    url('/img/earth-2200.webp') type('image/webp'),
+    url('/img/earth-2200.jpg') type('image/jpeg')
   );
   background-size: cover;
   background-position: center 30%;
@@ -188,9 +181,9 @@ kbd {
 @media (max-width: 900px) {
   .hero-backdrop {
     background-image: image-set(
-      url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=60&w=1100&fm=avif&fit=crop') type('image/avif'),
-      url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=65&w=1100&fm=webp&fit=crop') type('image/webp'),
-      url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=70&w=1100&fm=jpg&fit=crop') type('image/jpeg')
+      url('/img/earth-1100.avif') type('image/avif'),
+      url('/img/earth-1100.webp') type('image/webp'),
+      url('/img/earth-1100.jpg') type('image/jpeg')
     );
   }
   .hero-backdrop::after { background: linear-gradient(180deg, rgba(7,9,12,.5) 0%, rgba(7,9,12,.8) 55%, var(--bg) 100%); }
@@ -324,45 +317,6 @@ kbd {
 .section-lede { margin-top: .9rem; max-width: 40rem; color: var(--text-2); font-size: 1.02rem; line-height: 1.65; }
 
 /* ---------- Open source ---------- */
-.stat-row {
-  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px;
-  border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; background: var(--line);
-  margin-bottom: 1rem;
-}
-@media (min-width: 900px) { .stat-row { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.stat-row > div { display: flex; flex-direction: column-reverse; gap: .3rem; padding: 1.2rem 1.3rem; background: var(--surface); }
-.stat-row dt { font: .72rem var(--font-mono); color: var(--text-3); }
-.stat-row dd { font-size: clamp(1.9rem, 3.4vw, 2.5rem); font-weight: 650; letter-spacing: -.04em; line-height: 1; font-variant-numeric: tabular-nums; color: #fff; }
-
-.upstream-board { display: grid; gap: 1rem; margin-bottom: 1rem; }
-@media (min-width: 1000px) { .upstream-board { grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); } }
-.upstream-list, .merge-chart { padding: 1.25rem 1.4rem; }
-.upstream-list li + li { border-top: 1px solid var(--line); }
-.upstream-list a {
-  display: grid; grid-template-columns: minmax(0, 1fr) 6rem 1.6rem 4.2rem; align-items: center; gap: .9rem;
-  padding: .6rem 0; font: .84rem var(--font-mono); color: var(--text);
-}
-.upstream-list a:hover .repo-name { color: #fff; text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: .25rem; }
-.repo-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.repo-owner { color: var(--text-3); }
-.repo-bar { height: 4px; border-radius: 4px; background: var(--line); overflow: hidden; }
-.repo-bar span { display: block; width: var(--share); height: 100%; background: var(--accent); opacity: .75; }
-.repo-count { text-align: right; font-variant-numeric: tabular-nums; }
-.repo-stars { text-align: right; font-size: .76rem; color: var(--text-3); font-variant-numeric: tabular-nums; }
-@media (max-width: 560px) {
-  .upstream-list a { grid-template-columns: minmax(0, 1fr) 1.6rem 3.8rem; }
-  .repo-bar, .repo-owner { display: none; }
-}
-.merge-chart { display: flex; flex-direction: column; }
-.merge-bars { flex: 1; min-height: 10.5rem; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); align-items: end; gap: .9rem; }
-.merge-bar { height: 100%; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; gap: .4rem; font: .72rem var(--font-mono); }
-.merge-value { color: var(--text); font-variant-numeric: tabular-nums; }
-.merge-fill { align-self: end; width: min(100%, 2.4rem); height: var(--height); border-radius: 4px 4px 2px 2px; background: linear-gradient(to top, rgba(57,255,136,.35), rgba(57,255,136,.85)); }
-.merge-bar.partial .merge-fill { background: transparent; border: 1px dashed rgba(57,255,136,.5); }
-.merge-month { text-align: center; line-height: 1.25; color: var(--text-3); }
-.merge-month small { display: block; font-size: .6rem; }
-.merge-chart figcaption { margin-top: 1rem; font-size: .76rem; line-height: 1.55; color: var(--text-3); }
-
 .case-grid { display: grid; gap: 1rem; }
 @media (min-width: 900px) { .case-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .case-card, .project-card {

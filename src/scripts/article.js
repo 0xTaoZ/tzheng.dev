@@ -44,3 +44,23 @@ content?.querySelectorAll("pre").forEach((pre) => {
   pre.replaceWith(wrapper);
   wrapper.append(pre, button);
 });
+
+// Highlight the section currently being read in the table of contents.
+const tocLinks = [...document.querySelectorAll(".toc a[href^='#']")];
+if (tocLinks.length && "IntersectionObserver" in window) {
+  const byId = new Map(tocLinks.map((link) => [decodeURIComponent(link.hash.slice(1)), link]));
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        tocLinks.forEach((link) => link.removeAttribute("aria-current"));
+        byId.get(entry.target.id)?.setAttribute("aria-current", "true");
+      }
+    },
+    { rootMargin: "0px 0px -70% 0px" },
+  );
+  byId.forEach((_, id) => {
+    const heading = document.getElementById(id);
+    if (heading) observer.observe(heading);
+  });
+}
