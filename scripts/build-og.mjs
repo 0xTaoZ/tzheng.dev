@@ -146,4 +146,16 @@ for (const [collection, folder] of [["articles", "articles"], ["projects", "proj
     count++;
   }
 }
+const articleCount = (await readdir("src/content/articles")).filter((file) => file.endsWith(".md")).length;
+const pages = [
+  { file: "contributions", kicker: "tzheng.dev / open source", title: "Open-source work: merged upstream pull requests", command: "$ upstream --merged", meta: `${contributions.merged.length} PRs / ${repositories} repositories / verified ${contributions.verifiedAt}` },
+  { file: "articles", kicker: "tzheng.dev / articles", title: "Security engineering notes and case analyses", command: "$ ls notes/ | wc -l", meta: `${articleCount} articles · monthly archive · RSS` },
+  { file: "projects", kicker: "tzheng.dev / projects", title: "Security tools, a study product and upstream work", command: "$ ls projects/", meta: "Case studies with source, tests and limits" },
+  { file: "system", kicker: "tzheng.dev / system design", title: "How this site is built, checked and delivered", command: "$ astro build && npm test", meta: "Astro · typed content · GitHub Pages" },
+  { file: "topics", kicker: "tzheng.dev / topics", title: "Browse the work by technical area", command: "$ grep -r topic", meta: "Cloud · infrastructure · logs · learning · publishing" },
+];
+for (const page of pages) {
+  await render(card(page), path.join(root, `${page.file}.png`));
+  count++;
+}
 console.log(`Generated ${count} share cards in public/og.`);

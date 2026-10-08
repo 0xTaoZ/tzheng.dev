@@ -1,4 +1,5 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import {
   mergedPRs,
@@ -6,15 +7,47 @@ import {
   repositoryCount,
   verifiedAt,
   contributionCases,
+  combinedStars,
+  compactNumber,
+  openCount,
+  upstreamRepositories,
 } from "../lib/contributions";
-const repositoryGroups = [...new Set(mergedPRs.map((pr) => pr.repository))].map(
-  (name) => ({ name, prs: mergedPRs.filter((pr) => pr.repository === name) }),
-);
+import { entrySlug, formatDate } from "../lib/content";
+const repositoryGroups = upstreamRepositories.map((repository) => ({
+  ...repository,
+  prs: mergedPRs
+    .filter((pr) => pr.repository === repository.name)
+    .sort((a, b) => b.mergedAt.localeCompare(a.mergedAt)),
+}));
+// Link each merged PR to the article that explains it, when one exists.
+const articles = await getCollection("articles", ({ data }) => data.status === "published");
+const writeUp = (url: string) =>
+  articles.find((article) => article.body?.includes(`${url})`));
+const schema = {
+  "@type": "CollectionPage",
+  "@id": "https://tzheng.dev/contributions/#record",
+  name: "Open-source contributions by Haitao Zheng",
+  url: "https://tzheng.dev/contributions/",
+  author: { "@id": "https://tzheng.dev/#person" },
+  dateModified: `${verifiedAt}T00:00:00Z`,
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: mergedCount,
+    itemListElement: mergedPRs.map((pr, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: pr.url,
+      name: `${pr.repository}#${pr.number}: ${pr.title}`,
+    })),
+  },
+};
 ---
 
 <BaseLayout
   title="Open-source work | Haitao Zheng"
-  description="Verified merged contributions to pyinfra, cfn-lint, Prowler and other upstream projects, with technical context and direct evidence."
+  description={`${mergedCount} merged pull requests by Haitao Zheng to ${upstreamRepositories.map((repository) => repository.label).join(", ")}, with technical context and direct links.`}
+  ogImage="/og/contributions.png"
+  structuredData={schema}
 >
   <main id="main-content" tabindex="-1" class="article-body">
     <header class="page-header">
@@ -35,8 +68,12 @@ const repositoryGroups = [...new Set(mergedPRs.map((pr) => pr.repository))].map(
         <span>Upstream repositories</span>
       </div>
       <div>
-        <strong>{verifiedAt.slice(0, 4)}</strong>
-        <span>Year of the verified record</span>
+        <strong>{compactNumber(combinedStars)}</strong>
+        <span>Combined GitHub stars</span>
+      </div>
+      <div>
+        <strong>{openCount}</strong>
+        <span>Open PRs in review</span>
       </div>
     </div>
     <p class="note" style="margin-bottom:35px">
@@ -103,23 +140,37 @@ const repositoryGroups = [...new Set(mergedPRs.map((pr) => pr.repository))].map(
             <tr>
               <th scope="col">Repository</th>
               <th scope="col">Change</th>
+              <th scope="col">Merged</th>
               <th scope="col">Record</th>
             </tr>
           </thead>
           <tbody>
             {repositoryGroups.flatMap((group) =>
-              group.prs.map((pr) => (
-                <tr>
-                  <td>
-                    {group.name}
-                    <span class="merge-label">Merged</span>
-                  </td>
-                  <td>{pr.title}</td>
-                  <td>
-                    <a href={pr.url}>#{pr.number} ↗</a>
-                  </td>
-                </tr>
-              )),
+              group.prs.map((pr) => {
+                const article = writeUp(pr.url);
+                return (
+                  <tr>
+                    <td>
+                      {group.name}
+                      <span class="merge-label">★ {compactNumber(group.stars)} · Merged</span>
+                    </td>
+                    <td>
+                      {pr.title}
+                      {article && (
+                        <a class="writeup" href={`/articles/${entrySlug(article)}/`}>
+                          Write-up: {article.data.title}
+                        </a>
+                      )}
+                    </td>
+                    <td class="nowrap">
+                      <time datetime={pr.mergedAt}>{formatDate(new Date(`${pr.mergedAt}T00:00:00Z`), "short")}</time>
+                    </td>
+                    <td>
+                      <a href={pr.url}>#{pr.number} ↗</a>
+                    </td>
+                  </tr>
+                );
+              }),
             )}
           </tbody>
         </table>

@@ -25,6 +25,7 @@ const resolveFile = async (url) => {
     return null;
   }
 };
+const titles = new Map();
 for (const [file, html] of pages) {
   const route =
     `/${path.relative(root, file).replaceAll(path.sep, "/")}`.replace(
@@ -36,6 +37,17 @@ for (const [file, html] of pages) {
   if ((html.match(/<h1(?:\s|>)/g) || []).length !== 1) fail("expected one h1");
   if ((html.match(/<main(?:\s|>)/g) || []).length !== 1)
     fail("expected one main landmark");
+  const title = html.match(/<title>([^<]*)<\/title>/)?.[1];
+  if (!title) fail("missing title");
+  else if (titles.has(title)) fail(`duplicate title with ${titles.get(title)}`);
+  else titles.set(title, route);
+  const description = html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? "";
+  if (description.length < 50 || description.length > 200)
+    fail(`meta description length ${description.length}`);
+  if (!html.includes('<link rel="canonical"')) fail("missing canonical link");
+  const ogImage = html.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
+  if (!ogImage || !(await resolveFile(new URL(ogImage))))
+    fail(`missing share image ${ogImage}`);
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   if (new Set(ids).size !== ids.length) fail("duplicate IDs");
   for (const match of html.matchAll(/\b(href|src)="([^"]+)"/g)) {

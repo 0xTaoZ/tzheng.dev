@@ -97,13 +97,16 @@ const verifiedLabel = new Date(`${verifiedAt}T00:00:00Z`).toLocaleDateString(
       </p>
       <div class="merge-bars">
         {monthlyMerged.map((month) => (
-          <div class="merge-bar">
+          <div class:list={["merge-bar", month.partial && "partial"]}>
             <span class="merge-value">{month.count}</span>
             <span
               class="merge-fill"
               style={`--height:${Math.max(4, (month.count / peak) * 100)}%`}
             ></span>
-            <span class="merge-month">{month.label}</span>
+            <span class="merge-month">
+              {month.label}
+              {month.partial && <small>to date</small>}
+            </span>
           </div>
         ))}
       </div>

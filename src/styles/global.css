@@ -251,3 +251,10 @@ h2:hover > .heading-anchor, h3:hover > .heading-anchor, .heading-anchor:focus-vi
   .article-pager .pager-next { text-align: left; }
   .article-pager .pager-next .meta { justify-content: flex-start; }
 }
+#article-archive.is-ranked { display: flex; flex-direction: column; }
+#article-archive.is-ranked .grid { display: flex; flex-direction: column; }
+.article-body .meta:has(> div > strong) { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 1px; margin: 1.5rem 0; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--line); }
+.article-body .meta > div:has(> strong) { display: flex; flex-direction: column; gap: .3rem; padding: 1rem 1.1rem; background: rgba(4,8,15,.92); }
+.article-body .meta > div > strong { color: #fff; font: 700 1.9rem/1 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: -.03em; }
+.pr-ledger .writeup { display: block; margin-top: .35rem; color: var(--green) !important; font-size: .8rem; }
+.pr-ledger .nowrap { white-space: nowrap; color: var(--muted); font: .8rem ui-monospace, SFMono-Regular, Menlo, monospace; }

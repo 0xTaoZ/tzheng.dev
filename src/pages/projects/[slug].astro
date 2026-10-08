@@ -63,6 +63,8 @@ const breadcrumbSchema = {
   title={`${project.data.title} | Projects`}
   description={project.data.excerpt}
   keywords={projectKeywords}
+  ogImage={`/og/projects/${entrySlug(project)}.png`}
+  ogImageAlt={project.data.title}
   structuredData={[projectSchema, breadcrumbSchema]}
 >
   <main id="main-content" tabindex="-1" class="article-body">

@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { entrySlug, articleMonth, monthLabel, byPublication } from "../../lib/content";
+import { entrySlug, articleMonth, monthLabel, byPublication, formatDate, readingTime } from "../../lib/content";
 const articles = (await getCollection("articles", ({ data }) => data.status === "published")).sort(byPublication);
 const months = [...new Set(articles.map(articleMonth))].sort().reverse();
 const categories = [...new Set(articles.map(article => article.data.category))].sort();
@@ -15,7 +15,8 @@ const schema = {
   })),
 };
 ---
-<BaseLayout title="Articles | Haitao Zheng" description="Security engineering articles, source-linked case analyses and a monthly learning archive." structuredData={schema}>
+<BaseLayout
+  ogImage="/og/articles.png" title="Articles | Haitao Zheng" description="Security engineering articles, source-linked case analyses and a monthly learning archive." structuredData={schema}>
   <main id="main-content" tabindex="-1" class="shell">
     <section>
       <div class="section-head">
@@ -28,8 +29,8 @@ const schema = {
       <nav class="archive-months" aria-label="Monthly reading archive">
         {months.map(month => <a class="chip" href={`#month-${month}`}>{monthLabel(month)} <span>({articles.filter(article => articleMonth(article) === month).length})</span></a>)}
       </nav>
-      <form class="article-filters" role="search" onsubmit="return false">
-        <label>Search articles<input type="search" id="article-search" name="q" placeholder="Title, topic or keyword" /></label>
+      <form class="article-filters" role="search" action="/articles/" method="get">
+        <label>Search articles<input type="search" id="article-search" name="q" placeholder="Title, topic or keyword  ( / )" autocomplete="off" /></label>
         <label>Category<select id="article-category" name="category"><option value="">All categories</option>{categories.map(category => <option value={category}>{category}</option>)}</select></label>
         <button class="button" type="reset">Clear filters</button>
       </form>
@@ -39,11 +40,11 @@ const schema = {
         {months.map(month => <section id={`month-${month}`} class="archive-group" data-archive-month={month}>
           <h2>{monthLabel(month)}</h2>
           <div class="grid">
-            {articles.filter(article => articleMonth(article) === month).map(article => <article class="card" data-article-card data-category={article.data.category} data-search={[article.data.title,article.data.excerpt,article.data.category,...article.data.tags, article.body ?? ""].join(" ").toLowerCase()}>
-              <div class="meta"><span>{article.data.category}</span><span>{article.data.readingTime}</span></div>
+            {articles.filter(article => articleMonth(article) === month).map(article => <article class="card" data-article-card data-category={article.data.category} data-title={article.data.title.toLowerCase()} data-tags={article.data.tags.join(" ").toLowerCase()} data-excerpt={`${article.data.category} ${article.data.excerpt}`.toLowerCase()} data-search={(article.body ?? "").replace(/\s+/g, " ").toLowerCase()}>
+              <div class="meta"><span>{article.data.category}</span><span>{readingTime(article)}</span></div>
               <h3><a href={`/articles/${entrySlug(article)}/`}>{article.data.title}</a></h3>
               <p>{article.data.excerpt}</p>
-              <p class="meta">Published <time datetime={article.data.date.toISOString().slice(0,10)}>{article.data.date.toLocaleDateString("en",{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"})}</time>{article.data.seriesMonth && <span> · Series: {monthLabel(month)}</span>}</p>
+              <p class="meta">Published <time datetime={article.data.date.toISOString().slice(0,10)}>{formatDate(article.data.date, "short")}</time>{article.data.seriesMonth && <span> · Series: {monthLabel(month)}</span>}</p>
               <div class="meta">{article.data.tags.map(tag => <span class="chip">{tag}</span>)}</div>
               <a class="link" href={`/articles/${entrySlug(article)}/`}>Read article ↗</a>
             </article>)}
@@ -55,22 +56,59 @@ const schema = {
   <script>
     const search = document.querySelector<HTMLInputElement>("#article-search")!;
     const category = document.querySelector<HTMLSelectElement>("#article-category")!;
+    const archive = document.querySelector<HTMLElement>("#article-archive")!;
     const cards = [...document.querySelectorAll<HTMLElement>("[data-article-card]")];
     const groups = [...document.querySelectorAll<HTMLElement>("[data-archive-month]")];
+    // Every term must match somewhere; matches in the title count most, then
+    // tags, then category and excerpt, then the article body.
+    const weights = [["title", 8], ["tags", 5], ["excerpt", 3], ["search", 1]] as const;
+    const score = (card: HTMLElement, terms: string[]) => {
+      let total = 0;
+      for (const term of terms) {
+        const hits = weights.reduce((sum, [field, weight]) => sum + (card.dataset[field]!.includes(term) ? weight : 0), 0);
+        if (hits === 0) return 0;
+        total += hits;
+      }
+      return total || 1;
+    };
+    const syncUrl = () => {
+      const params = new URLSearchParams();
+      if (search.value.trim()) params.set("q", search.value.trim());
+      if (category.value) params.set("category", category.value);
+      const query = params.toString();
+      history.replaceState(null, "", `${location.pathname}${query ? `?${query}` : ""}${query ? "" : location.hash}`);
+    };
     const update = () => {
       const terms = search.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      const ranked = terms.length > 0;
+      archive.classList.toggle("is-ranked", ranked);
       let count = 0;
       for (const card of cards) {
-        card.hidden = !terms.every(term => card.dataset.search!.includes(term)) || (!!category.value && card.dataset.category !== category.value);
+        const value = ranked ? score(card, terms) : 1;
+        card.hidden = value === 0 || (!!category.value && card.dataset.category !== category.value);
+        card.style.order = ranked ? String(-value) : "";
+        card.dataset.score = String(value);
         if (!card.hidden) count++;
       }
-      for (const group of groups) group.hidden = ![...group.querySelectorAll<HTMLElement>("[data-article-card]")].some(card => !card.hidden);
-      document.querySelector("#article-results")!.textContent = `Showing ${count} of ${cards.length} articles`;
+      for (const group of groups) {
+        const visible = [...group.querySelectorAll<HTMLElement>("[data-article-card]")].filter(card => !card.hidden);
+        group.hidden = visible.length === 0;
+        group.style.order = ranked ? String(-Math.max(0, ...visible.map(card => Number(card.dataset.score)))) : "";
+      }
+      const filters = [terms.length && `“${search.value.trim()}”`, category.value].filter(Boolean).join(" in ");
+      document.querySelector("#article-results")!.textContent = `Showing ${count} of ${cards.length} articles${filters ? ` for ${filters}` : ""}${ranked ? ", best matches first" : ""}`;
       (document.querySelector("#article-empty") as HTMLElement).hidden = count !== 0;
     };
-    document.querySelectorAll<HTMLAnchorElement>(".archive-months a").forEach(link => link.addEventListener("click", () => { search.value=""; category.value=""; update(); }));
-    search.addEventListener("input", update);
-    category.addEventListener("change", update);
-    document.querySelector(".article-filters")!.addEventListener("reset", () => { search.value=""; category.value=""; update(); });
+    const params = new URLSearchParams(location.search);
+    search.value = params.get("q") ?? "";
+    if ([...category.options].some(option => option.value === params.get("category"))) category.value = params.get("category")!;
+    document.querySelectorAll<HTMLAnchorElement>(".archive-months a").forEach(link => link.addEventListener("click", () => { search.value=""; category.value=""; update(); syncUrl(); }));
+    search.addEventListener("input", () => { update(); syncUrl(); });
+    category.addEventListener("change", () => { update(); syncUrl(); });
+    document.querySelector(".article-filters")!.addEventListener("reset", () => { search.value=""; category.value=""; update(); syncUrl(); });
+    addEventListener("keydown", (event) => {
+      if (event.key === "/" && document.activeElement?.tagName !== "INPUT") { event.preventDefault(); search.focus(); }
+    });
+    update();
   </script>
 </BaseLayout>

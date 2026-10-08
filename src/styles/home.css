@@ -1569,3 +1569,8 @@ body.pointer-ready .cursor-dot {
 .contact-label { color: #94a3b8; font: .72rem ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; text-transform: uppercase; }
 .contact-value { color: #fff; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .contact-primary .contact-value { font-size: 1.1rem; }
+.merge-month { text-align: center; line-height: 1.25; }
+.merge-month small { display: block; color: #64748b; font-size: .62rem; }
+.merge-bar.partial .merge-fill { background: transparent; border: 1px dashed rgba(125,211,252,.45); box-shadow: none; }
+/* Second project row fills the 12-column grid instead of leaving a gap. */
+@media (min-width: 1024px) { .project-case:nth-child(n+3) { grid-column: span 6; } }

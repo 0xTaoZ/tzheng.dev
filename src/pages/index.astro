@@ -42,7 +42,7 @@ const leading = [...upstreamRepositories]
   .sort((a, b) => b.stars - a.stars)
   .slice(0, 4)
   .map((repository) => repository.label);
-const description = `Haitao Zheng (Tao) studies Cyber Security & Privacy at H-BRS in Germany: ${mergedCount} merged open-source PRs to ${leading.join(", ")} and more, security tools and technical notes.`;
+const description = `Haitao Zheng (Tao), Cyber Security & Privacy student at H-BRS, Germany. ${mergedCount} merged PRs to ${leading.slice(0, -1).join(", ")} and ${leading.at(-1)}; security tools and notes.`;
 const profileSchema = {
   "@type": "ProfilePage",
   "@id": "https://tzheng.dev/#profile",

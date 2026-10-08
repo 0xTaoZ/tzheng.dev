@@ -41,7 +41,12 @@ export const compactNumber = (value: number) =>
 // snapshot date, including months without a merge.
 export const monthlyMerged = (() => {
   const counts = Object.groupBy(mergedPRs, (pr) => pr.mergedAt.slice(0, 7));
-  const months: { month: string; label: string; count: number }[] = [];
+  const months: {
+    month: string;
+    label: string;
+    count: number;
+    partial: boolean;
+  }[] = [];
   const first = mergedPRs.map((pr) => pr.mergedAt).sort()[0].slice(0, 7);
   const cursor = new Date(`${first}-01T00:00:00Z`);
   const end = verifiedAt.slice(0, 7);
@@ -51,6 +56,7 @@ export const monthlyMerged = (() => {
       month,
       label: cursor.toLocaleDateString("en", { month: "short", timeZone: "UTC" }),
       count: counts[month]?.length ?? 0,
+      partial: month === end,
     });
     cursor.setUTCMonth(cursor.getUTCMonth() + 1);
   }

@@ -1,10 +1,21 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { mergedCount, repositoryCount, verifiedAt } from "../lib/contributions";
+const profileSchema = {
+  "@type": "ProfilePage",
+  "@id": "https://tzheng.dev/about/#profile",
+  url: "https://tzheng.dev/about/",
+  name: "About Haitao Zheng (郑海涛)",
+  mainEntity: { "@id": "https://tzheng.dev/#person" },
+  dateModified: `${verifiedAt}T00:00:00Z`,
+};
 ---
 
 <BaseLayout
-  title="About | Haitao Zheng"
-  description="Haitao Zheng: Cyber Security & Privacy student at H-BRS, open-source contributor and builder of security tools in Germany."
+  title="About Haitao Zheng (郑海涛) | Cyber Security & Privacy, H-BRS"
+  description="Haitao Zheng (郑海涛, Tao): Cyber Security & Privacy student at H-BRS in Germany, open-source contributor and builder of small security tools."
+  ogType="profile"
+  structuredData={profileSchema}
 >
   <main id="main-content" tabindex="-1" class="article-body">
     <header class="page-header">
@@ -20,13 +31,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </header>
     <div class="profile-grid">
       <aside class="profile-aside">
-        <img
-          src="/portrait-small.webp"
-          alt="Haitao Zheng"
-          width="480"
-          height="600"
-          loading="lazy"
-        />
+        <picture>
+          <source type="image/avif" srcset="/img/portrait-480.avif 480w, /img/portrait-720.avif 720w" sizes="(max-width: 900px) 70vw, 320px" />
+          <img
+            src="/img/portrait-480.webp"
+            srcset="/img/portrait-480.webp 480w, /img/portrait-720.webp 720w"
+            sizes="(max-width: 900px) 70vw, 320px"
+            alt="Haitao Zheng"
+            width="480"
+            height="600"
+            fetchpriority="high"
+          />
+        </picture>
         <p class="note">Germany / English · German · Mandarin</p>
         <a class="link" href="https://github.com/0xTaoZ">
           GitHub / 0xTaoZ ↗
@@ -116,6 +132,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
               and database-backed application work.
             </p>
           </div>
+        </section>
+        <section class="timeline" lang="zh-CN" id="zh">
+          <span class="eyebrow">中文简介</span>
+          <p>
+            我是郑海涛（Haitao Zheng，英文名 Tao），在德国波恩-莱茵-锡格应用科学大学（H-BRS）
+            攻读网络安全与隐私（Cyber Security &amp; Privacy）本科。我通过编写小型安全工具、
+            阅读现有系统并向开源项目提交修复来学习。
+          </p>
+          <p>
+            截至 {verifiedAt}，我已有 {mergedCount} 个拉取请求被合并进 {repositoryCount}
+            个上游开源项目，包括 pyinfra、cfn-lint 和 Prowler。项目、文章和完整的贡献记录都附有源码与评审链接。
+          </p>
         </section>
         <section class="timeline">
           <span class="eyebrow">Beyond the keyboard</span>
