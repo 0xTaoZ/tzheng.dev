@@ -9,17 +9,12 @@ const projects = await getCollection("projects");
 <BaseLayout
   ogImage="/og/system.png" title="System Design | tzheng.dev" description="Content records, frontend components and the static delivery path for tzheng.dev.">
   
-  <!-- Cursor glow elements (same as index.html) -->
-  <div id="sys-cursor-field" class="sys-cursor-field" aria-hidden="true"></div>
-  <div id="sys-cursor-dot" class="sys-cursor-dot" aria-hidden="true"></div>
-  <!-- Ambient particle canvas -->
-  <canvas id="sys-ambient" class="sys-ambient-canvas" aria-hidden="true"></canvas>
 
   <header class="sys-hero shell">
     <div class="hero-grid">
       <div class="hero-narrative">
         <span class="eyebrow">BEHIND THIS SITE</span>
-        <h1 class="sys-title">System Design.</h1>
+        <h1 class="sys-title">System design</h1>
         <p class="sys-subtitle">Content records, frontend components and the static delivery path for tzheng.dev.</p>
         <div class="narrative-text">
           <p>The homepage keeps its custom visual presentation. Articles and project cases use typed records and stable routes.</p>
@@ -27,7 +22,7 @@ const projects = await getCollection("projects");
         </div>
       </div>
       <aside class="hero-profile">
-        <div class="sys-card profile-card" data-tilt>
+        <div class="sys-card profile-card">
           <div class="sys-card-inner">
             <h3 class="profile-heading">SYSTEM PROFILE</h3>
             <div class="profile-grid">
@@ -101,7 +96,7 @@ const projects = await getCollection("projects");
 
         <p>The homepage, content records and delivery process can now change independently. The homepage selects four cases; the complete project index exposes every case record.</p>
 
-        <div class="sys-card reveal" data-tilt>
+        <div class="sys-card reveal">
           <div class="sys-card-inner ba-grid">
             <div class="ba-col">
               <div class="ba-label">BEFORE</div>
@@ -137,7 +132,7 @@ const projects = await getCollection("projects");
         <p>Visitors do not need accounts to read a project. An article does not need a database query on every request. A portfolio does not need an authenticated application runtime merely because such a stack is available.</p>
         <p>That made static generation the natural default. Astro owns the structural layer of the site.</p>
         
-        <div class="sys-card reveal" data-tilt>
+        <div class="sys-card reveal">
           <div class="sys-card-inner">
             <p class="arch-intro"><strong>Astro owns the structural layer:</strong></p>
             <div class="chip-row">
@@ -158,7 +153,7 @@ const projects = await getCollection("projects");
 
         <p>The system can be understood as a sequence of transformations:</p>
 
-        <div class="sys-card reveal" data-tilt>
+        <div class="sys-card reveal">
           <div class="sys-card-inner flow-row">
             <div class="flow-node">
               <h4>AUTHORING</h4>
@@ -215,7 +210,7 @@ const projects = await getCollection("projects");
         <p>Homepage cards, indexes and detail routes read typed collection records.</p>
         <p>Articles and projects are no longer treated as permanent fragments inside a large homepage. They exist as independent Markdown documents inside structured collections.</p>
 
-        <div class="sys-card reveal" data-tilt style="margin: 2rem 0;">
+        <div class="sys-card reveal" style="margin: 2rem 0;">
           <div class="sys-card-inner">
             <h4 class="schema-title">DIRECTORY STRUCTURE</h4>
             <pre class="dir-tree"><code>src/
@@ -229,7 +224,7 @@ const projects = await getCollection("projects");
         <p>Each content type follows a strict Zod schema defined in <code>src/content.config.ts</code>.</p>
 
         <div class="schema-row">
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <h4 class="schema-title">ARTICLE SCHEMA</h4>
               <pre><code>title: z.string()
@@ -247,7 +242,7 @@ status: z.enum(["draft", "published", "archived"]).default("published")
 readingTime: z.string().optional()  // estimated from the body when absent</code></pre>
             </div>
           </div>
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <h4 class="schema-title">PROJECT SCHEMA</h4>
               <pre><code>title: z.string()
@@ -276,7 +271,7 @@ outcome: z.string().optional()</code></pre>
 
         <p style="margin-top: 2rem;">The content model creates a boundary between what exists and how it is presented. The entire transformation pipeline ensures content is validated before it ever reaches a layout:</p>
 
-        <div class="sys-card reveal" data-tilt>
+        <div class="sys-card reveal">
           <div class="sys-card-inner pipeline">
             <div class="pipe-node">Markdown FILE</div>
             <div class="pipe-sep">&darr;</div>
@@ -304,7 +299,7 @@ outcome: z.string().optional()</code></pre>
         <p>Every meaningful change begins in Git. Code, content, configuration, metadata, and interface changes enter the same version-controlled history. That makes changes reviewable, traceable, and reversible.</p>
         <p>But moving from directly publishable files to Astro introduced an important new boundary. The repository itself is no longer the finished website. It is source code. The production website has to be built.</p>
         
-        <div class="sys-card reveal" data-tilt style="margin: 2rem 0;">
+        <div class="sys-card reveal" style="margin: 2rem 0;">
           <div class="sys-card-inner pipeline">
             <div class="pipe-node">PUSH TO MAIN</div>
             <div class="pipe-sep">&darr;</div>
@@ -346,7 +341,7 @@ outcome: z.string().optional()</code></pre>
         <p>The homepage retains its dark palette, Earth background, terminal and custom motion. Its sections are native Astro components; project and article cards read the same records as their detail pages.</p>
         <p>Articles, project case studies, and system pages have a different responsibility. They need to remain readable for longer periods. They need predictable spacing. They need stable typography. They need layouts that survive different amounts of content.</p>
 
-        <div class="sys-card reveal" data-tilt style="margin: 2.5rem 0;">
+        <div class="sys-card reveal" style="margin: 2.5rem 0;">
           <div class="sys-card-inner layer-stack">
             <div class="layer-box layer-identity">
               <h4>IDENTITY LAYER</h4>
@@ -367,7 +362,7 @@ outcome: z.string().optional()</code></pre>
 
         <div class="callout-block">Desktop and mobile are not scaled versions of the same composition.</div>
         
-        <div class="sys-card reveal" data-tilt style="margin: 2rem 0;">
+        <div class="sys-card reveal" style="margin: 2rem 0;">
           <div class="sys-card-inner transform-grid">
             <div class="transform-col">
               <div class="transform-label">DESKTOP</div>
@@ -405,7 +400,7 @@ outcome: z.string().optional()</code></pre>
         <p>The difficult part was not choosing a framework. It was deciding what to preserve, what to rebuild, and where the boundaries actually belonged.</p>
 
         <div class="challenge-stack">
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <h4 class="challenge-title">Challenge 01 &mdash; Migrating Without Flattening the Interface</h4>
               <div class="pdr-grid">
@@ -419,7 +414,7 @@ outcome: z.string().optional()</code></pre>
             </div>
           </div>
           
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <h4 class="challenge-title">Challenge 02 &mdash; Changing the Deployment Boundary</h4>
               <div class="pdr-grid">
@@ -433,7 +428,7 @@ outcome: z.string().optional()</code></pre>
             </div>
           </div>
           
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <h4 class="challenge-title">Challenge 03 &mdash; Build Systems Expose Parser Boundaries</h4>
               <div class="pdr-grid">
@@ -447,7 +442,7 @@ outcome: z.string().optional()</code></pre>
             </div>
           </div>
 
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <h4 class="challenge-title">Challenge 04 &mdash; Mobile Is Not Desktop at a Smaller Size</h4>
               <div class="pdr-grid">
@@ -465,7 +460,7 @@ outcome: z.string().optional()</code></pre>
         <h4 class="ch-sub" style="margin-top: 4rem;">MIGRATION LOG: JULY 2026</h4>
         
         <div class="migration-log">
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <div class="migration-entry-head">
                 <span class="migration-date">2026-07-03</span>
@@ -476,7 +471,7 @@ outcome: z.string().optional()</code></pre>
             </div>
           </div>
 
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <div class="migration-entry-head">
                 <span class="migration-date">2026-07-03</span>
@@ -487,7 +482,7 @@ outcome: z.string().optional()</code></pre>
             </div>
           </div>
 
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <div class="migration-entry-head">
                 <span class="migration-date">2026-07-03</span>
@@ -498,7 +493,7 @@ outcome: z.string().optional()</code></pre>
             </div>
           </div>
 
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <div class="migration-entry-head">
                 <span class="migration-date">2026-07-03</span>
@@ -509,7 +504,7 @@ outcome: z.string().optional()</code></pre>
             </div>
           </div>
 
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <div class="migration-entry-head">
                 <span class="migration-date">2026-07-06</span>
@@ -520,7 +515,7 @@ outcome: z.string().optional()</code></pre>
             </div>
           </div>
 
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <div class="migration-entry-head">
                 <span class="migration-date">2026-07-06</span>
@@ -531,7 +526,7 @@ outcome: z.string().optional()</code></pre>
             </div>
           </div>
 
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <div class="migration-entry-head">
                 <span class="migration-date">2026-07-06</span>
@@ -558,7 +553,7 @@ outcome: z.string().optional()</code></pre>
         <h4 class="ch-sub">TRUST SURFACE</h4>
 
         <div class="trust-row">
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <h4 class="trust-title trust-exists">IDENTITY & ACCESS</h4>
               <ul class="trust-list">
@@ -568,7 +563,7 @@ outcome: z.string().optional()</code></pre>
               </ul>
             </div>
           </div>
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <h4 class="trust-title trust-exists">SUPPLY CHAIN</h4>
               <ul class="trust-list">
@@ -580,7 +575,7 @@ outcome: z.string().optional()</code></pre>
               </ul>
             </div>
           </div>
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <h4 class="trust-title trust-exists">BUILD & DEPLOYMENT</h4>
               <ul class="trust-list">
@@ -591,7 +586,7 @@ outcome: z.string().optional()</code></pre>
               </ul>
             </div>
           </div>
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <h4 class="trust-title trust-exists">DELIVERY</h4>
               <ul class="trust-list">
@@ -601,7 +596,7 @@ outcome: z.string().optional()</code></pre>
               </ul>
             </div>
           </div>
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <h4 class="trust-title trust-exists">CLIENT</h4>
               <ul class="trust-list">
@@ -616,7 +611,7 @@ outcome: z.string().optional()</code></pre>
         <h4 class="ch-sub">CI/CD BOUNDARIES</h4>
         <p>The deployment workflow requests only the permissions required for its real job. It explicitly scopes the permissions required for GitHub Pages deployment instead of relying on unrestricted repository write access:</p>
 
-        <div class="sys-card reveal" data-tilt style="margin-bottom: 2rem;">
+        <div class="sys-card reveal" style="margin-bottom: 2rem;">
           <div class="sys-card-inner pipeline">
             <div class="pipe-node">SOURCE (Repository)</div>
             <div class="pipe-sep">&darr;</div>
@@ -641,7 +636,7 @@ outcome: z.string().optional()</code></pre>
         </a>
 
         <h4 class="ch-sub">WHAT THE SYSTEM INTENTIONALLY AVOIDS</h4>
-        <div class="sys-card reveal" data-tilt>
+        <div class="sys-card reveal">
           <div class="sys-card-inner">
             <ul class="trust-list">
               <li>No runtime content database</li>
@@ -656,7 +651,7 @@ outcome: z.string().optional()</code></pre>
         <p style="margin-top: 1.5rem;">The current reading and contact flows do not require a backend. A future authenticated feature would need a separate assessment of credentials, sessions and operational responsibility.</p>
 
         <h4 class="ch-sub">RESIDUAL RISK</h4>
-        <div class="sys-card reveal" data-tilt>
+        <div class="sys-card reveal">
           <div class="sys-card-inner">
             <h4 class="trust-title trust-absent">WHAT STATIC ARCHITECTURE DOES NOT SOLVE</h4>
             <ul class="trust-list" style="columns: 1;">
@@ -675,7 +670,7 @@ outcome: z.string().optional()</code></pre>
 
         <h4 class="ch-sub">TRADE-OFFS</h4>
         <div class="trust-row">
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <h4 class="trust-title trust-exists">WHAT THE SYSTEM GAINS</h4>
               <ul class="trust-list">
@@ -689,7 +684,7 @@ outcome: z.string().optional()</code></pre>
               </ul>
             </div>
           </div>
-          <div class="sys-card reveal" data-tilt>
+          <div class="sys-card reveal">
             <div class="sys-card-inner">
               <h4 class="trust-title trust-absent">WHAT THE SYSTEM GIVES UP</h4>
               <ul class="trust-list">
@@ -710,7 +705,7 @@ outcome: z.string().optional()</code></pre>
       </section>
 
       <!-- THE PRINCIPLE -->
-      <div class="sys-card principle-card reveal" data-tilt style="margin-top: 6rem; margin-bottom: 2rem;">
+      <div class="sys-card principle-card reveal" style="margin-top: 6rem; margin-bottom: 2rem;">
         <div class="sys-card-inner">
           <h4 class="principle-title">THE PRINCIPLE</h4>
           <h2 class="principle-heading">Complexity has to earn its place.</h2>
@@ -734,63 +729,18 @@ outcome: z.string().optional()</code></pre>
 <style is:global>
 /* ===================================================================
    system.astro scoped styles
-   Design system: mirrors index.html card, cursor, canvas, tilt logic
+   Uses the shared tokens from tokens.css; chapters and cards stay flat.
    =================================================================== */
-
-/* --- Cursor glow (same CSS as index.html .cursor-field/.cursor-dot) --- */
-.sys-cursor-field,
-.sys-cursor-dot {
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 120;
-    pointer-events: none;
-    border-radius: 999px;
-    opacity: 0;
-    transform: translate3d(-50%, -50%, 0);
-    transition: opacity .25s ease;
-}
-.sys-cursor-field {
-    width: 21rem;
-    height: 21rem;
-    background: radial-gradient(circle, rgba(125,211,252,.14), rgba(57,255,136,.055) 36%, transparent 68%);
-    mix-blend-mode: screen;
-    filter: blur(2px);
-}
-.sys-cursor-dot {
-    width: .42rem;
-    height: .42rem;
-    background: rgba(186,230,253,.95);
-    box-shadow: 0 0 18px rgba(125,211,252,.85);
-}
-body.sys-pointer-ready .sys-cursor-field,
-body.sys-pointer-ready .sys-cursor-dot {
-    opacity: 1;
-}
-
-/* --- Ambient Canvas --- */
-.sys-ambient-canvas {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0.32;
-    mix-blend-mode: screen;
-    contain: strict;
-    transform: translateZ(0);
-}
 
 /* --- Reveal animation (same as index.html) --- */
 .reveal {
     opacity: 0;
-    transform: translateY(60px) scale(0.95);
-    transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: opacity, transform;
+    transform: translateY(10px);
+    transition: opacity .6s var(--ease), transform .6s var(--ease);
 }
 .reveal.active {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: none;
 }
 
 /* --- Hero --- */
@@ -843,7 +793,7 @@ body.sys-pointer-ready .sys-cursor-dot {
 /* --- Profile card specifics --- */
 .profile-card { width: 100%; }
 .profile-heading {
-    font: 700 .72rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 700 .72rem var(--font-mono);
     color: var(--muted);
     letter-spacing: .12em;
     margin: 0 0 1.2rem 0;
@@ -856,7 +806,7 @@ body.sys-pointer-ready .sys-cursor-dot {
 .profile-fact b {
     display: block;
     color: var(--muted);
-    font: 500 .68rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 500 .68rem var(--font-mono);
     margin-bottom: .25rem;
 }
 .profile-fact span {
@@ -964,7 +914,7 @@ body.sys-pointer-ready .sys-cursor-dot {
 }
 .chapter-list-mobile .ch-link {
     color: var(--muted);
-    font: .8rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: .8rem var(--font-mono);
     padding: .3rem .6rem;
     border-radius: 6px;
     transition: all .3s ease;
@@ -1003,7 +953,7 @@ body.sys-pointer-ready .sys-cursor-dot {
     }
 }
 .rail-label {
-    font: .7rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: .7rem var(--font-mono);
     color: var(--blue);
     letter-spacing: .12em;
     margin-bottom: 1.5rem;
@@ -1065,7 +1015,7 @@ body.sys-pointer-ready .sys-cursor-dot {
     scroll-margin-top: 140px;
 }
 .ch-kicker {
-    font: .9rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: .9rem var(--font-mono);
     color: var(--blue);
     letter-spacing: .05em;
     margin: 0 0 1.2rem 0;
@@ -1090,7 +1040,7 @@ body.sys-pointer-ready .sys-cursor-dot {
     border: 1px solid rgba(57,255,136,.14);
     border-radius: .45rem;
     padding: .1rem .35rem;
-    font: .88rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: .88rem var(--font-mono);
 }
 
 /* --- Callout --- */
@@ -1128,7 +1078,7 @@ body.sys-pointer-ready .sys-cursor-dot {
     box-shadow: 0 0 24px rgba(125,211,252,.08);
 }
 .ba-label {
-    font: 700 .72rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 700 .72rem var(--font-mono);
     color: var(--muted);
     letter-spacing: .1em;
     margin-bottom: .9rem;
@@ -1183,7 +1133,7 @@ body.sys-pointer-ready .sys-cursor-dot {
     min-width: 100px;
 }
 .flow-node h4 {
-    font: 700 .68rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 700 .68rem var(--font-mono);
     color: var(--blue);
     letter-spacing: .1em;
     margin: 0 0 .5rem 0;
@@ -1217,7 +1167,7 @@ body.sys-pointer-ready .sys-cursor-dot {
     .schema-row { grid-template-columns: 1fr 1fr; }
 }
 .schema-title {
-    font: 700 .72rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 700 .72rem var(--font-mono);
     color: var(--muted);
     letter-spacing: .1em;
     margin: 0 0 1rem 0;
@@ -1226,7 +1176,7 @@ body.sys-pointer-ready .sys-cursor-dot {
 }
 .sys-card pre {
     margin: 0;
-    font: .82rem/1.7 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: .82rem/1.7 var(--font-mono);
     color: var(--green);
 }
 
@@ -1238,7 +1188,7 @@ body.sys-pointer-ready .sys-cursor-dot {
     gap: .4rem;
 }
 .pipe-node {
-    font: 700 .8rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 700 .8rem var(--font-mono);
     color: #f8fafc;
     padding: .75rem 1.5rem;
     border: 1px solid rgba(148,163,184,.12);
@@ -1276,7 +1226,7 @@ body.sys-pointer-ready .sys-cursor-dot {
     box-shadow: inset 0 0 20px rgba(125,211,252,.06);
 }
 .layer-box h4 {
-    font: 700 .82rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 700 .82rem var(--font-mono);
     color: var(--blue);
     margin: 0 0 .6rem 0;
 }
@@ -1315,7 +1265,7 @@ body.sys-pointer-ready .sys-cursor-dot {
     border-top: 1px solid rgba(148,163,184,.10);
 }
 .pdr-label {
-    font: 700 .72rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 700 .72rem var(--font-mono);
     color: var(--blue);
 }
 .pdr-decision { color: var(--green); }
@@ -1336,7 +1286,7 @@ body.sys-pointer-ready .sys-cursor-dot {
     .trust-row { grid-template-columns: 1fr 1fr; }
 }
 .trust-title {
-    font: 700 .76rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 700 .76rem var(--font-mono);
     letter-spacing: .1em;
     margin: 0 0 1rem 0;
 }
@@ -1398,11 +1348,11 @@ body.sys-pointer-ready .sys-cursor-dot {
     margin-bottom: .55rem;
 }
 .migration-date {
-    font: 500 .72rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 500 .72rem var(--font-mono);
     color: var(--muted);
 }
 .migration-sha {
-    font: 500 .72rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 500 .72rem var(--font-mono);
     color: var(--blue);
     text-decoration: none;
     border-bottom: 1px dashed rgba(125,211,252,.3);
@@ -1424,7 +1374,7 @@ body.sys-pointer-ready .sys-cursor-dot {
 
 /* --- Directory tree --- */
 .dir-tree {
-    font: .82rem/1.8 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: .82rem/1.8 var(--font-mono);
     color: var(--green);
     background: transparent;
     border: none;
@@ -1439,7 +1389,7 @@ body.sys-pointer-ready .sys-cursor-dot {
     align-items: center;
     gap: .4rem;
     margin-top: 1.5rem;
-    font: 500 .78rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 500 .78rem var(--font-mono);
     color: var(--blue);
     border-bottom: 1px dashed rgba(125,211,252,.3);
     transition: color .2s ease;
@@ -1453,7 +1403,7 @@ body.sys-pointer-ready .sys-cursor-dot {
     margin: .5rem 0 0;
 }
 .perm-list li {
-    font: .82rem/1.7 ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: .82rem/1.7 var(--font-mono);
     color: var(--green);
     padding: .15rem 0;
 }
@@ -1464,7 +1414,7 @@ body.sys-pointer-ready .sys-cursor-dot {
     padding: clamp(2rem, 5vw, 4rem);
 }
 .principle-title {
-    font: 700 .76rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 700 .76rem var(--font-mono);
     color: var(--blue);
     letter-spacing: .12em;
     margin: 0 0 1.5rem 0;
@@ -1499,7 +1449,7 @@ body.sys-pointer-ready .sys-cursor-dot {
 
 /* --- Sub-heading inside chapters --- */
 .ch-sub {
-    font: 700 .76rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 700 .76rem var(--font-mono);
     color: var(--blue);
     letter-spacing: .08em;
     margin: 4rem 0 1.5rem 0;
@@ -1533,7 +1483,7 @@ body.sys-pointer-ready .sys-cursor-dot {
     margin-bottom: .5rem;
 }
 .transform-label {
-    font: 700 .72rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    font: 700 .72rem var(--font-mono);
     color: var(--muted);
     letter-spacing: .1em;
     margin-bottom: .9rem;
@@ -1544,168 +1494,29 @@ body.sys-pointer-ready .sys-cursor-dot {
     background: rgba(125,211,252,.06);
 }
 .transform-accent li { color: #f8fafc; }
+
+/* Flat, restrained surfaces to match the rest of the site. */
+.sys-card {
+    background: var(--surface) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transform: none !important;
+    transition: border-color .2s ease !important;
+}
+.sys-card:hover { border-color: var(--line-strong) !important; }
+.sys-card::before, .sys-card::after { display: none !important; }
+.sys-glass-bar { background: rgba(7, 9, 12, .9); backdrop-filter: blur(12px); top: 3.6rem; }
+.chapter-list-mobile .ch-link[aria-current="page"] { box-shadow: none; background: var(--surface-2); border-color: var(--line-strong); }
+.sys-title { font-weight: 680; letter-spacing: -.045em; }
 </style>
 
 <script>
-  // === System page interactive effects ===
-  // Ported directly from index.html's DOMContentLoaded block.
+  // System page: reveal chapters once and keep the chapter rail in sync.
   const initSystemEffects = () => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const isMobile = () => window.matchMedia("(max-width: 768px)").matches;
-    const finePointer = window.matchMedia("(pointer: fine)").matches;
-
-    // ---------- 1. Cursor glow (exact index.html logic) ----------
-    const pointer = {
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2,
-      sx: window.innerWidth / 2,
-      sy: window.innerHeight / 2
-    };
-
-    if (!reducedMotion && finePointer) {
-      const cursorField = document.getElementById('sys-cursor-field');
-      const cursorDot = document.getElementById('sys-cursor-dot');
-      let cursorFrame: number | null = null;
-
-      const renderPointer = () => {
-        cursorFrame = null;
-        pointer.sx += (pointer.x - pointer.sx) * 0.16;
-        pointer.sy += (pointer.y - pointer.sy) * 0.16;
-        const x = `${pointer.sx}px`;
-        const y = `${pointer.sy}px`;
-        if (cursorField) cursorField.style.transform = `translate3d(${x}, ${y}, 0) translate(-50%, -50%)`;
-        if (cursorDot) cursorDot.style.transform = `translate3d(${pointer.x}px, ${pointer.y}px, 0) translate(-50%, -50%)`;
-        if (Math.abs(pointer.x - pointer.sx) > 0.1 || Math.abs(pointer.y - pointer.sy) > 0.1) {
-          cursorFrame = requestAnimationFrame(renderPointer);
-        }
-      };
-
-      window.addEventListener('pointermove', (e: PointerEvent) => {
-        pointer.x = e.clientX;
-        pointer.y = e.clientY;
-        document.body.classList.add('sys-pointer-ready');
-        if (cursorFrame === null) cursorFrame = requestAnimationFrame(renderPointer);
-      }, { passive: true });
-      window.addEventListener('pointerleave', () => document.body.classList.remove('sys-pointer-ready'), { passive: true });
-    }
-
-    // ---------- 2. Ambient particle canvas (exact index.html logic) ----------
-    const canvas = document.getElementById("sys-ambient") as HTMLCanvasElement | null;
-    if (canvas && !reducedMotion) {
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-        let width = 0;
-        let height = 0;
-        let particles: Array<{x: number; y: number; vx: number; vy: number; r: number}> = [];
-        let raf: number | null = null;
-        let resizeFrame: number | null = null;
-
-        const resizeCanvas = () => {
-          const dpr = Math.min(window.devicePixelRatio || 1, isMobile() ? 1.25 : 2);
-          width = canvas.width = Math.floor(window.innerWidth * dpr);
-          height = canvas.height = Math.floor(window.innerHeight * dpr);
-          canvas.style.width = `${window.innerWidth}px`;
-          canvas.style.height = `${window.innerHeight}px`;
-          const count = isMobile() ? Math.min(34, Math.floor(window.innerWidth / 12)) : Math.min(80, Math.floor(window.innerWidth / 18));
-          particles = Array.from({ length: count }, () => ({
-            x: Math.random() * width,
-            y: Math.random() * height,
-            vx: (Math.random() - 0.5) * 0.16 * dpr,
-            vy: (Math.random() - 0.5) * 0.16 * dpr,
-            r: (Math.random() * 0.8 + 0.55) * dpr
-          }));
-        };
-
-        const draw = () => {
-          if (document.hidden) { raf = null; return; }
-          ctx.clearRect(0, 0, width, height);
-          const scale = width / Math.max(1, window.innerWidth);
-          const px = pointer.sx * scale;
-          const py = pointer.sy * scale;
-          const glow = ctx.createRadialGradient(px, py, 0, px, py, 260 * scale);
-          glow.addColorStop(0, "rgba(125, 211, 252, 0.105)");
-          glow.addColorStop(0.42, "rgba(57, 255, 136, 0.045)");
-          glow.addColorStop(1, "rgba(125, 211, 252, 0)");
-          ctx.fillStyle = glow;
-          ctx.fillRect(0, 0, width, height);
-          ctx.fillStyle = "rgba(125, 211, 252, 0.38)";
-          ctx.strokeStyle = "rgba(125, 211, 252, 0.10)";
-          const linkDistance = (isMobile() ? 92 : 150) * Math.min(window.devicePixelRatio || 1, 2);
-          particles.forEach((p, index) => {
-            const mdx = px - p.x;
-            const mdy = py - p.y;
-            const md = Math.hypot(mdx, mdy);
-            if (finePointer && md < 220 * scale) {
-              const force = (1 - md / (220 * scale)) * 0.018;
-              p.vx += mdx * force / Math.max(md, 1);
-              p.vy += mdy * force / Math.max(md, 1);
-            }
-            p.vx *= 0.995;
-            p.vy *= 0.995;
-            p.x += p.vx;
-            p.y += p.vy;
-            if (p.x < 0 || p.x > width) p.vx *= -1;
-            if (p.y < 0 || p.y > height) p.vy *= -1;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fill();
-            for (let i = index + 1; i < particles.length; i++) {
-              const q = particles[i];
-              const dx = p.x - q.x;
-              const dy = p.y - q.y;
-              const distance = Math.hypot(dx, dy);
-              if (distance < linkDistance) {
-                ctx.globalAlpha = 1 - distance / linkDistance;
-                ctx.beginPath();
-                ctx.moveTo(p.x, p.y);
-                ctx.lineTo(q.x, q.y);
-                ctx.stroke();
-                ctx.globalAlpha = 1;
-              }
-            }
-          });
-          raf = requestAnimationFrame(draw);
-        };
-
-        const restartCanvas = () => {
-          if (raf !== null) cancelAnimationFrame(raf);
-          resizeCanvas();
-          draw();
-        };
-        restartCanvas();
-        window.addEventListener("resize", () => {
-          if (resizeFrame !== null) cancelAnimationFrame(resizeFrame);
-          resizeFrame = requestAnimationFrame(() => { resizeFrame = null; restartCanvas(); });
-        }, { passive: true });
-        document.addEventListener("visibilitychange", () => {
-          if (document.hidden && raf !== null) { cancelAnimationFrame(raf); raf = null; }
-          else if (!document.hidden && raf === null) { restartCanvas(); }
-        });
-      }
-    }
-
-    // ---------- 3. Card tilt + mouse glow (exact index.html logic) ----------
-    if (!reducedMotion && !isMobile()) {
-      document.querySelectorAll('[data-tilt]').forEach((card) => {
-        const el = card as HTMLElement;
-        el.addEventListener('mousemove', (e: Event) => {
-          const me = e as MouseEvent;
-          const r = el.getBoundingClientRect();
-          const x = me.clientX - r.left;
-          const y = me.clientY - r.top;
-          const rx = ((y / r.height) - 0.5) * -5;
-          const ry = ((x / r.width) - 0.5) * 5;
-          el.style.setProperty('--mx', `${(x / r.width) * 100}%`);
-          el.style.setProperty('--my', `${(y / r.height) * 100}%`);
-          el.style.setProperty('--tilt-x', `${rx}deg`);
-          el.style.setProperty('--tilt-y', `${ry}deg`);
-        });
-        el.addEventListener('mouseleave', () => {
-          el.style.setProperty('--tilt-x', '0deg');
-          el.style.setProperty('--tilt-y', '0deg');
-        });
-      });
-    }
 
     // ---------- 4. Reveal animation (same IntersectionObserver as index.html) ----------
     const revealObserver = new IntersectionObserver((entries) => {

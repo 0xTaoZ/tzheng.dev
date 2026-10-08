@@ -15,7 +15,8 @@
     "postbuild": "node scripts/finish-build.mjs",
     "images": "node scripts/build-images.mjs",
     "og": "node scripts/build-og.mjs",
-    "contributions": "node scripts/refresh-contributions.mjs"
+    "contributions": "node scripts/refresh-contributions.mjs",
+    "resume:pdf": "node scripts/build-resume-pdf.mjs"
   },
   "dependencies": {
     "@astrojs/check": "0.9.10",

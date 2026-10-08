@@ -171,6 +171,7 @@ assert.equal(
 const record = pages.get(path.join(root, "contributions/index.html"));
 for (const pr of snapshot.merged)
   assert(record.includes(pr.url), `Missing contribution ${pr.url}`);
+assert((await stat(path.join(root, "haitao-zheng-resume.pdf"))).size > 0, "Résumé PDF is missing.");
 const sitemapIndex = await readFile(
   path.join(root, "sitemap-index.xml"),
   "utf8",

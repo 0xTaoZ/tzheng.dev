@@ -6,6 +6,7 @@
   font: .74rem var(--font-mono); color: var(--text-3);
 }
 .resume-toolbar p { margin: 0; }
+.resume-actions { display: inline-flex; gap: .5rem; }
 .sheet {
   width: min(210mm, 100%); margin: 0 auto;
   padding: 15mm 16mm;
