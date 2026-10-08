@@ -145,6 +145,7 @@ const related = relatedArticles(article, all);
           <a href="/about/">About</a>
           <a href="/contributions/">Open-source work</a>
           <a href="https://github.com/0xTaoZ">GitHub ↗</a>
+          {article.filePath && <a href={`https://github.com/0xTaoZ/tzheng.dev/blob/main/${article.filePath}`}>Source of this page ↗</a>}
           <a href="/rss.xml">RSS</a>
         </p>
       </div>

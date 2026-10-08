@@ -315,3 +315,14 @@ h2:hover > .heading-anchor, h3:hover > .heading-anchor, .heading-anchor:focus-vi
 .search-button:hover { color: var(--text); border-color: rgba(255,255,255,.3); }
 .search-button kbd { height: 1.2rem; font-size: .62rem; }
 @media (max-width: 899px) { .search-button { margin-left: auto; } .search-button span, .search-button kbd { display: none; } .nav-menu { margin-left: .4rem; } }
+
+/* ---------- Topics ---------- */
+.topic-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.topic-row { display: grid; gap: .6rem 2.5rem; padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
+@media (min-width: 900px) { .topic-row { grid-template-columns: 16rem minmax(0, 1fr) 16rem; } }
+.topic-head h2 { margin: 0 0 .5rem; font-size: 1.15rem; font-weight: 640; }
+.topic-row > p { margin: 0; color: var(--text-2); line-height: 1.65; }
+.topic-links { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.topic-links a { color: var(--link); font-size: .9rem; }
+.topic-links a:hover { color: #fff; }
+.topic-follow { margin-top: 2.5rem; }

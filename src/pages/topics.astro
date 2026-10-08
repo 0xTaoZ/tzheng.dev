@@ -103,36 +103,23 @@ const topics = [
           implementation notes.
         </p>
       </div>
-      <div class="grid">
-        {topics.map((topic, index) => (
-          <article
-            class:list={[
-              "card",
-              index === 0 && "featured",
-              index > 0 && "compact",
-            ]}
-          >
-            <div class="meta">
-              <span>{topic.group}</span>
+      <ol class="topic-list">
+        {topics.map((topic) => (
+          <li class="topic-row">
+            <div class="topic-head">
+              <h2>{topic.group}</h2>
+              <div class="meta">{topic.items.map((item) => <span class="chip">{item}</span>)}</div>
             </div>
-            <h3>{topic.group}</h3>
             <p>{topic.summary}</p>
-            <div class="meta">
-              {topic.items.map((item) => (
-                <span class="chip">{item}</span>
+            <ul class="topic-links">
+              {topic.links.map((link) => (
+                <li><a href={link.href}>{link.title}</a></li>
               ))}
-            </div>
-            {topic.links.map((link) => (
-              <p>
-                <a class="link" href={link.href}>
-                  {link.title} ↗
-                </a>
-              </p>
-            ))}
-          </article>
+            </ul>
+          </li>
         ))}
-      </div>
-      <article class="card featured" style="margin-top:2rem">
+      </ol>
+      <article class="card featured topic-follow">
         <div class="meta">
           <span>Source and review</span>
         </div>
