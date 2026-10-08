@@ -312,3 +312,5 @@ h2:hover > .heading-anchor, h3:hover > .heading-anchor, .heading-anchor:focus-vi
   .resume-section h2 { color: #0b5c8a; }
   .resume-list li + li { margin-top: 3pt; }
 }
+/* After the 7/5 opening row, index cards pair up as 6/6 instead of leaving a gap. */
+@media (min-width: 901px) { .shell .grid > .card.compact:nth-child(n+3) { grid-column: span 6; } }
