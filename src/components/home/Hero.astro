@@ -1,6 +1,12 @@
 ---
 import { getCollection } from "astro:content";
-import { mergedCount, mergedPRs, upstreamRepositories } from "../../lib/contributions";
+import {
+  combinedStars,
+  compactNumber,
+  mergedCount,
+  mergedPRs,
+  upstreamRepositories,
+} from "../../lib/contributions";
 interface Props {
   terminalLines: string[];
 }
@@ -16,197 +22,116 @@ const named = byStars.slice(0, 4).map((repository) => repository.label);
 const others = byStars.length - named.length;
 const projectList =
   others > 0
-    ? `${named.join(", ")} and ${others} more upstream projects`
+    ? `${named.join(", ")} and ${others} more`
     : `${named.slice(0, -1).join(", ")} and ${named.at(-1)}`;
 ---
 
-<section class="hero-bg hero-shell flex items-center justify-center overflow-hidden">
-  <div class="hero-overlay z-0"></div>
-  <div class="mission-layout relative z-10">
-    <div class="reveal">
-      <div class="mb-6 flex justify-center lg:justify-start">
-        <div class="eyebrow">
-          <span class="nav-dot"></span>blue-team / cloud-security / systems
-        </div>
-      </div>
-      <h1 class="hero-title font-bold text-white drop-shadow-2xl text-center lg:text-left">
-        HAITAO ZHENG <br />
-        <span class="text-[0.55em] text-gray-300 font-light tracking-tight">
-          (TAO)
-        </span>
+<section class="hero" id="top">
+  <div class="hero-backdrop" aria-hidden="true"></div>
+  <div class="container hero-grid">
+    <div class="hero-copy reveal">
+      <p class="hero-eyebrow">
+        <span class="status-dot" aria-hidden="true"></span>
+        blue-team / cloud-security / systems
+      </p>
+      <h1 class="hero-title">
+        Haitao Zheng <span class="hero-alias">(Tao)</span>
       </h1>
-      <p class="hero-subtitle text-gray-200 font-medium tracking-wide mt-6 drop-shadow-lg text-center lg:text-left max-w-3xl">
-        Cyber Security & Privacy <span class="text-gray-500">|</span> Systems &
+      <p class="hero-role">
+        Cyber Security &amp; Privacy <span aria-hidden="true">·</span> Systems &amp;
         Infrastructure Engineering
       </p>
-      <p class="hero-proof text-center lg:text-left">
-        <span class="proof-dot" aria-hidden="true"></span>
-        <a href="#contributions">{mergedCount} merged pull requests</a> to
-        {projectList}. B.Sc. Cyber Security &amp; Privacy at <span class="nowrap">H-BRS</span>, Germany.
+      <p class="hero-lede">
+        I build small, explainable security tools and send fixes upstream to
+        the projects I use: {mergedCount} merged pull requests to {projectList}.
+        B.Sc. student at <span class="nowrap">H-BRS</span>, Germany.
       </p>
-
-      <div
-        class="terminal-crt mt-8 max-w-3xl mx-auto lg:mx-0"
-        aria-label="terminal intro"
-      >
-        <div class="terminal-topbar">
-          <div class="terminal-dots">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          <span>local / portfolio console</span>
-        </div>
-        <div class="terminal-body">
-          <div
-            id="terminal-output"
-            data-lines={JSON.stringify(terminalLines)}
-            class="terminal-output"
-          >
-            {terminalLines.join("\n")}
-          </div>
-          <span class="terminal-cursor"></span>
-        </div>
-      </div>
-
-      <div class="hero-feature-strip max-w-3xl mx-auto lg:mx-0">
-        <a href="/projects/cloudtrail-quickscan/" class="hero-mini-card">
-          <p class="num">project / tool</p>
-          <p class="title">cloudtrail-quickscan</p>
-          <p class="meta">AWS logs · detection checks</p>
-        </a>
-        <a href="/projects/cfn-lint-contribution/" class="hero-mini-card">
-          <p class="num">open source / PR</p>
-          <p class="title">cfn-lint contribution</p>
-          <p class="meta">CloudFormation · {cfnLintCount} merged PRs</p>
-        </a>
-        <a href="/articles/" class="hero-mini-card">
-          <p class="num">writing / blog</p>
-          <p class="title">Technical Articles</p>
-          <p class="meta">{articleCount} notes · monthly archive</p>
-        </a>
-      </div>
-
-      <div class="mission-actions flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-4 mt-8 w-full sm:w-auto">
-        <a
-          href="#contributions"
-          class="primary-action w-full sm:w-auto justify-center px-7 py-3.5 rounded-full font-semibold text-sm flex items-center"
-        >
-          View Contributions
-        </a>
-        <a
-          href="#projects"
-          class="primary-action w-full sm:w-auto justify-center px-7 py-3.5 rounded-full font-semibold text-sm flex items-center"
-        >
-          View Projects
-        </a>
-        <div class="flex items-center justify-center gap-3 w-full sm:w-auto mt-2 sm:mt-0">
-          <a
-            href="https://github.com/0xTaoZ"
-            target="_blank"
-            class="secondary-action w-12 h-12 rounded-full flex items-center justify-center transition hover:bg-white hover:text-black shrink-0"
-            aria-label="Haitao Zheng GitHub Profile"
-          >
-            <svg
-              class="w-5 h-5 opacity-90"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
-            </svg>
+      <dl class="hero-stats">
+        <div><dt>merged upstream PRs</dt><dd>{mergedCount}</dd></div>
+        <div><dt>upstream repositories</dt><dd>{upstreamRepositories.length}</dd></div>
+        <div><dt>combined stars</dt><dd>{compactNumber(combinedStars)}</dd></div>
+        <div><dt>technical articles</dt><dd>{articleCount}</dd></div>
+      </dl>
+      <div class="hero-actions">
+        <a href="#contributions" class="btn btn-primary">View contributions</a>
+        <a href="#projects" class="btn">View projects</a>
+        <a href="/resume/" class="btn btn-ghost">Résumé</a>
+        <span class="hero-icons">
+          <a href="https://github.com/0xTaoZ" class="icon-link" aria-label="Haitao Zheng on GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12.02c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03A9.56 9.56 0 0 1 12 6.84c.85 0 1.71.11 2.5.34 1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.7-4.57 4.94.36.31.68.92.68 1.86v2.75c0 .27.18.58.69.48A10.02 10.02 0 0 0 22 12.02C22 6.48 17.52 2 12 2z" /></svg>
           </a>
-          <a
-            href="https://www.linkedin.com/in/haitaozheng/"
-            target="_blank"
-            class="secondary-action w-12 h-12 rounded-full flex items-center justify-center transition hover:bg-white hover:text-black shrink-0"
-            aria-label="Haitao Zheng LinkedIn Profile"
-          >
-            <svg
-              class="w-5 h-5 opacity-90"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-            </svg>
+          <a href="https://www.linkedin.com/in/haitaozheng/" class="icon-link" aria-label="Haitao Zheng on LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" /></svg>
           </a>
-          <a
-            href="mailto:h@tzheng.dev"
-            data-email-contact
-            class="secondary-action w-12 h-12 rounded-full flex items-center justify-center transition hover:bg-white hover:text-black shrink-0"
-            aria-label="Email Haitao Zheng"
-          >
-            <svg
-              class="w-5 h-5 opacity-90"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              viewBox="0 0 24 24"
-            >
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-              <polyline points="22,6 12,13 2,6"></polyline>
-            </svg>
+          <a href="mailto:h@tzheng.dev" data-email-contact class="icon-link" aria-label="Email Haitao Zheng">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
           </a>
-        </div>
+        </span>
       </div>
     </div>
 
-    <div class="portrait-stage reveal delay-200">
-      <div class="portrait-orbit" aria-hidden="true"></div>
-      <div class="portrait-card" data-tilt>
-        <picture>
-          <source
-            type="image/avif"
-            srcset="/img/portrait-480.avif 480w, /img/portrait-720.avif 720w, /img/portrait-1122.avif 1122w"
-            sizes="(max-width: 768px) 76vw, 34rem"
-          />
-          <source
-            type="image/webp"
-            srcset="/img/portrait-480.webp 480w, /img/portrait-720.webp 720w, /img/portrait-1122.webp 1122w"
-            sizes="(max-width: 768px) 76vw, 34rem"
-          />
-          <img
-            src="/img/portrait-720.jpg"
-            alt="Haitao Zheng"
-            width="1122"
-            height="1402"
-            decoding="async"
-            fetchpriority="high"
-            class="object-cover object-right transition-transform duration-700 hover:scale-[1.015] avatar-mask"
-          />
-        </picture>
-        <div class="portrait-caption text-left">
-          <div class="flex items-center justify-between gap-4">
-            <p class="text-[11px] uppercase tracking-[0.18em] text-sky-200 font-mono">
-              ENGINEERING PROFILE
-            </p>
-            <span class="chip">Germany</span>
-          </div>
-          <h2 class="mt-3 text-lg font-semibold text-white tracking-tight">
-            Security tooling, cloud logs, IOC workflows, and static-first web
-            systems.
-          </h2>
-          <div class="dossier-line">
-            <span class="text-gray-500">focus</span>
-            <span class="text-gray-200">
-              blue-team / cloud-security / systems
-            </span>
-          </div>
-          <div class="dossier-line">
-            <span class="text-gray-500">stack</span>
-            <span class="text-gray-200">
-              Python / Java / C / SQL / TypeScript
-            </span>
-          </div>
-          <div class="dossier-line">
-            <span class="text-gray-500">web</span>
-            <span class="text-gray-200">
-              Astro / CSS / Markdown / GitHub / Cloudflare
-            </span>
-          </div>
-        </div>
+    <figure class="hero-portrait reveal delay-1">
+      <picture>
+        <source
+          type="image/avif"
+          srcset="/img/portrait-480.avif 480w, /img/portrait-720.avif 720w, /img/portrait-1122.avif 1122w"
+          sizes="(max-width: 900px) 60vw, 420px"
+        />
+        <source
+          type="image/webp"
+          srcset="/img/portrait-480.webp 480w, /img/portrait-720.webp 720w, /img/portrait-1122.webp 1122w"
+          sizes="(max-width: 900px) 60vw, 420px"
+        />
+        <img
+          src="/img/portrait-720.jpg"
+          alt="Haitao Zheng"
+          width="1122"
+          height="1402"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </picture>
+      <figcaption class="profile-card">
+        <p class="profile-head"><span>Engineering profile</span><span>Germany</span></p>
+        <p class="profile-summary">
+          Security tooling, cloud logs, IOC workflows, and static-first web
+          systems.
+        </p>
+        <dl>
+          <div><dt>focus</dt><dd>blue-team / cloud-security / systems</dd></div>
+          <div><dt>stack</dt><dd>Python / Java / C / SQL / TypeScript</dd></div>
+          <div><dt>web</dt><dd>Astro / CSS / Markdown / GitHub / Cloudflare</dd></div>
+        </dl>
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="container hero-lower">
+    <div class="terminal reveal" aria-label="Terminal summary">
+      <div class="terminal-bar">
+        <span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>tao@tzheng.dev: ~</span>
       </div>
+      <pre id="terminal-output" class="terminal-output" data-lines={JSON.stringify(terminalLines)}>{terminalLines.join("\n")}</pre>
+      <span class="terminal-cursor" aria-hidden="true"></span>
     </div>
+    <nav class="start-here reveal delay-1" aria-label="Start here">
+      <p class="label">Start here</p>
+      <a href="/projects/cloudtrail-quickscan/">
+        <span class="start-kind">project / tool</span>
+        <span class="start-title">cloudtrail-quickscan</span>
+        <span class="start-meta">AWS logs · detection checks</span>
+      </a>
+      <a href="/projects/cfn-lint-contribution/">
+        <span class="start-kind">open source / PR</span>
+        <span class="start-title">cfn-lint contribution</span>
+        <span class="start-meta">CloudFormation · {cfnLintCount} merged PRs</span>
+      </a>
+      <a href="/articles/">
+        <span class="start-kind">writing / blog</span>
+        <span class="start-title">Technical articles</span>
+        <span class="start-meta">{articleCount} notes · monthly archive</span>
+      </a>
+    </nav>
   </div>
 </section>

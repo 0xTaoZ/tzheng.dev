@@ -1,6 +1,5 @@
 ---
 import "../styles/home.css";
-import "../styles/home-utilities.css";
 import { getCollection } from "astro:content";
 import { entrySlug, selectHomepageProjects } from "../lib/content";
 import SiteHead from "../components/SiteHead.astro";
@@ -74,44 +73,18 @@ const profileSchema = {
     <meta name="yandex-verification" content="0dfbab3f3b38610b" />
     <meta name="msvalidate.01" content="CC8AED0FA93BE482A324F0EC51216889" />
   </head>
-  <body class="antialiased selection:bg-blue-600 selection:text-white">
-    <a class="skip-link" href="#main-content">
-      Skip to content
-    </a>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <HomeNavigation />
     <main id="main-content" tabindex="-1">
       <HomeHero terminalLines={terminalLines} />
-
       <HomeContributions />
-
-      <div class="divider max-w-6xl mx-auto"></div>
-
-      <!-- 精选项目-->
       <HomeProjects />
-
-      <div class="divider max-w-6xl mx-auto"></div>
-
-      <!-- Technical writing and archive -->
       <HomeArticles />
-
-      <div class="divider max-w-6xl mx-auto"></div>
-      <!-- System Design gateway -->
-      <HomeSystemGateway />
-
-      <div class="divider max-w-6xl mx-auto"></div>
-      <!-- 教育经历  -->
       <HomeEducation />
-
-      <div class="divider max-w-6xl mx-auto"></div>
-
-      <!-- 技术栈 (Technical Toolkit Section) -->
       <HomeToolkit />
-
-      <div class="divider max-w-6xl mx-auto"></div>
-      <!-- 语言与兴趣 (Languages & Interests) -->
+      <HomeSystemGateway />
       <HomeAbout />
-
-      <div class="divider max-w-6xl mx-auto"></div>
       <HomeContact />
     </main>
     <HomeFooter />

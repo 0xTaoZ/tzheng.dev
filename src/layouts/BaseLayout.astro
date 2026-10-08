@@ -14,6 +14,15 @@ interface Props {
   tags?: string[];
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
+const links = [
+  { href: "/contributions/", label: "Open source" },
+  { href: "/projects/", label: "Projects" },
+  { href: "/articles/", label: "Articles" },
+  { href: "/about/", label: "About" },
+  { href: "/resume/", label: "Résumé" },
+];
+const path = Astro.url.pathname;
+const current = (href: string) => path === href || path.startsWith(href);
 ---
 
 <!doctype html>
@@ -22,28 +31,29 @@ interface Props {
     <SiteHead {...Astro.props} />
   </head>
   <body>
-    <a class="skip-link" href="#main-content">
-      Skip to content
-    </a>
-    <nav class="nav">
-      <a class="brand logo-only" href="/" aria-label="Back to tzheng.dev home">
-        <img src="/img/logo-64.webp" alt="" width="32" height="32" />
-      </a>
-      <div class="nav-links">
-        <a href="/#contributions">Contributions</a>
-        <a href="/#projects">Projects</a>
-        <a href="/system/">System Design</a>
-        <a href="/articles/">Articles</a>
-        <a href="/#toolkit">Toolkit</a>
-        <a href="/#education">Education</a>
-        <a href="/about/">About</a>
-        <a href="/resume/">Résumé</a>
-        <a href="/legal/">Legal</a>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="nav">
+      <div class="nav-inner">
+        <a class="wordmark" href="/" aria-label="Haitao Zheng, home">
+          <img src="/img/logo-64.webp" alt="" width="28" height="28" />
+          <span>Haitao Zheng</span>
+        </a>
+        <nav class="nav-links" aria-label="Site">
+          {links.map((link) => (
+            <a href={link.href} aria-current={current(link.href) ? "page" : undefined}>{link.label}</a>
+          ))}
+        </nav>
+        <details class="nav-menu">
+          <summary aria-label="Open navigation"><span></span><span></span></summary>
+          <nav aria-label="Site menu">
+            <a href="/">Home</a>
+            {links.map((link) => <a href={link.href}>{link.label}</a>)}
+            <a href="/topics/">Topics</a>
+            <a href="/system/">System design</a>
+          </nav>
+        </details>
       </div>
-    </nav>
-    <a class="back-home" href="/">
-      ← Back to home
-    </a>
+    </header>
     <slot />
     <SiteFooter />
   </body>

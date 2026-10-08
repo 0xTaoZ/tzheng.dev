@@ -1,0 +1,66 @@
+/* Shared design tokens for the homepage and the content pages. One neutral
+   scale, one terminal accent, one link colour; type does most of the work. */
+:root {
+  color-scheme: dark;
+  --bg: #07090c;
+  --surface: #0c0f14;
+  --surface-2: #11151b;
+  --line: rgba(255, 255, 255, 0.075);
+  --line-strong: rgba(255, 255, 255, 0.15);
+  --text: #e9edf2;
+  --text-2: #aab3c0;
+  --text-3: #808b9b;
+  --accent: #39ff88;
+  --accent-dim: rgba(57, 255, 136, 0.14);
+  --link: #9fd2ff;
+  --blue: #7dd3fc;
+  --muted: var(--text-2);
+  --radius: 10px;
+  --radius-lg: 14px;
+  --container: 1120px;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --font-sans: "Inter Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01", "ss03";
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code, kbd, pre, samp { font-family: var(--font-mono); }
+
+::selection { background: rgba(57, 255, 136, 0.25); color: #fff; }
+
+:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 9999;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: var(--text);
+  color: var(--bg);
+  font-weight: 600;
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}

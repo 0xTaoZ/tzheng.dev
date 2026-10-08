@@ -1,4 +1,5 @@
 ---
+import SectionHeader from "./SectionHeader.astro";
 import {
   combinedStars,
   compactNumber,
@@ -27,119 +28,82 @@ const verifiedLabel = new Date(`${verifiedAt}T00:00:00Z`).toLocaleDateString(
 );
 ---
 
-<section id="contributions" class="home-section py-32 px-6 max-w-7xl mx-auto">
-  <div class="mb-14 reveal">
-    <p class="section-kicker mb-4">Accepted upstream work</p>
-    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-      <div>
-        <h2 class="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">
-          Open-source work.
-        </h2>
-        <p class="text-xl text-gray-400 font-light max-w-3xl">
-          I contribute fixes to open-source security and infrastructure tools
-          so other users can receive the same fix. Tests and maintainer review
-          are part of that work.
+<section id="contributions" class="section">
+  <div class="container">
+    <SectionHeader
+      index="01"
+      label="Open source"
+      title="Open-source work"
+      link={{ href: "/contributions/", label: "All merged PRs" }}
+    >
+      <p class="section-lede">
+        When a security or infrastructure tool I use gets something wrong, I
+        fix it upstream so every user receives the fix. Each change went
+        through tests and maintainer review.
+      </p>
+    </SectionHeader>
+
+    <dl class="stat-row reveal" aria-label="Contribution summary">
+      <div><dt>Merged upstream PRs</dt><dd>{mergedCount}</dd></div>
+      <div><dt>Upstream repositories</dt><dd>{repositoryCount}</dd></div>
+      <div><dt>Combined GitHub stars</dt><dd>{compactNumber(combinedStars)}</dd></div>
+      <div><dt>Open PRs in review</dt><dd>{openCount}</dd></div>
+    </dl>
+
+    <div class="upstream-board reveal">
+      <div class="panel upstream-list">
+        <p class="panel-label"><span>Merged into</span><span>PRs · stars</span></p>
+        <ol>
+          {upstreamRepositories.map((repository) => (
+            <li>
+              <a href={repository.url}>
+                <span class="repo-name"><span class="repo-owner">{repository.owner}/</span>{repository.repo}</span>
+                <span class="repo-bar" aria-hidden="true"><span style={`--share:${(repository.merged / mostMerged) * 100}%`}></span></span>
+                <span class="repo-count">{repository.merged}</span>
+                <span class="repo-stars">★ {compactNumber(repository.stars)}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <figure class="panel merge-chart">
+        <p class="panel-label">
+          <span>Merged per month</span>
+          <span>{monthlyMerged[0].label}–{monthlyMerged.at(-1)!.label} {verifiedAt.slice(0, 4)}</span>
         </p>
-      </div>
-      <a href="/contributions/" class="case-link">
-        About the work &amp; all PRs <span>↗</span>
-      </a>
-    </div>
-  </div>
-
-  <dl class="proof-stats reveal" aria-label="Contribution summary">
-    <div>
-      <dt>Merged upstream PRs</dt>
-      <dd>{mergedCount}</dd>
-    </div>
-    <div>
-      <dt>Upstream repositories</dt>
-      <dd>{repositoryCount}</dd>
-    </div>
-    <div>
-      <dt>Combined GitHub stars</dt>
-      <dd>{compactNumber(combinedStars)}</dd>
-    </div>
-    <div>
-      <dt>Open PRs in review</dt>
-      <dd>{openCount}</dd>
-    </div>
-  </dl>
-
-  <div class="upstream-board reveal">
-    <div class="upstream-list">
-      <p class="board-label">
-        <span>Merged into</span>
-        <span>PRs · stars</span>
-      </p>
-      <ol>
-        {upstreamRepositories.map((repository) => (
-          <li>
-            <a href={repository.url}>
-              <span class="repo-name">
-                <span class="repo-owner">{repository.owner}/</span>
-                {repository.repo}
-              </span>
-              <span class="repo-bar" aria-hidden="true">
-                <span style={`--share:${(repository.merged / mostMerged) * 100}%`}></span>
-              </span>
-              <span class="repo-count">{repository.merged}</span>
-              <span class="repo-stars">★ {compactNumber(repository.stars)}</span>
-            </a>
-          </li>
-        ))}
-      </ol>
-    </div>
-    <figure class="merge-chart">
-      <p class="board-label">
-        <span>Merged per month</span>
-        <span>{monthlyMerged[0].label}–{monthlyMerged.at(-1)!.label} {verifiedAt.slice(0, 4)}</span>
-      </p>
-      <div class="merge-bars">
-        {monthlyMerged.map((month) => (
-          <div class:list={["merge-bar", month.partial && "partial"]}>
-            <span class="merge-value">{month.count}</span>
-            <span
-              class="merge-fill"
-              style={`--height:${Math.max(4, (month.count / peak) * 100)}%`}
-            ></span>
-            <span class="merge-month">
-              {month.label}
-              {month.partial && <small>to date</small>}
-            </span>
-          </div>
-        ))}
-      </div>
-      <figcaption>
-        Snapshot verified {verifiedLabel}. Merged pull requests by
-        0xTaoZ outside personal repositories; stars as of the same date.
-      </figcaption>
-    </figure>
-  </div>
-
-  <div class="notes-grid-final">
-    {cases.map((item) => (
-      <article
-        class="note-link-card reveal"
-        data-upstream-case={item.repository}
-      >
-        <div class="flex items-center justify-between gap-4 mb-8">
-          <span class="chip">{item.area}</span>
-          <span class="text-xs text-gray-500 font-mono">
-            {countFor(item.url)} merged PRs
-          </span>
+        <div class="merge-bars">
+          {monthlyMerged.map((month) => (
+            <div class:list={["merge-bar", month.partial && "partial"]}>
+              <span class="merge-value">{month.count}</span>
+              <span class="merge-fill" style={`--height:${Math.max(4, (month.count / peak) * 100)}%`}></span>
+              <span class="merge-month">{month.label}{month.partial && <small>to date</small>}</span>
+            </div>
+          ))}
         </div>
-        <h3 class="text-2xl font-bold text-white mb-4">{item.repository}</h3>
-        {"context" in item && <p class="text-xs text-gray-500 font-mono mb-4">{item.context}</p>}
-        <p class="text-white text-sm leading-relaxed mb-4">{item.title}</p>
-        <p class="text-gray-400 text-sm leading-relaxed font-light">
-          {item.change}
-        </p>
-        <p class="text-xs text-gray-500 font-mono mt-7">{item.evidence}</p>
-        <a class="case-link" href={item.url}>
-          Merged patch #{item.number} <span>↗</span>
-        </a>
-      </article>
-    ))}
+        <figcaption>
+          Snapshot verified {verifiedLabel}: merged pull requests by 0xTaoZ
+          outside personal repositories; stars as of the same date.
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="case-grid">
+      {cases.map((item) => (
+        <article class="case-card reveal" data-upstream-case={item.repository}>
+          <p class="case-meta">
+            <span>{item.area}</span>
+            <span>{countFor(item.url)} merged</span>
+          </p>
+          <h3>{item.repository}</h3>
+          {"context" in item && <p class="case-context">{item.context}</p>}
+          <p class="case-title">{item.title}</p>
+          <p class="case-body">{item.change}</p>
+          <p class="case-evidence">{item.evidence}</p>
+          <a class="text-link" href={item.url}>
+            Merged patch #{item.number} <span aria-hidden="true">↗</span>
+          </a>
+        </article>
+      ))}
+    </div>
   </div>
 </section>

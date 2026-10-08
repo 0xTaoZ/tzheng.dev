@@ -1,6 +1,27 @@
+---
+import { execSync } from "node:child_process";
+// The commit this page was built from, linked so anyone can read the source.
+const commit = (() => {
+  try {
+    return (process.env.GITHUB_SHA ?? execSync("git rev-parse HEAD", { encoding: "utf8" })).trim();
+  } catch {
+    return "";
+  }
+})();
+const builtOn = new Date().toISOString().slice(0, 10);
+---
+
 <footer class="site-footer">
   <div class="footer-inner">
-    <p>© 2026 Haitao Zheng</p>
+    <div class="footer-meta">
+      <p>© 2026 Haitao Zheng</p>
+      {commit && (
+        <p class="build">
+          Built {builtOn} from{" "}
+          <a href={`https://github.com/0xTaoZ/tzheng.dev/commit/${commit}`}>{commit.slice(0, 7)}</a>
+        </p>
+      )}
+    </div>
     <nav aria-label="Footer">
       <a href="mailto:h@tzheng.dev">Email</a>
       <a href="https://github.com/0xTaoZ">GitHub</a>
@@ -16,12 +37,24 @@
 </footer>
 
 <style>
-  .site-footer { margin-top:2.5rem; border-top:1px solid rgba(148,163,184,.12); padding:2rem 1.5rem; color:#94a3b8; background:transparent; }
-  .footer-inner { max-width:1232px; margin:auto; display:flex; justify-content:space-between; align-items:center; gap:1.5rem; }
-  p { margin:0; font:inherit; font-size:.85rem; }
-  nav { display:flex; flex-wrap:wrap; gap:.8rem 1.4rem; }
-  a { color:inherit; font-size:.85rem; text-decoration:none; }
-  a:hover { color:#f8fafc; text-decoration:underline; text-underline-offset:.25rem; }
-  a:focus-visible { outline:2px solid #94a3b8; outline-offset:5px; }
-  @media (max-width:760px) { .footer-inner { flex-direction:column; align-items:flex-start; } }
+  .site-footer { border-top: 1px solid var(--line, rgba(255,255,255,.08)); padding: 2rem 0 2.5rem; color: var(--text-2, #aab3c0); }
+  .footer-inner {
+    max-width: calc(var(--container, 1120px) + 2 * var(--gutter, 2rem));
+    margin: 0 auto;
+    padding: 0 var(--gutter, 2rem);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  p { margin: 0; font-size: .85rem; }
+  .build { margin-top: .3rem; font: .72rem var(--font-mono, ui-monospace, monospace); color: var(--text-3, #808b9b); }
+  nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .6rem 1.3rem; }
+  a { color: inherit; font-size: .85rem; text-decoration: none; }
+  .build a { font-size: inherit; }
+  a:hover { color: #fff; text-decoration: underline; text-underline-offset: .25rem; }
+  @media (max-width: 760px) {
+    .footer-inner { flex-direction: column; }
+    nav { justify-content: flex-start; }
+  }
 </style>

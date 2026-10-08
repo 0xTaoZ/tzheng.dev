@@ -1,4 +1,7 @@
 ---
+import "@fontsource-variable/inter/wght.css";
+import "@fontsource-variable/jetbrains-mono/wght.css";
+import interLatin from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
 import { existsSync } from "node:fs";
 import { person } from "../lib/identity";
 interface Props {
@@ -77,6 +80,7 @@ const graph = {
 />
 <meta name="referrer" content="strict-origin-when-cross-origin" />
 <link rel="canonical" href={canonical} />
+<link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
 <link rel="me" href="https://github.com/0xTaoZ" />
 <link rel="me" href="https://www.linkedin.com/in/haitaozheng/" />
 <link rel="icon" href="/favicon.png" type="image/png" />
