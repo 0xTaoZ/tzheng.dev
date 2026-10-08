@@ -302,15 +302,26 @@ document.addEventListener("DOMContentLoaded", function () {
     palette?.querySelectorAll(".command-box a") || [],
   );
   let commandIndex = 0;
+  const articleSearch = palette?.querySelector("[data-article-search]");
   const syncCommandSearch = () => {
-    const query = (commandInput?.value || "").trim().toLowerCase();
+    const raw = (commandInput?.value || "").trim();
+    const query = raw.toLowerCase();
     const visible = [];
     commandItems.forEach((item) => {
+      if (item === articleSearch) return;
       const match = item.textContent.toLowerCase().includes(query);
       item.hidden = !match;
       if (match) visible.push(item);
       item.style.background = "";
     });
+    // Any typed text can also be sent to the article archive search.
+    if (articleSearch) {
+      articleSearch.hidden = !raw;
+      articleSearch.style.background = "";
+      articleSearch.href = `/articles/?q=${encodeURIComponent(raw)}`;
+      articleSearch.querySelector("[data-query]").textContent = raw;
+      if (raw) visible.push(articleSearch);
+    }
     commandIndex = Math.min(commandIndex, Math.max(0, visible.length - 1));
     visible[commandIndex]?.style.setProperty(
       "background",

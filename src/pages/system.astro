@@ -236,12 +236,15 @@ const projects = await getCollection("projects");
 slug: z.string().optional()
 date: z.coerce.date()
 updated: z.coerce.date().optional()
+project: z.string().optional()
+seriesMonth: z.string().regex(/^\d&#123;4&#125;-(0[1-9]|1[0-2])$/).optional()
+homepageOrder: z.number().int().positive().optional()
 excerpt: z.string()
 tags: z.array(z.string()).default([])
 category: z.string()
 featured: z.boolean().default(false)
 status: z.enum(["draft", "published", "archived"]).default("published")
-readingTime: z.string()</code></pre>
+readingTime: z.string().optional()  // estimated from the body when absent</code></pre>
             </div>
           </div>
           <div class="sys-card reveal" data-tilt>
@@ -261,7 +264,8 @@ homepageFacts: z.array(z.object(&#123;
 stack: z.array(z.string()).default([])
 github: z.url().optional()
 demo: z.url().optional()
-excerpt: z.string()</code></pre>
+excerpt: z.string()
+outcome: z.string().optional()</code></pre>
             </div>
           </div>
         </div>

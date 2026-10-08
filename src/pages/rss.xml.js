@@ -12,11 +12,14 @@ export async function GET(context) {
     description:
       "Security notes, learning logs, and project writing by Haitao Zheng.",
     site: context.site,
+    customData: "<language>en</language>",
     items: articles.map((article) => ({
       title: article.data.title,
       description: article.data.excerpt,
       pubDate: article.data.date,
       link: `/articles/${entrySlug(article)}/`,
+      categories: [article.data.category, ...article.data.tags],
+      author: "h@tzheng.dev (Haitao Zheng)",
     })),
   });
 }
