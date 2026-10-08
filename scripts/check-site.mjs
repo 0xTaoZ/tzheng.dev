@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 
@@ -48,6 +49,21 @@ for (const [file, html] of pages) {
   const ogImage = html.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
   if (!ogImage || !(await resolveFile(new URL(ogImage))))
     fail(`missing share image ${ogImage}`);
+  const csp = html.match(/<meta http-equiv="Content-Security-Policy" content="([^"]+)"/)?.[1];
+  if (!csp) fail("missing Content-Security-Policy");
+  else {
+    if (html.indexOf("Content-Security-Policy") > html.indexOf("<script"))
+      fail("Content-Security-Policy must precede every script");
+    for (const [, attributes, body] of html.matchAll(/<script(?![^>]*\bsrc=)([^>]*)>([\s\S]*?)<\/script>/g)) {
+      if (/type="application\/ld\+json"/.test(attributes)) continue;
+      const hash = `sha256-${createHash("sha256").update(body).digest("base64")}`;
+      if (!csp.includes(`'${hash}'`)) fail("inline script is not allowed by the CSP");
+    }
+    for (const match of html.matchAll(/\b(?:src|href)="(https?:\/\/[^"/]+)/g)) {
+      if (/<(?:img|script|source)[^>]*$/.test(html.slice(Math.max(0, match.index - 200), match.index)) && !csp.includes(match[1]) && match[1] !== "https://tzheng.dev")
+        fail(`external resource not allowed by the CSP: ${match[1]}`);
+    }
+  }
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   if (new Set(ids).size !== ids.length) fail("duplicate IDs");
   for (const match of html.matchAll(/\b(href|src)="([^"]+)"/g)) {
