@@ -1,0 +1,18 @@
+/* Site-wide command palette (⌘K). */
+.command-palette { position: fixed; inset: 0; z-index: 90; display: grid; place-items: start center; padding: min(14vh, 7rem) 1rem 1rem; background: rgba(0, 0, 0, .6); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.command-palette[hidden] { display: none; }
+.command-box { width: min(100%, 38rem); overflow: hidden; border: 1px solid var(--line-strong); border-radius: var(--radius-lg); background: #0b0e13; box-shadow: 0 30px 90px rgba(0, 0, 0, .65); }
+.command-field { display: flex; align-items: center; gap: .7rem; padding: 0 1rem; border-bottom: 1px solid var(--line); color: var(--text-3); }
+.command-field input { flex: 1; height: 3.2rem; border: 0; outline: none; background: transparent; color: #fff; font: 1rem var(--font-sans); }
+.command-field input::-webkit-search-cancel-button { display: none; }
+.command-results { list-style: none; margin: 0; padding: .4rem; max-height: min(60vh, 26rem); overflow-y: auto; }
+.command-results li a { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); gap: .1rem .8rem; padding: .6rem .7rem; border-radius: 8px; color: var(--text-2); }
+.command-results li a[aria-selected="true"] { background: var(--surface-2); color: #fff; }
+.command-kind { grid-row: span 2; font: .66rem/2 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+.command-title { font-size: .93rem; font-weight: 550; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.command-meta { font: .7rem var(--font-mono); color: var(--text-3); }
+.command-results mark { background: none; color: var(--accent); }
+.command-empty { padding: 1rem .7rem; font-size: .9rem; color: var(--text-3); }
+.command-foot { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; margin: 0; padding: .6rem 1rem; border-top: 1px solid var(--line); font: .7rem var(--font-mono); color: var(--text-3); }
+.command-foot kbd, .command-field kbd { min-width: 1.2rem; height: 1.2rem; font-size: .62rem; }
+@media (max-width: 560px) { .command-foot { display: none; } }

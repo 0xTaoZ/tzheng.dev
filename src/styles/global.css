@@ -311,3 +311,7 @@ h2:hover > .heading-anchor, h3:hover > .heading-anchor, .heading-anchor:focus-vi
 @media (min-width: 800px) { .archive-kind { text-align: right; } }
 #article-archive.is-ranked .archive-group h2 { display: none; }
 #article-archive.is-ranked .archive-group { padding: 0; border: 0; }
+.search-button { display: inline-flex; align-items: center; gap: .45rem; height: 2rem; margin-left: .5rem; padding: 0 .45rem 0 .65rem; border: 1px solid var(--line-strong); border-radius: 7px; background: transparent; color: var(--text-3); font: .8rem var(--font-sans); cursor: pointer; }
+.search-button:hover { color: var(--text); border-color: rgba(255,255,255,.3); }
+.search-button kbd { height: 1.2rem; font-size: .62rem; }
+@media (max-width: 899px) { .search-button { margin-left: auto; } .search-button span, .search-button kbd { display: none; } .nav-menu { margin-left: .4rem; } }

@@ -26,6 +26,9 @@ const resolveFile = async (url) => {
     return null;
   }
 };
+for (const name of await readdir(path.join(root, "_astro")))
+  if (name.endsWith(".css") && (await readFile(path.join(root, "_astro", name), "utf8")).includes("url(data:"))
+    errors.push(`/_astro/${name}: inlined data: URL is blocked by the CSP`);
 const titles = new Map();
 for (const [file, html] of pages) {
   const route =
@@ -64,9 +67,11 @@ for (const [file, html] of pages) {
         fail(`external resource not allowed by the CSP: ${match[1]}`);
     }
   }
-  const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
+  // Markup only: template strings inside inline scripts are not links.
+  const markup = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "");
+  const ids = [...markup.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   if (new Set(ids).size !== ids.length) fail("duplicate IDs");
-  for (const match of html.matchAll(/\b(href|src)="([^"]+)"/g)) {
+  for (const match of markup.matchAll(/\b(href|src)="([^"]+)"/g)) {
     const [, kind, raw] = match;
     if (/^(mailto:|tel:|data:|javascript:)/i.test(raw)) continue;
     const url = new URL(decode(raw), `https://tzheng.dev${route}`);

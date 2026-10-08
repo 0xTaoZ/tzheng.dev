@@ -1,0 +1,33 @@
+---
+import "../styles/palette.css";
+---
+
+<div id="command-palette" class="command-palette" hidden>
+  <div class="command-box" role="dialog" aria-modal="true" aria-label="Search the site">
+    <div class="command-field">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+      <input
+        id="command-input"
+        type="search"
+        role="combobox"
+        aria-expanded="true"
+        aria-controls="command-results"
+        aria-autocomplete="list"
+        placeholder="Search articles, projects and pages…"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <kbd>esc</kbd>
+    </div>
+    <ul id="command-results" class="command-results" role="listbox" aria-label="Results"></ul>
+    <p class="command-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> to move</span>
+      <span><kbd>↵</kbd> to open</span>
+      <span><kbd>⌘</kbd><kbd>K</kbd> or <kbd>/</kbd> anywhere</span>
+    </p>
+  </div>
+</div>
+
+<script>
+  import "../scripts/palette.js";
+</script>

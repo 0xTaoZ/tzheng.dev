@@ -30,7 +30,7 @@ const schema = {
         {months.map(month => <a class="chip" href={`#month-${month}`}>{monthLabel(month)} <span>({articles.filter(article => articleMonth(article) === month).length})</span></a>)}
       </nav>
       <form class="article-filters" role="search" action="/articles/" method="get">
-        <label>Search articles<input type="search" id="article-search" name="q" placeholder="Title, topic or keyword  ( / )" autocomplete="off" /></label>
+        <label>Search articles<input type="search" id="article-search" name="q" placeholder="Title, topic or keyword" autocomplete="off" /></label>
         <label>Category<select id="article-category" name="category"><option value="">All categories</option>{categories.map(category => <option value={category}>{category}</option>)}</select></label>
         <button class="button" type="reset">Clear filters</button>
       </form>
@@ -107,9 +107,6 @@ const schema = {
     search.addEventListener("input", () => { update(); syncUrl(); });
     category.addEventListener("change", () => { update(); syncUrl(); });
     document.querySelector(".article-filters")!.addEventListener("reset", () => { search.value=""; category.value=""; update(); syncUrl(); });
-    addEventListener("keydown", (event) => {
-      if (event.key === "/" && document.activeElement?.tagName !== "INPUT") { event.preventDefault(); search.focus(); }
-    });
     update();
   </script>
 </BaseLayout>

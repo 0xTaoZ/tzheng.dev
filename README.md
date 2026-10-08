@@ -65,6 +65,10 @@ rejects unknown project references. Related notes are ranked by the same
 project, then shared tags, then category. The archive search ranks matches
 by title, tags, excerpt and body, and keeps `?q=` and `?category=` in the URL.
 
+`/search.json` is generated at build time from pages, project cases and
+articles. The site-wide command palette (⌘K, Ctrl+K or `/`) fetches it on
+first use and ranks matches by title, tags, metadata and body.
+
 No database or authentication service is needed for this editorial workflow.
 Revisit that choice if a browser-based multi-author editor, reader accounts or
 comments become requirements. Content changes use the same checked Pages build.

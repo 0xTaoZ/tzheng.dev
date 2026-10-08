@@ -1,5 +1,5 @@
 // Homepage behaviour: navigation state, reveal-on-scroll, the terminal intro,
-// the mobile menu, the command palette and copying the email address.
+// the mobile menu and copying the email address.
 
 const legacyNotes = {
   "#note-cloudtrail": "cloudtrail-first-pass",
@@ -59,83 +59,11 @@ const setMenu = (open) => {
 menuButton?.addEventListener("click", () => setMenu(!mobileMenu.classList.contains("open")));
 mobileMenu?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setMenu(false)));
 
-// Command palette.
-const palette = document.getElementById("command-palette");
-const commandInput = document.getElementById("command-input");
-const commandItems = [...(palette?.querySelectorAll(".command-box a") ?? [])];
-const articleSearch = palette?.querySelector("[data-article-search]");
-let commandIndex = 0;
-let previousFocus = null;
-const visibleItems = () => commandItems.filter((item) => !item.hidden);
-const syncPalette = () => {
-  const raw = (commandInput?.value ?? "").trim();
-  const query = raw.toLowerCase();
-  for (const item of commandItems) {
-    if (item !== articleSearch) item.hidden = !item.textContent.toLowerCase().includes(query);
-  }
-  // Any typed text can also be sent to the article archive search.
-  if (articleSearch) {
-    articleSearch.hidden = !raw;
-    articleSearch.href = `/articles/?q=${encodeURIComponent(raw)}`;
-    articleSearch.querySelector("[data-query]").textContent = raw;
-  }
-  const items = visibleItems();
-  commandIndex = Math.min(commandIndex, Math.max(0, items.length - 1));
-  commandItems.forEach((item) => item.classList.toggle("selected", item === items[commandIndex]));
-};
-const openPalette = () => {
-  previousFocus = document.activeElement;
-  palette?.classList.add("open");
-  palette?.setAttribute("aria-hidden", "false");
-  commandIndex = 0;
-  syncPalette();
-  requestAnimationFrame(() => commandInput?.focus());
-};
-const closePalette = () => {
-  if (!palette?.classList.contains("open")) return;
-  palette.classList.remove("open");
-  palette.setAttribute("aria-hidden", "true");
-  previousFocus?.focus();
-};
-document.getElementById("command-open")?.addEventListener("click", openPalette);
-palette?.addEventListener("click", (event) => event.target === palette && closePalette());
-commandItems.forEach((item) => item.addEventListener("click", closePalette));
-commandInput?.addEventListener("input", () => {
-  commandIndex = 0;
-  syncPalette();
-});
-commandInput?.addEventListener("keydown", (event) => {
-  const items = visibleItems();
-  if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-    event.preventDefault();
-    commandIndex = (commandIndex + (event.key === "ArrowDown" ? 1 : -1) + items.length) % Math.max(1, items.length);
-    syncPalette();
-  } else if (event.key === "Enter" && items[commandIndex]) {
-    event.preventDefault();
-    items[commandIndex].click();
-  }
-});
+// Escape closes the mobile menu (the command palette handles its own keys).
 addEventListener("keydown", (event) => {
-  if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
-    event.preventDefault();
-    palette?.classList.contains("open") ? closePalette() : openPalette();
-  } else if (event.key === "Escape") {
-    closePalette();
-    if (mobileMenu?.classList.contains("open")) {
-      setMenu(false);
-      menuButton?.focus();
-    }
-  } else if (event.key === "Tab" && palette?.classList.contains("open")) {
-    const controls = [commandInput, ...visibleItems()].filter(Boolean);
-    const first = controls[0];
-    const last = controls.at(-1);
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last?.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first?.focus();
-    }
+  if (event.key === "Escape" && mobileMenu?.classList.contains("open")) {
+    setMenu(false);
+    menuButton?.focus();
   }
 });
 

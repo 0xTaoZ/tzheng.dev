@@ -29,6 +29,8 @@ export default defineConfig({
   compressHTML: true,
   site,
   prefetch: { prefetchAll: true, defaultStrategy: "hover" },
+  // Emit fonts and images as files; inlined data: URIs would need a looser CSP.
+  vite: { build: { assetsInlineLimit: 0 } },
   integrations: [
     sitemap({
       filter: (page) => !page.includes("/404"),
