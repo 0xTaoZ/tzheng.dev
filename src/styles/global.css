@@ -127,7 +127,7 @@ h1 { font-size: clamp(3.5rem, 9vw, 8rem); line-height: .92; letter-spacing: -.07
 .portrait img { position:relative; width:min(80vw,34rem); filter:saturate(1.02) contrast(1.03); mask-image: radial-gradient(ellipse at 55% 48%, black 42%, transparent 78%); }
 section { padding: 6.5rem 0; }
 .section-head { margin-bottom: 2.4rem; }
-.section-head h2 { font-size: clamp(3rem, 6vw, 5rem); line-height: .95; letter-spacing: -.06em; margin: .7rem 0; }
+.section-head h1, .section-head h2 { font-size: clamp(3rem, 6vw, 5rem); line-height: .95; letter-spacing: -.06em; margin: .7rem 0; }
 .section-head p { color: var(--muted); font-size: 1.15rem; line-height: 1.65; max-width: 760px; }
 .grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1rem; }
 .card {
@@ -148,42 +148,6 @@ section { padding: 6.5rem 0; }
 .meta { display: flex; flex-wrap: wrap; gap: .45rem; color: var(--muted); font: .72rem ui-monospace, SFMono-Regular, Menlo, monospace; }
 .link { color: #bae6fd; font-weight: 700; font-size: .88rem; }
 .timeline { display:grid; gap:1rem; }
-.site-footer {
-  border-top: 1px solid rgba(148,163,184,.10);
-  padding: 2.2rem 0;
-  color: var(--muted);
-  background: linear-gradient(180deg, transparent, rgba(2,6,14,.55));
-}
-.footer-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-}
-.footer-inner p { margin: .25rem 0; line-height: 1.6; font: .82rem ui-monospace, SFMono-Regular, Menlo, monospace; }
-.footer-kicker { color: #bae6fd; text-transform: uppercase; letter-spacing: .12em; }
-.footer-security {
-  max-width: 54rem;
-  border: 1px solid rgba(125,211,252,.20);
-  border-radius: 18px;
-  padding: .9rem 1rem;
-  color: #dbeafe;
-  background: rgba(125,211,252,.055);
-  box-shadow: 0 0 34px rgba(125,211,252,.08);
-}
-.system-link {
-  min-width: min(100%, 24rem);
-  display: grid;
-  gap: .22rem;
-  border: 1px solid rgba(125,211,252,.20);
-  border-radius: 18px;
-  padding: 1rem 1.1rem;
-  background: linear-gradient(135deg, rgba(125,211,252,.08), rgba(57,255,136,.045));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
-}
-.system-link span { color: #f8fafc; font-weight: 760; letter-spacing: -.02em; }
-.system-link small { color: #94a3b8; line-height: 1.45; }
-.system-link:hover { border-color: rgba(125,211,252,.38); transform: translateY(-1px); }
 .article-body { width:min(780px, calc(100vw - 2rem)); margin:0 auto; padding: 5rem 0; }
 .article-body h1 { font-size: clamp(3rem, 8vw, 6.5rem); }
 .article-body p { color:#cbd5e1; line-height:1.9; font-size:1.05rem; }
@@ -201,3 +165,30 @@ section { padding: 6.5rem 0; }
   .card, .card.featured, .card.compact { grid-column: span 12; }
   .footer-inner { align-items: stretch; flex-direction: column; }
 }
+
+.skip-link { position: fixed; top: 8px; left: 8px; z-index: 9999; padding: 12px 20px; background: #020305; color: #f8fafc; transform: translateY(-200%); }
+.skip-link:focus { transform: none; }
+
+.article-body img { max-width:100%; height:auto; }
+.article-body .table-scroll { overflow-x:auto; }
+.article-body table { width:100%; border-collapse:collapse; text-align:left; }
+.article-body th, .article-body td { padding:.75rem; border-bottom:1px solid var(--line); vertical-align:top; }
+.article-body table a { color:#bae6fd; }
+.article-body .merge-label { display:block; font-size:.72rem; color:var(--muted); }
+
+/* Article archive extends the existing cards and typography. */
+[hidden] { display: none !important; }
+.archive-months { display:flex; flex-wrap:wrap; gap:.6rem; margin-bottom:2rem; }
+.archive-note { font-size:.94rem !important; }
+.article-filters { display:flex; flex-wrap:wrap; align-items:end; gap:1rem; margin:2rem 0 1rem; }
+.article-filters label { display:grid; gap:.6rem; color:var(--muted); flex:1 1 15rem; }
+.article-filters input, .article-filters select { width:100%; min-height:2.8rem; padding:.7rem; border:1px solid var(--line); border-radius:10px; background:#0a101b; color:#f8fafc; font:inherit; }
+.article-filters .button { cursor:pointer; font:inherit; }
+.archive-group { padding:2rem 0; scroll-margin-top:7rem; }
+.archive-group h2 { margin-bottom:1.5rem; }
+.archive-group .card h3 { font-size:clamp(1.4rem,2.5vw,2rem); line-height:1.2; }
+.archive-group .card h3 a { color:inherit; }
+.archive-group .card .meta { margin:.85rem 0; }
+.article-body { overflow-wrap:anywhere; }
+.article-body pre { max-width:100%; overflow-x:auto; }
+.article-body :not(pre) > code { white-space:normal; overflow-wrap:anywhere; }

@@ -5,7 +5,13 @@ date: "2026-10-03"
 status: "learning"
 type: "Indicator extraction"
 featured: false
-priority: 5
+priority: 4
+homepageOrder: 4
+homepageFacts:
+  - label: "Extraction"
+    text: "Defanged URLs, IPs, domains, hashes, email and CVE IDs."
+  - label: "Enrichment"
+    text: "Optional reputation lookup; --no-enrich keeps parsing offline."
 stack: ["Python", "IOC", "JSON"]
 github: "https://github.com/0xTaoZ/Sentinel-IOC-Toolkit"
 excerpt: "Extracts and normalizes indicators from investigation text, including defanged URLs, domains, hashes and CVE identifiers."
@@ -27,7 +33,7 @@ python3 extractor.py ../test.txt --output ioc-report.json
 
 ## Optional enrichment
 
-AbuseIPDB enrichment is optional. Local parsing does not require an API key. Reputation data is additional context; extracting a string does not establish that it is malicious.
+AbuseIPDB enrichment is optional. Use `--no-enrich` to force offline parsing even when a key is configured. Local parsing does not require an API key. Reputation data is additional context; extracting a string does not establish that it is malicious.
 
 ## Boundaries
 

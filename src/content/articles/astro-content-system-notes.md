@@ -2,61 +2,38 @@
 title: "How I use Astro Content Collections for my portfolio"
 slug: "astro-content-system-notes"
 date: 2026-07-08
-updated: 2026-10-03
-excerpt: "Astro Content Collections helped me turn my portfolio into a static-first content system with typed metadata, generated pages, sitemap, RSS, and a smaller attack surface."
+excerpt: "How I keep cards and pages in sync, publish Markdown and search the article archive without a backend."
 tags: ["astro", "frontend", "content-system", "cloudflare", "seo"]
-category: "Frontend"
+category: "Engineering"
 featured: true
 status: "published"
-readingTime: "6 min"
+readingTime: "2 min"
+updated: 2026-10-06
+project: "tzheng-dev"
 ---
 
-I recently changed my portfolio from a mostly static HTML site into an Astro-based content system. The goal was not just to use a new framework. The goal was to make articles and projects easier to maintain, easier to index by search engines, and safer to deploy as static files.
+Project cards used to keep their own copies of the title and summary inside my homepage. I could update a case study and leave its card describing the old version. I now keep those details in one content record.
 
-The most useful part for me is Astro Content Collections. Instead of keeping articles inside one HTML file or a JavaScript array, each article can live as its own Markdown or MDX file.
+This July article was updated in October to describe the current site.
 
-```text
-src/content/articles/
-src/content/projects/
-```
+## One record for the page and its card
 
-Each file has frontmatter metadata. For articles, I use fields like `title`, `slug`, `date`, `updated`, `excerpt`, `tags`, `category`, `featured`, `status`, and `readingTime`. This makes the content easier to sort, filter, and render.
+Articles and projects are Markdown files in `src/content/`. The schema in `src/content.config.ts` checks required fields before the build. A separate slug keeps the URL stable when I change a title.
 
-The important idea is that content is not only text. Content also needs structure. A blog article needs a title, date, tags, status, summary, and URL. A project needs stack, status, GitHub link, demo link, priority, and a short explanation. When this metadata is consistent, the website can generate pages automatically.
+Project metadata includes source links, stack and homepage order. The homepage, complete index and case study read the same collection. The terminal's selected-project list uses the same order too.
 
-For example, the article list page reads all published articles from the collection. The detail page uses the article slug to generate a static route. That means I do not need to manually create a new HTML page every time I write a post.
+For articles, `homepageOrder` selects three reading recommendations. The archive includes all published entries. Drafts are left out of the public routes, homepage and RSS. There is no second article body inside a JavaScript array.
 
-```text
-/articles/
-/articles/cloudtrail-first-pass/
-/articles/ioc-tool/
-```
+## Dates and finding an article
 
-Projects use the same idea. I do not want the Projects page to become a random GitHub repository list. I want it to show selected case studies. Content Collections help because each project file can include metadata like `featured`, `priority`, `status`, and `stack`. The homepage can show only featured projects, while the project page can show more detail.
+`date` holds the publication date. An optional `seriesMonth` groups a note into a monthly reading series. It does not change the date shown in RSS or structured data.
 
-Another technical benefit is static output. Astro builds the pages ahead of time. The final site is just HTML, CSS, JavaScript, images, RSS, and sitemap files. There is no public database, no public login surface, and no backend session state.
+Search runs in the browser over the title, summary, category and tags. The whole archive is already in the HTML, so readers can browse it even without JavaScript. I do not need a server query for this amount of content.
 
-For a personal cyber security portfolio, I think this is a strong default. A static site has a smaller attack surface. If I do not need a database, I should not add one. If I do not need a login system, I should not fake one in the frontend.
+Project articles also link back to their case study. That helps a reader find the code after reading about one small part of it.
 
-The publishing workflow also becomes cleaner. Content changes go through Git. If I add an article, I add a new MDX file. If I edit a project case study, Git shows the diff. If something breaks, I can review the exact commit. This is simple, but it is a real engineering advantage.
+## Publishing
 
-I also added SEO-related output around the content system. The site now has generated article pages, project pages, RSS, sitemap, canonical URLs, Open Graph metadata, and structured data. This is important because a portfolio should not only look good. Search engines should also understand what the site is about.
+The build generates article pages, the archive, RSS and sitemap. GitHub Actions publishes the checked output to GitHub Pages, with Cloudflare in front of the site.
 
-For example, a technical article about CloudTrail or IOC extraction should have its own URL. It should not be hidden inside a modal or one giant page. A separate URL makes it easier to share, index, and revisit later.
-
-The current publishing workflow uses GitHub Actions and GitHub Pages. Cloudflare provides the domain’s edge layer. The build turns the Astro source into a static artifact:
-
-```text
-Git repository
-  -> Astro build
-  -> static dist output
-  -> GitHub Pages
-```
-
-This is also good for performance. Most pages can be delivered as prebuilt files. The browser does not need a lot of client-side JavaScript just to read an article. Motion and interaction can still exist on the homepage, but the content pages should stay fast and readable.
-
-One design decision I care about is keeping the homepage feeling premium while making the content system more maintainable behind it. A site can have strong visual design and still have a clean content architecture. Those two things should support each other.
-
-The current site preserves the original homepage and shared dark presentation. Since the current articles and cases need no embedded components, the source files now use plain Markdown with the same typed metadata and stable URLs. But the base is now much better: content files, typed metadata, generated routes, static deployment, and search-friendly URLs.
-
-This migration taught me that frontend engineering is not only about UI. It is also about content modeling, build pipelines, deployment, SEO, performance, and security trade-offs. For my portfolio, Astro is useful because it lets me keep the site static while still treating the content like a real system.
+For now, Markdown and Git are enough for editing. A browser editor or multiple authors would be a different requirement. The [system page](/system/#content) has the current implementation, and the [site case study](/projects/tzheng-dev/) explains the maintenance work.

@@ -1,30 +1,35 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { entrySlug } from "../../lib/content";
+import { entrySlug, monthLabel, byPublication } from "../../lib/content";
 
 export async function getStaticPaths() {
-  const articles = await getCollection("articles", ({ data }) => data.status === "published");
-  return articles.map((article) => ({ params: { slug: entrySlug(article) }, props: { article } }));
+  const articles = await getCollection(
+    "articles",
+    ({ data }) => data.status === "published",
+  );
+  return articles.map((article) => ({
+    params: { slug: entrySlug(article) },
+    props: { article },
+  }));
 }
 
 const { article } = Astro.props;
-const all = (await getCollection("articles", ({ data }) => data.status === "published"))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const all = (
+  await getCollection("articles", ({ data }) => data.status === "published")
+).sort(byPublication);
+const projects = await getCollection("projects");
+const relatedProject = article.data.project ? projects.find(project => entrySlug(project) === article.data.project) : undefined;
+if (article.data.project && !relatedProject) throw new Error(`Unknown article project: ${article.data.project}`);
 const index = all.findIndex((item) => entrySlug(item) === entrySlug(article));
 const previous = all[index + 1];
 const next = all[index - 1];
 const { Content, headings } = await render(article);
-const articleUrl = new URL(`/articles/${entrySlug(article)}/`, Astro.site).toString();
-const articleKeywords = [
-  article.data.title,
-  article.data.category,
-  ...article.data.tags,
-  "Haitao Zheng article",
-  "郑海涛 技术文章",
-  "cyber security blog",
-  "security learning notes"
-];
+const articleUrl = new URL(
+  `/articles/${entrySlug(article)}/`,
+  Astro.site,
+).toString();
+const articleKeywords = [article.data.category, ...article.data.tags];
 const articleSchema = {
   "@type": "Article",
   "@id": `${articleUrl}#article`,
@@ -33,10 +38,10 @@ const articleSchema = {
   url: articleUrl,
   datePublished: article.data.date.toISOString(),
   dateModified: (article.data.updated ?? article.data.date).toISOString(),
-  author: { "@id": "https://tzheng.dev/#haitao-zheng" },
+  author: { "@id": "https://tzheng.dev/#person" },
   publisher: { "@id": "https://tzheng.dev/#website" },
   mainEntityOfPage: articleUrl,
-  keywords: articleKeywords
+  keywords: articleKeywords,
 };
 
 const breadcrumbSchema = {
@@ -47,59 +52,101 @@ const breadcrumbSchema = {
       "@type": "ListItem",
       position: 1,
       name: "Home",
-      item: "https://tzheng.dev/"
+      item: "https://tzheng.dev/",
     },
     {
       "@type": "ListItem",
       position: 2,
       name: "Articles",
-      item: "https://tzheng.dev/articles/"
+      item: "https://tzheng.dev/articles/",
     },
     {
       "@type": "ListItem",
       position: 3,
       name: article.data.title,
-      item: articleUrl
-    }
-  ]
+      item: articleUrl,
+    },
+  ],
 };
 
 const relatedArticles = all
-  .filter((item) => entrySlug(item) !== entrySlug(article) && item.data.tags.some(t => article.data.tags.includes(t)))
+  .filter(
+    (item) =>
+      entrySlug(item) !== entrySlug(article) &&
+      (item.data.tags.some((t) => article.data.tags.includes(t)) ||
+        (article.data.project && item.data.project === article.data.project)),
+  )
   .sort((a, b) => {
-    const aMatches = a.data.tags.filter(t => article.data.tags.includes(t)).length;
-    const bMatches = b.data.tags.filter(t => article.data.tags.includes(t)).length;
-    return bMatches - aMatches || b.data.date.valueOf() - a.data.date.valueOf();
+    const aMatches = a.data.tags.filter((t) =>
+      article.data.tags.includes(t),
+    ).length;
+    const bMatches = b.data.tags.filter((t) =>
+      article.data.tags.includes(t),
+    ).length;
+    const aProject = Number(!!article.data.project && a.data.project === article.data.project);
+    const bProject = Number(!!article.data.project && b.data.project === article.data.project);
+    return bProject - aProject || bMatches - aMatches || byPublication(a, b);
   })
   .slice(0, 3);
 ---
 
-<BaseLayout title={`${article.data.title} | Haitao Zheng`} description={article.data.excerpt} keywords={articleKeywords} structuredData={[articleSchema, breadcrumbSchema]}>
-  <main class="article-body">
-    <a class="button" href="/articles/">← Articles</a>
+<BaseLayout
+  title={`${article.data.title} | Haitao Zheng`}
+  description={article.data.excerpt}
+  keywords={articleKeywords}
+  structuredData={[articleSchema, breadcrumbSchema]}
+>
+  <main id="main-content" tabindex="-1" class="article-body">
+    <a class="button" href="/articles/">
+      ← Articles
+    </a>
     <h1>{article.data.title}</h1>
     <div class="meta">
-      <span>{article.data.date.toLocaleDateString("en", { month: "long", day: "numeric", year: "numeric" })}</span>
+      <span>Published
+        {article.data.date.toLocaleDateString("en", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        })}
+      </span>
       <span>{article.data.category}</span>
       <span>{article.data.readingTime}</span>
-      {article.data.updated && <span>updated {article.data.updated.toLocaleDateString("en")}</span>}
+      {article.data.updated && (
+        <span>updated {article.data.updated.toLocaleDateString("en")}</span>
+      )}
     </div>
+    {article.data.seriesMonth && <p class="note">Reading series: <a href={`/articles/#month-${article.data.seriesMonth}`}>{monthLabel(article.data.seriesMonth)}</a>. This grouping describes the topic or work discussed, not the publication date.</p>}
     <p>{article.data.excerpt}</p>
+    {relatedProject && <p class="meta">Project: <a class="link" href={`/projects/${entrySlug(relatedProject)}/`}>{relatedProject.data.title} ↗</a></p>}
     {headings.length > 0 && (
       <nav class="toc" aria-label="Table of contents">
         <strong>Contents</strong>
-        {headings.map((heading) => <a href={`#${heading.slug}`}>{heading.text}</a>)}
+        {headings.map((heading) => (
+          <a href={`#${heading.slug}`}>{heading.text}</a>
+        ))}
       </nav>
     )}
     <Content />
     <div class="grid" style="margin-top:3rem">
-      {previous && <a class="card compact" href={`/articles/${entrySlug(previous)}/`}><span class="meta">Previous</span><h3>{previous.data.title}</h3></a>}
-      {next && <a class="card compact" href={`/articles/${entrySlug(next)}/`}><span class="meta">Next</span><h3>{next.data.title}</h3></a>}
+      {previous && (
+        <a class="card compact" href={`/articles/${entrySlug(previous)}/`}>
+          <span class="meta">Previous</span>
+          <h3>{previous.data.title}</h3>
+        </a>
+      )}
+      {next && (
+        <a class="card compact" href={`/articles/${entrySlug(next)}/`}>
+          <span class="meta">Next</span>
+          <h3>{next.data.title}</h3>
+        </a>
+      )}
     </div>
-    
+
     {relatedArticles.length > 0 && (
       <div style="margin-top: 4rem;">
-        <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem; color: #fff;">Related Articles</h2>
+        <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem; color: #fff;">
+          Related Articles
+        </h2>
         <div class="grid">
           {relatedArticles.map((rel) => (
             <a class="card compact" href={`/articles/${entrySlug(rel)}/`}>

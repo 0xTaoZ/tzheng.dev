@@ -5,7 +5,17 @@ date: "2026-10-03"
 status: "security"
 type: "Cloud investigation"
 featured: true
-priority: 2
+priority: 1
+homepageOrder: 1
+homepageFacts:
+  - label: "Input"
+    text: "Local CloudTrail JSON; no AWS credentials."
+  - label: "Checks"
+    text: "IAM changes, logging disruption and public exposure."
+  - label: "Output"
+    text: "Severity, event context and text or JSON reports."
+  - label: "Evidence"
+    text: "Synthetic fixtures, unit tests and investigation notes."
 stack: ["Python", "AWS CloudTrail", "CLI", "Unit tests"]
 github: "https://github.com/0xTaoZ/cloudtrail-quickscan"
 excerpt: "An explainable first pass over AWS audit logs: IAM changes, logging disruption, public exposure and unusual activity."

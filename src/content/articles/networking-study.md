@@ -8,7 +8,7 @@ tags: ["learning", "networking"]
 category: "Networking"
 featured: false
 status: "published"
-readingTime: "3 min"
+readingTime: "1 min"
 ---
 
 Sometimes I want to jump directly to advanced security topics. But networking basics keep coming back.

@@ -1,0 +1,92 @@
+---
+import { getCollection } from "astro:content";
+import { entrySlug, selectHomepageProjects } from "../../lib/content";
+const projects = selectHomepageProjects(await getCollection("projects"));
+---
+
+<section id="projects" class="py-32 px-6 max-w-7xl mx-auto">
+  <div class="mb-14 reveal">
+    <p class="section-kicker mb-4">Selected work</p>
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+      <div>
+        <h2 class="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+          Projects.
+        </h2>
+        <p class="text-xl text-gray-400 font-light max-w-3xl">
+          A complete study product, security tools and the engineering behind
+          this site.
+        </p>
+      </div>
+      <a
+        href="/projects/"
+        class="inline-flex items-center justify-center px-5 py-3 rounded-full border border-sky-300/25 text-sky-100 hover:bg-sky-300 hover:text-black transition duration-300 text-sm font-medium"
+      >
+        All project cases
+      </a>
+    </div>
+    <p class="mt-5 text-sm text-gray-500 font-mono md:hidden">
+      Swipe sideways to scan project cards →
+    </p>
+  </div>
+  <div class="project-deck">
+    {projects.map((project, index) => (
+      <article
+        class:list={[
+          "project-case",
+          "reveal",
+          index === 0 && "featured",
+          index % 2 === 1 && "delay-100",
+        ]}
+        data-tilt
+      >
+        <div class="case-inner">
+          <div class="flex flex-wrap items-center gap-2 mb-6">
+            {project.data.stack.map((item) => (
+              <span class="chip">{item}</span>
+            ))}
+          </div>
+          {index === 0 && <p class="section-kicker mb-3">Featured build</p>}
+          <h3
+            class:list={[
+              "font-bold",
+              "text-white",
+              index === 0
+                ? "text-3xl md:text-4xl mb-4 tracking-tight"
+                : "text-2xl mb-3",
+            ]}
+          >
+            {project.data.title}
+          </h3>
+          <p
+            class:list={[
+              "leading-relaxed",
+              "font-light",
+              index === 0 ? "text-gray-300 text-lg" : "text-gray-400",
+            ]}
+          >
+            {project.data.excerpt}
+          </p>
+          <div class="case-meta-grid">
+            {project.data.homepageFacts.map((fact) => (
+              <div class="case-fact">
+                <b>{fact.label}</b>
+                <span>{fact.text}</span>
+              </div>
+            ))}
+          </div>
+          <a href={`/projects/${entrySlug(project)}/`} class="case-link">
+            Read the case study <span>↗</span>
+          </a>
+        </div>
+      </article>
+    ))}
+  </div>
+  <div class="project-dots" id="project-dots" aria-hidden="true">
+    {projects.map((_, index) => (
+      <button
+        class:list={[index === 0 && "active"]}
+        data-project-index={index}
+      ></button>
+    ))}
+  </div>
+</section>

@@ -1,11 +1,11 @@
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
-import { entrySlug } from "../lib/content";
+import { entrySlug, byPublication } from "../lib/content";
 
 export async function GET(context) {
   const articles = (
     await getCollection("articles", ({ data }) => data.status === "published")
-  ).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  ).sort(byPublication);
 
   return rss({
     title: "Haitao Zheng Articles",

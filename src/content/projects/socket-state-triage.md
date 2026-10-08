@@ -5,7 +5,13 @@ date: "2026-10-03"
 status: "active"
 type: "Linux socket review"
 featured: false
-priority: 9
+priority: 3
+homepageOrder: 3
+homepageFacts:
+  - label: "Parser"
+    text: "C implementation with explicit wildcard-address handling."
+  - label: "Review"
+    text: "Broad listeners and privileged ports, checked with make test."
 stack: ["C", "Linux", "No dependencies"]
 github: "https://github.com/0xTaoZ/socket-state-triage"
 excerpt: "A dependency-free utility for reviewing Linux socket state, wildcard listeners and broad privileged-port bindings."

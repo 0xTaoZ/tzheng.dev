@@ -5,10 +5,10 @@ date: 2026-02-12
 updated: 2026-02-12
 excerpt: "I learned that secure systems start with small habits: reading logs, checking services, and understanding routes."
 tags: ["learning", "networking", "linux"]
-category: "Systems"
+category: "Infrastructure"
 featured: false
 status: "published"
-readingTime: "3 min"
+readingTime: "1 min"
 ---
 
 Linux is still difficult for me sometimes, but it also feels very honest. If something does not work, there is usually a log, a service status, or a command that can explain the problem.

@@ -9,6 +9,9 @@ const articles = defineCollection({
     slug: z.string().optional(),
     date: z.coerce.date(),
     updated: z.coerce.date().optional(),
+    project: z.string().optional(),
+    seriesMonth: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/).optional(),
+    homepageOrder: z.number().int().positive().optional(),
     excerpt: z.string(),
     tags: z.array(z.string()).default([]),
     category: z.string(),
@@ -34,6 +37,10 @@ const projects = defineCollection({
     type: z.string(),
     featured: z.boolean().default(false),
     priority: z.number().default(99),
+    homepageOrder: z.number().int().positive().optional(),
+    homepageFacts: z
+      .array(z.object({ label: z.string(), text: z.string() }))
+      .default([]),
     stack: z.array(z.string()).default([]),
     github: z.url().optional(),
     demo: z.url().optional(),

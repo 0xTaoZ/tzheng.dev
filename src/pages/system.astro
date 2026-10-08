@@ -1,8 +1,12 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import pkg from "../../package.json";
+const articles = await getCollection("articles");
+const projects = await getCollection("projects");
 ---
 
-<BaseLayout title="System Design | tzheng.dev" description="How tzheng.dev evolved from a custom cyber portfolio into a versioned, content-driven static engineering system.">
+<BaseLayout title="System Design | tzheng.dev" description="Content records, frontend components and the static delivery path for tzheng.dev.">
   
   <!-- Cursor glow elements (same as index.html) -->
   <div id="sys-cursor-field" class="sys-cursor-field" aria-hidden="true"></div>
@@ -15,10 +19,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <div class="hero-narrative">
         <span class="eyebrow">BEHIND THIS SITE</span>
         <h1 class="sys-title">System Design.</h1>
-        <p class="sys-subtitle">How tzheng.dev evolved from a custom cyber portfolio into a versioned, content-driven static engineering system.</p>
+        <p class="sys-subtitle">Content records, frontend components and the static delivery path for tzheng.dev.</p>
         <div class="narrative-text">
-          <p>This is not a list of technologies.</p>
-          <p>It is the story of how the site was designed, how its architecture changed, how content moves from source files to production, what broke during the migration, and why some forms of complexity were deliberately left out.</p>
+          <p>The homepage keeps its custom visual presentation. Articles and project cases use typed records and stable routes.</p>
+          <p>This reference covers the current implementation, its delivery boundaries and the earlier migration history.</p>
         </div>
       </div>
       <aside class="hero-profile">
@@ -27,8 +31,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <h3 class="profile-heading">SYSTEM PROFILE</h3>
             <div class="profile-grid">
               <div class="profile-fact"><b>RUNTIME MODEL</b><span>Static</span></div>
-              <div class="profile-fact"><b>FRAMEWORK</b><span>Astro 5</span></div>
-              <div class="profile-fact"><b>CONTENT</b><span>MDX Collections</span></div>
+              <div class="profile-fact"><b>FRAMEWORK</b><span>Astro {pkg.dependencies.astro}</span></div>
+              <div class="profile-fact"><b>CONTENT</b><span>Markdown collections</span></div>
               <div class="profile-fact"><b>BUILD</b><span>Node 24</span></div>
               <div class="profile-fact"><b>SOURCE OF TRUTH</b><span>Git</span></div>
               <div class="profile-fact"><b>DELIVERY</b><span>GitHub Pages &rarr; Cloudflare Edge</span></div>
@@ -38,9 +42,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </aside>
     </div>
     <div class="hero-tags">
-      <span class="chip">Astro 5</span>
+      <span class="chip">Astro {pkg.dependencies.astro}</span>
       <span class="chip">TypeScript</span>
-      <span class="chip">MDX</span>
+      <span class="chip">Markdown</span>
       <span class="chip">Git</span>
       <span class="chip">CI/CD</span>
       <span class="chip">Static Delivery</span>
@@ -79,7 +83,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </nav>
     </aside>
 
-    <main class="story-main">
+    <main id="main-content" tabindex="-1" class="story-main">
       
       <!-- 01 ORIGIN -->
       <section id="origin" class="chapter reveal">
@@ -87,18 +91,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <h3 class="ch-heading">The interface could grow. The content model could not.</h3>
         <p>tzheng.dev began as a highly customized personal homepage.</p>
         <p>The original architecture was built around visual identity: custom HTML, CSS, JavaScript, motion, terminal-inspired interactions, project presentations, and a deliberately cinematic first impression.</p>
-        <p>That model worked well while the website was primarily a portfolio. Then the site began to grow.</p>
+
         <p>Projects needed independent records. Articles needed stable routes, metadata, categories, and long-form layouts.</p>
         <p>Search engines needed canonical URLs, structured identity signals, sitemap output, and pages that could exist independently from the homepage.</p>
-        <p>The problem was no longer visual. The interface could continue growing, but the content model could not. Every new long-term feature increased the risk of turning one presentation layer into the source of truth for the entire site.</p>
+        <p>Separate summaries inside the homepage could fall behind their detail pages. Shared records remove that second place to maintain the same information.</p>
 
         <div class="callout-block">Keep the expressive interface. Rebuild the system underneath it.</div>
-        
-        <p>The homepage remained the identity layer.</p>
-        <p>Articles and projects became structured content.</p>
-        <p>Astro became responsible for routing, content generation, metadata, and production builds.</p>
-        <p>Git became the history of the system.</p>
-        <p>The objective was not to replace the original site with a framework. It was to separate the parts that needed to evolve independently. The result is a hybrid system: an expressive shell on top of a structured core.</p>
+
+        <p>The homepage, content records and delivery process can now change independently. The homepage selects four cases; the complete project index exposes every case record.</p>
 
         <div class="sys-card reveal" data-tilt>
           <div class="sys-card-inner ba-grid">
@@ -131,7 +131,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <!-- 02 ARCHITECTURE -->
       <section id="architecture" class="chapter reveal">
         <h2 class="ch-kicker">02 &mdash; The Architecture</h2>
-        <h3 class="ch-heading">Static by design, not by limitation.</h3>
+        <h3 class="ch-heading">Prebuilt pages for public content.</h3>
         <p>Most content on tzheng.dev is public and read-heavy.</p>
         <p>Visitors do not need accounts to read a project. An article does not need a database query on every request. A portfolio does not need an authenticated application runtime merely because such a stack is available.</p>
         <p>That made static generation the natural default. Astro owns the structural layer of the site.</p>
@@ -151,10 +151,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           </div>
         </div>
 
-        <p>MDX stores long-form articles and project records. TypeScript supports the configuration and content tooling around the build. The original homepage keeps the custom frontend behavior that gives it its identity.</p>
-        <p>This boundary is deliberate.</p>
+        <p>Markdown stores the articles and project records. TypeScript checks the schemas and page code. Local CSS assets replace the browser-time utility CSS generator, and a bundled script handles homepage interactions.</p>
 
-        <div class="callout-block">The framework does not need to own every interaction in order to own the architecture.</div>
+        <div class="callout-block">Astro generates the pages; browser JavaScript handles the interactive parts.</div>
 
         <p>The system can be understood as a sequence of transformations:</p>
 
@@ -162,7 +161,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <div class="sys-card-inner flow-row">
             <div class="flow-node">
               <h4>AUTHORING</h4>
-              <span>Astro pages &middot; MDX &middot; HTML/CSS/JS</span>
+              <span>Astro pages &middot; Markdown &middot; HTML/CSS/JS</span>
             </div>
             <div class="flow-sep">&rarr;</div>
             <div class="flow-node flow-highlight">
@@ -202,31 +201,31 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           </div>
         </div>
 
-        <p>This is not a zero-JavaScript website. JavaScript remains where interaction, navigation, motion, and interface behavior justify it. The distinction is more important:</p>
+        <p>JavaScript handles the terminal animation, navigation, project carousel and optional motion. Article content is present in the initial HTML response.</p>
         
-        <div class="callout-block">JavaScript is a deliberate layer, not the default answer to every page.</div>
-        
-        <p>The public system remains mostly static, while the expressive parts of the frontend are allowed to remain expressive.</p>
+        <div class="callout-block">Articles render as HTML. The homepage script adds motion and navigation.</div>
+
       </section>
 
       <!-- 03 CONTENT -->
       <section id="content" class="chapter reveal">
         <h2 class="ch-kicker">03 &mdash; Content as a System</h2>
-        <h3 class="ch-heading">A new article should be a content file, not homepage surgery.</h3>
-        <p>One of the most important architectural changes was separating content from presentation.</p>
-        <p>Articles and projects are no longer treated as permanent fragments inside a large homepage. They exist as independent Markdown and MDX documents inside structured collections.</p>
+        <h3 class="ch-heading">One content record, several page views.</h3>
+        <p>Homepage cards, indexes and detail routes read typed collection records.</p>
+        <p>Articles and projects are no longer treated as permanent fragments inside a large homepage. They exist as independent Markdown documents inside structured collections.</p>
 
         <div class="sys-card reveal" data-tilt style="margin: 2rem 0;">
           <div class="sys-card-inner">
             <h4 class="schema-title">DIRECTORY STRUCTURE</h4>
-            <pre class="dir-tree"><code>src/content/
-├── config.ts
-├── articles/   (8 files)
-└── projects/   (4 files)</code></pre>
+            <pre class="dir-tree"><code>src/
+├── content.config.ts
+└── content/
+    ├── articles/   ({articles.length} records)
+    └── projects/   ({projects.length} records)</code></pre>
           </div>
         </div>
 
-        <p>Each content type follows a strict Zod schema defined in <code>config.ts</code>.</p>
+        <p>Each content type follows a strict Zod schema defined in <code>src/content.config.ts</code>.</p>
 
         <div class="schema-row">
           <div class="sys-card reveal" data-tilt>
@@ -234,8 +233,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
               <h4 class="schema-title">ARTICLE SCHEMA</h4>
               <pre><code>title: z.string()
 slug: z.string().optional()
-date: z.date()
-updated: z.date().optional()
+date: z.coerce.date()
+updated: z.coerce.date().optional()
 excerpt: z.string()
 tags: z.array(z.string()).default([])
 category: z.string()
@@ -249,20 +248,24 @@ readingTime: z.string()</code></pre>
               <h4 class="schema-title">PROJECT SCHEMA</h4>
               <pre><code>title: z.string()
 slug: z.string().optional()
-date: z.date()
+date: z.coerce.date()
 status: z.enum(["active", "archived", "learning", "open-source", "security"])
 type: z.string()
 featured: z.boolean().default(false)
 priority: z.number().default(99)
+homepageOrder: z.number().int().positive().optional()
+homepageFacts: z.array(z.object(&#123;
+  label: z.string(), text: z.string()
+&#125;)).default([])
 stack: z.array(z.string()).default([])
-github: z.string().url().optional()
-demo: z.string().url().optional()
+github: z.url().optional()
+demo: z.url().optional()
 excerpt: z.string()</code></pre>
             </div>
           </div>
         </div>
 
-        <a class="evidence-link" href="https://github.com/0xTaoZ/tzheng.dev/blob/main/src/content/config.ts" target="_blank" rel="noopener noreferrer">
+        <a class="evidence-link" href="https://github.com/0xTaoZ/tzheng.dev/blob/main/src/content.config.ts" target="_blank" rel="noopener noreferrer">
           View content schema &nearr;
         </a>
 
@@ -270,7 +273,7 @@ excerpt: z.string()</code></pre>
 
         <div class="sys-card reveal" data-tilt>
           <div class="sys-card-inner pipeline">
-            <div class="pipe-node">MDX FILE</div>
+            <div class="pipe-node">Markdown FILE</div>
             <div class="pipe-sep">&darr;</div>
             <div class="pipe-node">SCHEMA VALIDATION</div>
             <div class="pipe-sep">&darr;</div>
@@ -285,7 +288,8 @@ excerpt: z.string()</code></pre>
         </div>
 
         <p style="margin-top: 1.5rem;">This makes content changes predictable. A malformed content record can be detected before publication instead of silently becoming part of a page. A new article does not require editing the homepage. A project can change its metadata without rewriting its layout.</p>
-        <p>CONTENT decides what exists. LAYOUT decides how it is presented. BUILD decides how it becomes a page.</p>
+        <p style="margin-top:1.5rem;">The article archive groups original notes and companion guides into monthly reading series. Publication dates remain separate and are shared by detail pages, RSS and structured metadata. Search and category filtering run locally in the browser; reading the archive requires no JavaScript or database.</p>
+
       </section>
 
       <!-- 04 DELIVERY -->
@@ -307,7 +311,7 @@ excerpt: z.string()</code></pre>
             <div class="pipe-sep">&darr;</div>
             <div class="pipe-node">npm ci</div>
             <div class="pipe-sep">&darr;</div>
-            <div class="pipe-node">npm run build</div>
+            <div class="pipe-node">npm run check &rarr; npm run build &rarr; npm test</div>
             <div class="pipe-sep">&darr;</div>
             <div class="pipe-node">dist/</div>
             <div class="pipe-sep">&darr;</div>
@@ -326,7 +330,7 @@ excerpt: z.string()</code></pre>
         </a>
 
         <p style="margin-top: 2rem;">A commit can succeed while the build fails. A build can succeed while the wrong artifact is deployed. A deployment can succeed while a route or client interaction is still broken.</p>
-        <p>Treating source, build, artifact, and deployment as separate failure boundaries makes issues easier to locate. The pipeline does not become more professional by having more stages. It becomes more useful when each stage has a clear purpose.</p>
+        <p>Treating source, build, artifact, and deployment as separate failure boundaries makes issues easier to locate. Type and content checks precede the build. Generated-page checks run before the artifact is uploaded.</p>
       </section>
 
       <!-- 05 INTERFACE -->
@@ -334,7 +338,7 @@ excerpt: z.string()</code></pre>
         <h2 class="ch-kicker">05 &mdash; The Interface Layer</h2>
         <h3 class="ch-heading">Preserve identity without letting the interface own the architecture.</h3>
         <p>The website has two different jobs. The first is to create identity. The second is to carry information. Those jobs do not need the same visual intensity.</p>
-        <p>The homepage is intentionally expressive. It uses a dark visual system, terminal-inspired details, controlled motion, custom interactions, and a stronger sense of atmosphere. It is designed to be remembered.</p>
+        <p>The homepage retains its dark palette, Earth background, terminal and custom motion. Its sections are native Astro components; project and article cards read the same records as their detail pages.</p>
         <p>Articles, project case studies, and system pages have a different responsibility. They need to remain readable for longer periods. They need predictable spacing. They need stable typography. They need layouts that survive different amounts of content.</p>
 
         <div class="sys-card reveal" data-tilt style="margin: 2.5rem 0;">
@@ -351,13 +355,11 @@ excerpt: z.string()</code></pre>
           </div>
         </div>
 
-        <p>It is not one interface repeated everywhere. It is one design language with different levels of expression.</p>
         <p>Shared interface patterns create continuity between those layers: navigation, metadata, chips, typography hierarchy, spacing rules, cards, footer signals, and the interaction language.</p>
         <p>The design system is deliberately lightweight. The project does not introduce an external UI framework simply to prove that one could be used. Custom CSS remains appropriate where the visual system is specific to the site. Astro provides structure where structure is needed.</p>
         
         <h4 class="ch-sub">RESPONSIVE TRANSFORMATION</h4>
-        
-        <p>The page architecture follows another important rule:</p>
+
         <div class="callout-block">Desktop and mobile are not scaled versions of the same composition.</div>
         
         <div class="sys-card reveal" data-tilt style="margin: 2rem 0;">
@@ -394,7 +396,7 @@ excerpt: z.string()</code></pre>
       <!-- 06 PROBLEMS -->
       <section id="problems" class="chapter reveal">
         <h2 class="ch-kicker">06 &mdash; What Broke Along the Way</h2>
-        <h3 class="ch-heading">Real migration logs, not hypothetical.</h3>
+        <h3 class="ch-heading">Migration decisions and recorded commits.</h3>
         <p>The difficult part was not choosing a framework. It was deciding what to preserve, what to rebuild, and where the boundaries actually belonged.</p>
 
         <div class="challenge-stack">
@@ -455,7 +457,7 @@ excerpt: z.string()</code></pre>
           </div>
         </div>
 
-        <h4 class="ch-sub" style="margin-top: 4rem;">MIGRATION LOG</h4>
+        <h4 class="ch-sub" style="margin-top: 4rem;">MIGRATION LOG: JULY 2026</h4>
         
         <div class="migration-log">
           <div class="sys-card reveal" data-tilt>
@@ -545,9 +547,8 @@ excerpt: z.string()</code></pre>
         <p>Static architecture does not mean zero attack surface.</p>
         <p>The system still depends on account security, repository permissions, the dependency supply chain, CI/CD permissions, build integrity, hosting configuration, DNS, edge infrastructure, and client-side code.</p>
         <p>The security decision is narrower and more honest: <strong>Do not create a public runtime surface without a reason.</strong></p>
-        <p>The goal is not to claim that risk disappears. The goal is to avoid operating public systems that the site does not need.</p>
-        
-        <div class="callout-block">Static-first is a reduction strategy, not a security guarantee.</div>
+
+        <div class="callout-block">Static output reduces runtime responsibilities. Build and account security still matter.</div>
         
         <h4 class="ch-sub">TRUST SURFACE</h4>
 
@@ -647,7 +648,7 @@ excerpt: z.string()</code></pre>
             </ul>
           </div>
         </div>
-        <p style="margin-top: 1.5rem;">These absences are not slogans. They are architectural decisions. Every missing runtime component is one less public system that needs credentials, patches, authentication logic, session handling, operational monitoring, and incident response.</p>
+        <p style="margin-top: 1.5rem;">The current reading and contact flows do not require a backend. A future authenticated feature would need a separate assessment of credentials, sessions and operational responsibility.</p>
 
         <h4 class="ch-sub">RESIDUAL RISK</h4>
         <div class="sys-card reveal" data-tilt>
@@ -677,7 +678,7 @@ excerpt: z.string()</code></pre>
                 <li>Version-controlled content</li>
                 <li>Build-time validation</li>
                 <li>Reproducible deployment</li>
-                <li>Portable MDX files</li>
+                <li>Portable Markdown files</li>
                 <li>Simple rollback</li>
                 <li>Smaller public runtime surface</li>
               </ul>
@@ -710,7 +711,7 @@ excerpt: z.string()</code></pre>
           <h2 class="principle-heading">Complexity has to earn its place.</h2>
           <div class="principle-body">
             <p>tzheng.dev is not designed to use the largest possible stack. It is designed so that every major layer has a reason to exist.</p>
-            <p>Astro provides structure. MDX provides portable content. TypeScript strengthens contracts around the system. Git provides history and rollback. Automation turns source into a reproducible artifact. GitHub Pages serves the generated site. The edge layer supports public delivery. Custom frontend code remains where expression matters.</p>
+            <p>Astro provides structure. Markdown provides portable content. TypeScript strengthens contracts around the system. Git provides history and rollback. Automation turns source into a reproducible artifact. GitHub Pages serves the generated site. The edge layer supports public delivery. Custom frontend code remains where expression matters.</p>
             <div class="principle-rules">
               <p>Add structure where growth requires it.</p>
               <p>Preserve what already works.</p>

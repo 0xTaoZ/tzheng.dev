@@ -1,0 +1,179 @@
+---
+interface Props {
+  terminalLines: string[];
+}
+const { terminalLines } = Astro.props;
+---
+
+<section class="hero-bg hero-shell flex items-center justify-center overflow-hidden">
+  <div class="hero-overlay z-0"></div>
+  <div class="mission-layout relative z-10">
+    <div class="reveal">
+      <div class="mb-6 flex justify-center lg:justify-start">
+        <div class="eyebrow">
+          <span class="nav-dot"></span>blue-team / cloud-security / systems
+        </div>
+      </div>
+      <h1 class="hero-title font-bold text-white drop-shadow-2xl text-center lg:text-left">
+        HAITAO ZHENG <br />
+        <span class="text-[0.55em] text-gray-300 font-light tracking-tight">
+          (TAO)
+        </span>
+      </h1>
+      <p class="hero-subtitle text-gray-200 font-medium tracking-wide mt-6 drop-shadow-lg text-center lg:text-left max-w-3xl">
+        Cyber Security & Privacy <span class="text-gray-500">|</span> Systems &
+        Infrastructure Engineering
+      </p>
+
+      <div
+        class="terminal-crt mt-8 max-w-3xl mx-auto lg:mx-0"
+        aria-label="terminal intro"
+      >
+        <div class="terminal-topbar">
+          <div class="terminal-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <span>local / portfolio console</span>
+        </div>
+        <div class="terminal-body">
+          <div
+            id="terminal-output"
+            data-lines={JSON.stringify(terminalLines)}
+            class="terminal-output"
+          >
+            {terminalLines.join("\n")}
+          </div>
+          <span class="terminal-cursor"></span>
+        </div>
+      </div>
+
+      <div class="hero-feature-strip max-w-3xl mx-auto lg:mx-0">
+        <a href="#projects" class="hero-mini-card">
+          <p class="num">project / tool</p>
+          <p class="title">cloudtrail-quickscan</p>
+          <p class="meta">AWS logs · detection checks</p>
+        </a>
+        <a href="#contributions" class="hero-mini-card">
+          <p class="num">open source / PR</p>
+          <p class="title">cfn-lint contribution</p>
+          <p class="meta">CloudFormation · PR</p>
+        </a>
+        <a href="/articles/" class="hero-mini-card">
+          <p class="num">writing / blog</p>
+          <p class="title">Technical Articles</p>
+          <p class="meta">security notes · learning log</p>
+        </a>
+      </div>
+
+      <div class="mission-actions flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-4 mt-8 w-full sm:w-auto">
+        <a
+          href="#contributions"
+          class="primary-action w-full sm:w-auto justify-center px-7 py-3.5 rounded-full font-semibold text-sm flex items-center"
+        >
+          View Contributions
+        </a>
+        <a
+          href="#projects"
+          class="primary-action w-full sm:w-auto justify-center px-7 py-3.5 rounded-full font-semibold text-sm flex items-center"
+        >
+          View Projects
+        </a>
+        <div class="flex items-center justify-center gap-3 w-full sm:w-auto mt-2 sm:mt-0">
+          <a
+            href="https://github.com/0xTaoZ"
+            target="_blank"
+            class="secondary-action w-12 h-12 rounded-full flex items-center justify-center transition hover:bg-white hover:text-black shrink-0"
+            aria-label="Haitao Zheng GitHub Profile"
+          >
+            <svg
+              class="w-5 h-5 opacity-90"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+            </svg>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/haitaozheng/"
+            target="_blank"
+            class="secondary-action w-12 h-12 rounded-full flex items-center justify-center transition hover:bg-white hover:text-black shrink-0"
+            aria-label="Haitao Zheng LinkedIn Profile"
+          >
+            <svg
+              class="w-5 h-5 opacity-90"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+            </svg>
+          </a>
+          <a
+            href="mailto:h@tzheng.dev"
+            data-email-contact
+            class="secondary-action w-12 h-12 rounded-full flex items-center justify-center transition hover:bg-white hover:text-black shrink-0"
+            aria-label="Email Haitao Zheng"
+          >
+            <svg
+              class="w-5 h-5 opacity-90"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              viewBox="0 0 24 24"
+            >
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="portrait-stage reveal delay-200">
+      <div class="portrait-orbit" aria-hidden="true"></div>
+      <div class="portrait-card" data-tilt>
+        <img
+          src="/IMG_1419.jpg"
+          alt="Haitao Zheng"
+          loading="lazy"
+          decoding="async"
+          fetchpriority="low"
+          class="object-cover object-right transition-transform duration-700 hover:scale-[1.015] avatar-mask"
+        />
+        <div class="portrait-caption text-left">
+          <div class="flex items-center justify-between gap-4">
+            <p class="text-[11px] uppercase tracking-[0.18em] text-sky-200 font-mono">
+              ENGINEERING PROFILE
+            </p>
+            <span class="chip">live</span>
+          </div>
+          <h2 class="mt-3 text-lg font-semibold text-white tracking-tight">
+            Security tooling, cloud logs, IOC workflows, and static-first web
+            systems.
+          </h2>
+          <div class="dossier-line">
+            <span class="text-gray-500">focus</span>
+            <span class="text-gray-200">
+              blue-team / cloud-security / systems
+            </span>
+          </div>
+          <div class="dossier-line">
+            <span class="text-gray-500">stack</span>
+            <span class="text-gray-200">
+              Python / Java / C / SQL / TypeScript
+            </span>
+          </div>
+          <div class="dossier-line">
+            <span class="text-gray-500">web</span>
+            <span class="text-gray-200">
+              Astro / CSS / Markdown / GitHub / Cloudflare
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

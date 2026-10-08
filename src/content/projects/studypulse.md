@@ -5,7 +5,16 @@ date: "2026-10-03"
 status: "active"
 type: "Full-stack product"
 featured: true
-priority: 1
+priority: 5
+homepageFacts:
+  - label: "Product"
+    text: "Weekly planning, recall checks and spaced review."
+  - label: "Implementation"
+    text: "React client, typed Worker APIs and D1 storage."
+  - label: "Rules"
+    text: "Bounded grading values; deterministic scores and rewards."
+  - label: "Validation"
+    text: "Domain and API tests in the public source."
 stack: ["TypeScript", "React", "Workers", "D1"]
 github: "https://github.com/0xTaoZ/studypulse-app"
 excerpt: "A study tracker that connects planning, recall checks and spaced review. Built for my own cyber security semester."

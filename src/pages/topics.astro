@@ -1,101 +1,141 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-
 const topics = [
   {
-    group: "Identity",
-    items: ["Haitao Zheng", "Zheng Haitao", "郑海涛", "鄭海濤", "Tao Zheng", "jensenzheng"]
+    group: "Cloud investigation",
+    summary:
+      "Local CloudTrail review, IAM risk and Kubernetes security checks.",
+    items: ["AWS", "Python", "Kubernetes"],
+    links: [
+      {
+        title: "CloudTrail Quickscan",
+        href: "/projects/cloudtrail-quickscan/",
+      },
+      { title: "Prowler contributions", href: "/contributions/#prowler" },
+      { title: "IAM boundary-removal analysis", href: "/articles/permissions-boundary-removal/" },
+      { title: "Pod volume evidence", href: "/articles/pod-evidence-before-check/" },
+    ],
   },
   {
-    group: "Cyber Security",
-    items: ["cyber security", "cybersecurity", "网络安全", "網路安全", "IT security", "IT-Sicherheit", "blue team", "cloud security", "Cloud-Sicherheit", "security tooling"]
+    group: "Infrastructure & validation",
+    summary:
+      "SSH host identity and CloudFormation lifecycle-policy validation.",
+    items: ["SSH", "pyinfra", "CloudFormation"],
+    links: [
+      {
+        title: "SSH certificate trust",
+        href: "/articles/ssh-trust-boundaries/",
+      },
+      {
+        title: "cfn-lint contributions",
+        href: "/projects/cfn-lint-contribution/",
+      },
+    ],
   },
   {
-    group: "Systems & Cloud",
-    items: ["CloudTrail", "cloud logs", "IOC workflows", "incident investigation", "static-first architecture", "Cloudflare Pages", "GitHub workflow", "version-controlled publishing"]
+    group: "Logs & indicators",
+    summary:
+      "Small tools for inspecting local evidence and producing readable results.",
+    items: ["JSONL", "Java", "C"],
+    links: [
+      { title: "JSONL Lens", href: "/projects/jsonl-lens/" },
+      { title: "Missing, null and type drift", href: "/articles/jsonl-missing-null-types/" },
+      {
+        title: "Sentinel IOC Toolkit",
+        href: "/projects/sentinel-ioc-toolkit/",
+      },
+    ],
   },
   {
-    group: "Engineering Stack",
-    items: ["Python", "Java", "C", "SQL", "TypeScript", "Astro", "MDX", "Markdown", "CSS", "GitHub"]
+    group: "Learning products",
+    summary: "Study workflows, recall evidence and deterministic reward rules.",
+    items: ["TypeScript", "React", "Worker APIs"],
+    links: [
+      { title: "StudyPulse", href: "/projects/studypulse/" },
+      {
+        title: "Scoring boundaries",
+        href: "/articles/results-before-rewards/",
+      },
+    ],
   },
   {
-    group: "Writing Themes",
-    items: ["technical articles", "learning notes", "project case studies", "security study log", "IT technology", "IT 技术", "technical portfolio", "developer portfolio"]
-  }
+    group: "Frontend & publishing",
+    summary:
+      "Typed content, shared components and static delivery for this site.",
+    items: ["Astro", "Markdown", "GitHub Pages"],
+    links: [
+      {
+        title: "Content Collections",
+        href: "/articles/astro-content-system-notes/",
+      },
+      { title: "System Design", href: "/system/" },
+    ],
+  },
 ];
-
-const keywords = topics.flatMap((topic) => topic.items);
-const topicsSchema = {
-  "@type": "CollectionPage",
-  "@id": "https://tzheng.dev/topics/#webpage",
-  name: "Haitao Zheng technical topics",
-  description: "Technical topics connected to Haitao Zheng, including cyber security, IT systems, cloud security, blue team tooling, and static-first web engineering.",
-  url: "https://tzheng.dev/topics/",
-  author: { "@id": "https://tzheng.dev/#person" },
-  publisher: { "@id": "https://tzheng.dev/#person" },
-  mainEntity: {
-    "@type": "ItemList",
-    "itemListElement": topics.map((topic, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "name": topic.group,
-      "item": {
-        "@type": "DefinedTermSet",
-        "name": topic.group,
-        "hasDefinedTerm": topic.items.map(term => ({
-          "@type": "DefinedTerm",
-          "name": term
-        }))
-      }
-    }))
-  },
-  about: keywords.map((name) => ({ "@type": "Thing", name }))
-};
 ---
 
 <BaseLayout
   title="Topics | Haitao Zheng"
-  description="Technical topics connected to Haitao Zheng: cyber security, IT technology, cloud security, blue team tooling, project writing, and static-first engineering."
-  keywords={keywords}
-  structuredData={topicsSchema}
+  description="Browse technical work by subject, with links to projects and implementation notes."
 >
-  <main class="shell">
+  <main id="main-content" tabindex="-1" class="shell">
     <section>
       <div class="section-head">
-        <span class="eyebrow">Search identity / technical direction / project language</span>
-        <h2>Topics.</h2>
+        <span class="eyebrow">Browse the work</span>
+        <h1>Topics.</h1>
         <p>
-          This page connects Haitao Zheng, also written as Zheng Haitao, 郑海涛, and 鄭海濤, with the technical areas documented on this site:
-          cyber security, IT systems, cloud security, blue team workflows, security tooling, and static-first web engineering.
+          Start with a technical area, then follow the case studies and
+          implementation notes.
         </p>
       </div>
-
       <div class="grid">
         {topics.map((topic, index) => (
-          <article class:list={["card", index === 0 && "featured", index > 0 && "compact"]}>
-            <div class="meta"><span>{topic.group}</span></div>
-            <h3>{topic.group}</h3>
+          <article
+            class:list={[
+              "card",
+              index === 0 && "featured",
+              index > 0 && "compact",
+            ]}
+          >
             <div class="meta">
-              {topic.items.map((item) => <span class="chip">{item}</span>)}
+              <span>{topic.group}</span>
             </div>
+            <h3>{topic.group}</h3>
+            <p>{topic.summary}</p>
+            <div class="meta">
+              {topic.items.map((item) => (
+                <span class="chip">{item}</span>
+              ))}
+            </div>
+            {topic.links.map((link) => (
+              <p>
+                <a class="link" href={link.href}>
+                  {link.title} ↗
+                </a>
+              </p>
+            ))}
           </article>
         ))}
       </div>
-
       <article class="card featured" style="margin-top:2rem">
-        <div class="meta"><span>Discoverability model</span></div>
-        <h3>How these topics connect.</h3>
+        <div class="meta">
+          <span>Source and review</span>
+        </div>
+        <h3>Follow the work.</h3>
         <p>
-          The site is built so search engines can connect one consistent identity with the same public technical surface:
-          the <a href="/" class="text-sky-300 hover:underline hover:text-sky-200 transition-colors">homepage</a>, GitHub profile, <a href="/articles/" class="text-sky-300 hover:underline hover:text-sky-200 transition-colors">article archive</a>, <a href="/projects/" class="text-sky-300 hover:underline hover:text-sky-200 transition-colors">project case studies</a>, and <a href="/system/" class="text-sky-300 hover:underline hover:text-sky-200 transition-colors">system design documentation</a>.
-          The goal is not to rank for every broad technology term immediately. The realistic goal is to make searches like
-          “Haitao Zheng cyber security”, “郑海涛 网络安全”, “Tao Zheng cloud security”, or project-specific searches lead back
-          to the same portfolio over time.
-        </p>
-        <p>
-          For broad keywords such as cyber security or IT technology, the strongest signal comes from useful <a href="/articles/" class="text-sky-300 hover:underline hover:text-sky-200 transition-colors">technical writing</a>,
-          public GitHub work, clear page titles, and repeated external references to the same domain. This page acts as a clean
-          index for the terms this site actually covers.
+          The{" "}
+          <a class="link" href="/projects/">
+            project index
+          </a>{" "}
+          explains scope and validation. The{" "}
+          <a class="link" href="/contributions/">
+            contribution record
+          </a>{" "}
+          links merged upstream patches.{" "}
+          <a class="link" href="/articles/">
+            Articles
+          </a>{" "}
+          cover individual implementation decisions.
         </p>
       </article>
     </section>

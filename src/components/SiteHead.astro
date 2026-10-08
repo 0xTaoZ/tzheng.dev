@@ -1,0 +1,81 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  keywords?: string | string[];
+  ogImage?: string;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
+}
+const {
+  title,
+  description = "Haitao Zheng's projects, upstream contributions and technical notes.",
+  ogImage = "/logo.png",
+  structuredData = [],
+} = Astro.props;
+const canonical = new URL(
+  Astro.url.pathname === "/404/" ? "/404.html" : Astro.url.pathname,
+  Astro.site,
+);
+const graph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://tzheng.dev/#person",
+      name: "Haitao Zheng",
+      alternateName: ["郑海涛", "鄭海濤", "Tao Zheng"],
+      url: "https://tzheng.dev/",
+      sameAs: [
+        "https://github.com/0xTaoZ",
+        "https://www.linkedin.com/in/haitaozheng/",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://tzheng.dev/#website",
+      name: "tzheng.dev",
+      url: "https://tzheng.dev/",
+      inLanguage: "en",
+      publisher: { "@id": "https://tzheng.dev/#person" },
+    },
+    {
+      "@type": "WebPage",
+      "@id": canonical.toString(),
+      url: canonical.toString(),
+      name: title,
+      description,
+      isPartOf: { "@id": "https://tzheng.dev/#website" },
+    },
+    ...(Array.isArray(structuredData) ? structuredData : [structuredData]),
+  ],
+};
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#030712" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="author" content="Haitao Zheng" />
+<link rel="canonical" href={canonical} />
+<link rel="me" href="https://github.com/0xTaoZ" />
+<link rel="me" href="https://www.linkedin.com/in/haitaozheng/" />
+<link rel="icon" href="/favicon.png" type="image/png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={new URL(ogImage, Astro.site)} />
+<meta name="twitter:card" content="summary_large_image" />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title="Haitao Zheng: articles"
+  href="/rss.xml"
+/>
+<script
+  is:inline
+  type="application/ld+json"
+  set:html={JSON.stringify(graph).replaceAll("<", "\u003c")}
+/>

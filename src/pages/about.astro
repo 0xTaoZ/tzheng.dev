@@ -3,18 +3,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout
-  title="About — Haitao Zheng"
+  title="About | Haitao Zheng"
   description="Haitao Zheng: Cyber Security & Privacy student at H-BRS, open-source contributor and builder of security tools in Germany."
 >
-  <main class="article-body">
+  <main id="main-content" tabindex="-1" class="article-body">
     <header class="page-header">
       <span class="eyebrow">
         About / <span lang="zh">郑海涛</span>
       </span>
-      <h1>
-        A student.
-        <br />A working practice.
-      </h1>
+      <h1>Haitao Zheng.</h1>
       <p>
         I’m Haitao, also known as Tao. I study cyber security in Germany and
         learn by building tools, reading existing systems and contributing
@@ -31,12 +28,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           loading="lazy"
         />
         <p class="note">Germany / English · German · Mandarin</p>
-        <a class="text-link" href="https://github.com/0xTaoZ">
+        <a class="link" href="https://github.com/0xTaoZ">
           GitHub / 0xTaoZ ↗
         </a>
       </aside>
       <div class="profile-copy">
-        <h2>Security meets infrastructure.</h2>
+        <h2>Security and infrastructure.</h2>
         <p>
           I am interested in the places where those fields overlap:
           authentication boundaries, cloud configuration, useful audit evidence
@@ -53,7 +50,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           this site show the work I can already do and the areas I’m developing
           next.
         </p>
-        <a class="text-link" href="mailto:h@tzheng.dev">
+        <a class="link" href="mailto:h@tzheng.dev">
           Talk about an opportunity <span aria-hidden="true">↗</span>
         </a>
         <section class="timeline" id="education">

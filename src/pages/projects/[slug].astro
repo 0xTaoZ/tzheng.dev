@@ -5,22 +5,19 @@ import { entrySlug } from "../../lib/content";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
-  return projects.map((project) => ({ params: { slug: entrySlug(project) }, props: { project } }));
+  return projects.map((project) => ({
+    params: { slug: entrySlug(project) },
+    props: { project },
+  }));
 }
 
 const { project } = Astro.props;
 const { Content, headings } = await render(project);
-const projectUrl = new URL(`/projects/${entrySlug(project)}/`, Astro.site).toString();
-const projectKeywords = [
-  project.data.title,
-  project.data.status,
-  project.data.type,
-  ...project.data.stack,
-  "Haitao Zheng project",
-  "郑海涛 项目",
-  "cyber security project",
-  "security engineering case study"
-];
+const projectUrl = new URL(
+  `/projects/${entrySlug(project)}/`,
+  Astro.site,
+).toString();
+const projectKeywords = [project.data.type, ...project.data.stack];
 const projectSchema = {
   "@type": "SoftwareSourceCode",
   "@id": `${projectUrl}#project`,
@@ -28,12 +25,12 @@ const projectSchema = {
   description: project.data.excerpt,
   url: projectUrl,
   dateCreated: project.data.date.toISOString(),
-  creator: { "@id": "https://tzheng.dev/#haitao-zheng" },
+  creator: { "@id": "https://tzheng.dev/#person" },
   publisher: { "@id": "https://tzheng.dev/#website" },
   keywords: projectKeywords,
   codeRepository: project.data.github,
   programmingLanguage: project.data.stack,
-  applicationCategory: project.data.type
+  applicationCategory: project.data.type,
 };
 
 const breadcrumbSchema = {
@@ -44,43 +41,69 @@ const breadcrumbSchema = {
       "@type": "ListItem",
       position: 1,
       name: "Home",
-      item: "https://tzheng.dev/"
+      item: "https://tzheng.dev/",
     },
     {
       "@type": "ListItem",
       position: 2,
       name: "Projects",
-      item: "https://tzheng.dev/#projects"
+      item: "https://tzheng.dev/projects/",
     },
     {
       "@type": "ListItem",
       position: 3,
       name: project.data.title,
-      item: projectUrl
-    }
-  ]
+      item: projectUrl,
+    },
+  ],
 };
 ---
 
-<BaseLayout title={`${project.data.title} | Projects`} description={project.data.excerpt} keywords={projectKeywords} structuredData={[projectSchema, breadcrumbSchema]}>
-  <main class="article-body">
-    <a class="button" href="/projects/">← Projects</a>
+<BaseLayout
+  title={`${project.data.title} | Projects`}
+  description={project.data.excerpt}
+  keywords={projectKeywords}
+  structuredData={[projectSchema, breadcrumbSchema]}
+>
+  <main id="main-content" tabindex="-1" class="article-body">
+    <a class="button" href="/projects/">
+      ← Projects
+    </a>
     <h1>{project.data.title}</h1>
     <div class="meta">
       <span>{project.data.status}</span>
       <span>{project.data.type}</span>
-      <span>{project.data.date.toLocaleDateString("en", { month: "long", year: "numeric" })}</span>
+      <span>
+        {project.data.date.toLocaleDateString("en", {
+          month: "long",
+          year: "numeric",
+        })}
+      </span>
     </div>
     <p>{project.data.excerpt}</p>
-    <div class="meta">{project.data.stack.map((item) => <span class="chip">{item}</span>)}</div>
+    <div class="meta">
+      {project.data.stack.map((item) => (
+        <span class="chip">{item}</span>
+      ))}
+    </div>
     <div class="actions">
-      {project.data.github && <a class="button primary" href={project.data.github} target="_blank">GitHub ↗</a>}
-      {project.data.demo && <a class="button" href={project.data.demo} target="_blank">Demo ↗</a>}
+      {project.data.github && (
+        <a class="button primary" href={project.data.github} target="_blank">
+          GitHub ↗
+        </a>
+      )}
+      {project.data.demo && (
+        <a class="button" href={project.data.demo} target="_blank">
+          Demo ↗
+        </a>
+      )}
     </div>
     {headings.length > 0 && (
       <nav class="toc" aria-label="Table of contents">
         <strong>Contents</strong>
-        {headings.map((heading) => <a href={`#${heading.slug}`}>{heading.text}</a>)}
+        {headings.map((heading) => (
+          <a href={`#${heading.slug}`}>{heading.text}</a>
+        ))}
       </nav>
     )}
     <Content />

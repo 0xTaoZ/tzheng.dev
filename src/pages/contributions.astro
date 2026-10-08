@@ -13,24 +13,19 @@ const repositoryGroups = [...new Set(mergedPRs.map((pr) => pr.repository))].map(
 ---
 
 <BaseLayout
-  title="Open-source work — Haitao Zheng"
+  title="Open-source work | Haitao Zheng"
   description="Verified merged contributions to pyinfra, cfn-lint, Prowler and other upstream projects, with technical context and direct evidence."
 >
-  <main class="article-body">
+  <main id="main-content" tabindex="-1" class="article-body">
     <header class="page-header">
       <span class="eyebrow">Open source / accepted work</span>
-      <h1>
-        Earn trust
-        <br />
-        at the boundaries.
-      </h1>
+      <h1>Open-source work.</h1>
       <p>
-        I contribute focused fixes to cloud, security and infrastructure
-        projects. The strongest signal is what changed and why maintainers
-        accepted it.
+        Accepted fixes to cloud, security and infrastructure projects, with the
+        reported failure, patch and review linked below.
       </p>
     </header>
-    <div class="metrics">
+    <div class="meta">
       <div>
         <strong>{mergedCount}</strong>
         <span>Merged upstream pull requests</span>
@@ -40,7 +35,7 @@ const repositoryGroups = [...new Set(mergedPRs.map((pr) => pr.repository))].map(
         <span>Upstream repositories</span>
       </div>
       <div>
-        <strong>2026</strong>
+        <strong>{verifiedAt.slice(0, 4)}</strong>
         <span>Year of the verified record</span>
       </div>
     </div>
@@ -51,26 +46,41 @@ const repositoryGroups = [...new Set(mergedPRs.map((pr) => pr.repository))].map(
         Check the live GitHub record ↗
       </a>
     </p>
+    <section id="why" class="card" style="margin:2rem 0">
+      <h2>Why contribute upstream?</h2>
+      <p>I contribute fixes to open-source security and infrastructure tools.
+        Returning a fix to the project lets other users receive it too, instead
+        of keeping the same workaround in their own copy.</p>
+      <p>The work includes reading existing code, reproducing the problem,
+        adding tests and going through review. The cases below link to the
+        accepted patch so the change can be checked directly.</p>
+      <a class="link" href="/articles/why-contribute-upstream/">Read the contribution approach ↗</a>
+    </section>
     {contributionCases.map((item) => (
-      <section class="evidence-case">
+      <section
+        id={item.repository.toLowerCase()}
+        class="card"
+        style="margin:2rem 0"
+      >
         <div>
           <span class="eyebrow">{item.area}</span>
           <h2>{item.repository}</h2>
+          {"context" in item && <p>{item.context}</p>}
           <p class="meta">#{item.number} / Merged</p>
         </div>
         <div>
           <h3>{item.title}</h3>
           <p>
-            <strong>The failure.</strong> {item.problem}
+            <strong>Problem.</strong> {item.problem}
           </p>
           <p>
-            <strong>The change.</strong> {item.change}
+            <strong>Change.</strong> {item.change}
           </p>
           <p>
-            <strong>The judgment.</strong> {item.lesson}
+            <strong>Reason.</strong> {item.lesson}
           </p>
           <p class="note">{item.evidence}</p>
-          <a class="text-link" href={item.url}>
+          <a class="link" href={item.url}>
             Read the patch and review <span aria-hidden="true">↗</span>
           </a>
         </div>
@@ -78,7 +88,7 @@ const repositoryGroups = [...new Set(mergedPRs.map((pr) => pr.repository))].map(
     ))}
     <section class="section" style="border-bottom:0" id="record">
       <span class="eyebrow">The merged record / {verifiedAt}</span>
-      <h2>Evidence, line by line.</h2>
+      <h2>Merged pull requests.</h2>
       <p style="margin:22px 0 35px;color:var(--muted)">
         A count is only useful if it can be checked. Every entry below links to
         a merged upstream pull request.
@@ -115,29 +125,6 @@ const repositoryGroups = [...new Set(mergedPRs.map((pr) => pr.repository))].map(
         </table>
       </div>
     </section>
-    <div class="principles">
-      <div>
-        <h3>Reproduce before changing.</h3>
-        <p>
-          Make the failure concrete enough that the patch and regression test
-          answer the same question.
-        </p>
-      </div>
-      <div>
-        <h3>Respect the owning layer.</h3>
-        <p>
-          Read the existing resolver, connector or service model before
-          introducing another special case.
-        </p>
-      </div>
-      <div>
-        <h3>Follow the review through.</h3>
-        <p>
-          A submitted patch is a proposal. Maintainer review and merge are
-          separate milestones.
-        </p>
-      </div>
-    </div>
     <p class="note">
       I am a contributor to these projects, not their maintainer or an employee
       of the organizations behind them. Work still under review is visible on{" "}

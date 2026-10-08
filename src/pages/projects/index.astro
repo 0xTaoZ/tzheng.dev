@@ -3,8 +3,9 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { entrySlug } from "../../lib/content";
 
-const projects = (await getCollection("projects")).sort((a, b) => a.data.priority - b.data.priority);
-const featured = projects.filter((project) => project.data.featured);
+const projects = (await getCollection("projects")).sort(
+  (a, b) => a.data.priority - b.data.priority,
+);
 const projectKeywords = [
   "Haitao Zheng projects",
   "郑海涛 项目",
@@ -13,39 +14,63 @@ const projectKeywords = [
   "cloud security projects",
   "security engineering portfolio",
   "blue team tools",
-  ...new Set(featured.flatMap((project) => project.data.stack))
+  ...new Set(projects.flatMap((project) => project.data.stack)),
 ];
 const projectCollectionSchema = {
   "@type": "CollectionPage",
   "@id": "https://tzheng.dev/projects/#collection",
   name: "Projects by Haitao Zheng",
-  description: "Curated security, open-source, and engineering case studies by Haitao Zheng.",
+  description:
+    "Curated security, open-source, and engineering case studies by Haitao Zheng.",
   url: "https://tzheng.dev/projects/",
-  author: { "@id": "https://tzheng.dev/#haitao-zheng" },
-  hasPart: featured.map((project) => ({
+  author: { "@id": "https://tzheng.dev/#person" },
+  hasPart: projects.map((project) => ({
     "@type": "CreativeWork",
     name: project.data.title,
-    url: new URL(`/projects/${entrySlug(project)}/`, Astro.site).toString()
-  }))
+    url: new URL(`/projects/${entrySlug(project)}/`, Astro.site).toString(),
+  })),
 };
 ---
 
-<BaseLayout title="Projects | Haitao Zheng" description="Curated security, open-source, and portfolio projects by Haitao Zheng." keywords={projectKeywords} structuredData={projectCollectionSchema}>
-  <main class="shell">
+<BaseLayout
+  title="Projects | Haitao Zheng"
+  description="Curated security, open-source, and portfolio projects by Haitao Zheng."
+  keywords={projectKeywords}
+  structuredData={projectCollectionSchema}
+>
+  <main id="main-content" tabindex="-1" class="shell">
     <section>
       <div class="section-head">
-        <span class="eyebrow">Curated project system</span>
-        <h2>Projects.</h2>
-        <p>Featured projects only, stored as MDX files with status, stack, GitHub links, and case-study body content.</p>
+        <span class="eyebrow">Projects and upstream work</span>
+        <h1>Projects.</h1>
+        <p>
+          Tools, products and accepted upstream work, with source links,
+          validation and the limits of each case.
+        </p>
       </div>
       <div class="grid">
-        {featured.map((project, index) => (
-          <article class:list={["card", index === 0 && "featured", index > 0 && "compact"]}>
-            <div class="meta"><span>{project.data.status}</span><span>{project.data.type}</span></div>
+        {projects.map((project, index) => (
+          <article
+            class:list={[
+              "card",
+              index === 0 && "featured",
+              index > 0 && "compact",
+            ]}
+          >
+            <div class="meta">
+              <span>{project.data.status}</span>
+              <span>{project.data.type}</span>
+            </div>
             <h3>{project.data.title}</h3>
             <p>{project.data.excerpt}</p>
-            <div class="meta">{project.data.stack.map((item) => <span class="chip">{item}</span>)}</div>
-            <a class="link" href={`/projects/${entrySlug(project)}/`}>Open case study ↗</a>
+            <div class="meta">
+              {project.data.stack.map((item) => (
+                <span class="chip">{item}</span>
+              ))}
+            </div>
+            <a class="link" href={`/projects/${entrySlug(project)}/`}>
+              Open case study ↗
+            </a>
           </article>
         ))}
       </div>

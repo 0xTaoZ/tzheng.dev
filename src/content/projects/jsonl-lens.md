@@ -5,7 +5,13 @@ date: "2026-10-03"
 status: "active"
 type: "Data inspection"
 featured: true
-priority: 3
+priority: 2
+homepageOrder: 2
+homepageFacts:
+  - label: "Schema"
+    text: "Missing values, nulls, scalar types and nested paths."
+  - label: "Signal"
+    text: "High-cardinality warnings remain visible when value lists are hidden."
 stack: ["Python", "JSON Lines", "CLI"]
 github: "https://github.com/0xTaoZ/jsonl-lens"
 excerpt: "A quick inspection tool for messy event exports: missing fields, type changes, nested paths and noisy identifiers."

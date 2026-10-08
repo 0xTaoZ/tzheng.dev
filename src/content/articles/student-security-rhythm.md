@@ -8,7 +8,7 @@ tags: ["learning", "blue-team"]
 category: "Learning"
 featured: false
 status: "published"
-readingTime: "3 min"
+readingTime: "1 min"
 ---
 
 Cyber security is easy to make too big in my head. There is cloud, web, networks, Linux, cryptography, privacy, forensics, malware, and many tools.

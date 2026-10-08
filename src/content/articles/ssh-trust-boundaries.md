@@ -1,41 +1,31 @@
 ---
-title: "A compatibility fix is still a security decision"
+title: "Supporting SSH host certificates in pyinfra"
 slug: "ssh-trust-boundaries"
 date: 2026-10-03
-excerpt: "What an accepted pyinfra patch taught me about OpenSSH host certificates, strict checking and preserving the trust boundary."
+seriesMonth: "2026-09"
+excerpt: "How I handled CA entries in known_hosts while keeping strict host checking enabled."
 tags: ["ssh", "infrastructure", "open-source", "security"]
 category: "Infrastructure"
 featured: true
 status: "published"
-readingTime: "4 min"
+readingTime: "2 min"
+updated: 2026-10-06
 ---
 
-A tool can fail to recognize a valid trust relationship without being wrong to reject an unfamiliar host. That distinction matters when fixing SSH compatibility.
+In [pyinfra #1945](https://github.com/pyinfra-dev/pyinfra/pull/1945), I worked on support for OpenSSH host certificates. A server certificate signed by a configured CA could be rejected as an unknown host under strict checking.
 
-[pyinfra PR #1945](https://github.com/pyinfra-dev/pyinfra/pull/1945) began with a specific gap: the connector skipped `@cert-authority` lines in `known_hosts` because Paramiko could not parse them as ordinary host keys. The server could present a host certificate signed by a configured CA, yet strict host-key checking still treated it as unknown.
+The connector used Paramiko to load ordinary host keys. Entries marked `@cert-authority` in `known_hosts` needed different handling.
 
-## The tempting fix changes the question
+## Keep the CA entries
 
-Disabling strict checking would make the connection succeed. It would also change the question from “is this server trusted?” to “can I connect to it?”
+The patch keeps those entries separately. Ordinary host keys still use the existing loading path, including its handling of malformed entries.
 
-The bug was in representing an existing trust rule. The expected behavior was not to accept every unknown host.
+Accepting a certificate requires several checks. The signing CA must be trusted for the host pattern, the hostname must match a certificate principal and the certificate must be within its validity period.
 
-## Keep the trust rule explicit
+Reading the CA entry is therefore only part of the change. The connector also has to check the certificate when an ordinary host-key lookup cannot establish trust. Strict checking stays enabled.
 
-The patch keeps CA entries separately while normal host keys continue through the existing loading path. When the server key is missing from the ordinary host-key set, certificate acceptance depends on the trusted CA, target hostname pattern, certificate principal and validity window.
+## What was checked
 
-The important implementation choice is the boundary. Certificate-aware handling belongs where the connector evaluates host identity. It should not weaken ordinary key checks to compensate for a parsing limitation.
+The PR records connector regression tests, Ruff and mypy checks. It was merged in September 2026. The review and tests are linked in the PR so the accepted behavior can be inspected.
 
-## Test rejection as deliberately as acceptance
-
-A positive fixture can show that the reported case works. It cannot establish that the broader trust contract still holds.
-
-For a change like this, the test questions include the accepted CA case and the reasons a certificate must not establish trust. Connector regressions, linting and type checks are part of the linked PR's validation record.
-
-That evidence is narrower than a claim that every SSH certificate deployment is covered. It shows the concrete behavior reviewed and accepted upstream.
-
-## What I took from the review
-
-A compatibility patch near authentication is a security decision even when it adds support for something legitimate. Preserve the invariant first, then make the unsupported representation fit it.
-
-The patch was merged in September 2026. Follow-up work on hostname matching for custom ports is a separate proposal; it should not be presented as already accepted work.
+Custom-port hostname matching is a separate follow-up. I keep that out of the description of the merged fix. The [contribution page](/contributions/#pyinfra) links the accepted work.

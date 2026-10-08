@@ -1,0 +1,56 @@
+---
+import SiteFooter from "../SiteFooter.astro";
+---
+
+<SiteFooter />
+
+<div id="command-palette" class="command-palette" aria-hidden="true">
+  <div
+    class="command-box"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Search site commands"
+  >
+    <input
+      id="command-input"
+      aria-label="Command palette search"
+      placeholder="Search commands…  Projects / Articles / GitHub / Contact"
+    />
+    <div>
+      <a href="#contributions">
+        <span>Open Contributions</span>
+        <span>↘</span>
+      </a>
+      <a href="#projects">
+        <span>Open Projects</span>
+        <span>↘</span>
+      </a>
+      <a href="/articles/">
+        <span>Read Articles</span>
+        <span>↗</span>
+      </a>
+      <a href="#education">
+        <span>View Education</span>
+        <span>↘</span>
+      </a>
+      <a href="https://github.com/0xTaoZ" target="_blank">
+        <span>Open GitHub</span>
+        <span>↗</span>
+      </a>
+      <a href="/system/">
+        <span>System Design</span>
+        <span>↗</span>
+      </a>
+      <a href="/topics/">
+        <span>Topics</span>
+        <span>↗</span>
+      </a>
+      <a href="mailto:h@tzheng.dev">
+        <span>Contact by email</span>
+        <span>↗</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript：低调交互、移动导航、终端打字、3D tilt、渐入动画 -->
