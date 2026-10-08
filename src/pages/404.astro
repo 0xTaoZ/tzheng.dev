@@ -25,6 +25,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           Read the notes
         </a>
       </div>
+      <form class="article-filters" role="search" action="/articles/" method="get">
+        <label>Search the articles<input type="search" name="q" placeholder="CloudTrail, SSH, Prowler…" /></label>
+        <button class="button" type="submit">Search</button>
+      </form>
     </header>
   </main>
 </BaseLayout>

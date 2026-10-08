@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { entrySlug } from "../../lib/content";
+import { entrySlug, byPublication, readingTime } from "../../lib/content";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -12,6 +12,12 @@ export async function getStaticPaths() {
 }
 
 const { project } = Astro.props;
+const notes = (
+  await getCollection(
+    "articles",
+    ({ data }) => data.status === "published" && data.project === entrySlug(project),
+  )
+).sort(byPublication);
 const { Content, headings } = await render(project);
 const projectUrl = new URL(
   `/projects/${entrySlug(project)}/`,
@@ -109,5 +115,19 @@ const breadcrumbSchema = {
       </nav>
     )}
     <Content />
+    {notes.length > 0 && (
+      <section class="related" aria-labelledby="project-notes">
+        <h2 id="project-notes">Notes about this project</h2>
+        <div class="related-grid">
+          {notes.map((note) => (
+            <a class="card compact" href={`/articles/${entrySlug(note)}/`}>
+              <span class="meta">{note.data.category} · {readingTime(note)}</span>
+              <h3>{note.data.title}</h3>
+              <p>{note.data.excerpt}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
   </main>
 </BaseLayout>
