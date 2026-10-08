@@ -1,80 +1,9 @@
 ---
 import "../styles/resume.css";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import {
-  combinedStars,
-  compactNumber,
-  mergedCount,
-  mergedPRs,
-  upstreamRepositories,
-  verifiedAt,
-} from "../lib/contributions";
-import { getCollection } from "astro:content";
+import { mergedCount, verifiedAt } from "../lib/contributions";
+import { header, education, openSource, otherOpenSource, projects, skills } from "../data/resume";
 
-const articleCount = (
-  await getCollection("articles", ({ data }) => data.status === "published")
-).length;
-const month = (date: string) =>
-  new Date(`${date}T00:00:00Z`).toLocaleDateString("en", {
-    month: "short",
-    year: "numeric",
-    timeZone: "UTC",
-  });
-const period = (...repositories: string[]) => {
-  const dates = mergedPRs
-    .filter((pr) => repositories.includes(pr.repository))
-    .map((pr) => pr.mergedAt)
-    .sort();
-  const [first, last] = [month(dates[0]), month(dates.at(-1)!)];
-  return first === last ? first : `${first} – ${last}`;
-};
-const pr = (repository: string, number: number) =>
-  `https://github.com/${repository}/pull/${number}`;
-const repo = (name: string) => upstreamRepositories.find((item) => item.name === name)!;
-
-// Open-source work written as experience: what changed and why it mattered.
-// Every claim maps to a merged pull request linked beside it.
-const contributions = [
-  {
-    name: "pyinfra-dev/pyinfra",
-    title: "pyinfra",
-    about: "Python infrastructure automation over SSH",
-    points: [
-      { text: "Added trust for OpenSSH host certificates signed by a known_hosts certificate authority, checking host pattern, principal and validity while keeping strict host-key checking.", refs: [1945] },
-      { text: "Fixed sudo passwords with rsync and NFSv4 ACL handover in the SSH connector, pinned versions in the dnf operation, OpenBSD services via rcctl, and CLI argument and Windows path handling.", refs: [1950, 1955, 1913, 1916, 1892, 1884] },
-    ],
-  },
-  {
-    name: "aws-cloudformation/cfn-lint",
-    title: "cfn-lint",
-    about: "AWS CloudFormation linter",
-    points: [
-      { text: "Rejected a bare Fn::Select used as a CreationPolicy or UpdatePolicy without AWS::LanguageExtensions, validated at the policy layer so the shared resolver stays unchanged.", refs: [4704] },
-      { text: "Corrected intrinsic-function and schema validation for Fn::GetAZs in Fn::Join, negative Fn::Select indexes, FindInMap DefaultValue, SAM GetAtt outputs and single-property schemas.", refs: [4677, 4622, 4628, 4665, 4686] },
-    ],
-  },
-  {
-    name: "prowler-cloud/prowler",
-    title: "Prowler",
-    about: "Cloud security posture scanner",
-    points: [
-      { text: "Added a Kubernetes check for Pods mounting hostPath volumes, including the volume data in the service model.", refs: [11837] },
-      { text: "Stopped seven ECS task-definition checks from reporting PASS when DescribeTaskDefinition failed, and reported Google Workspace 2-Step Verification failures that group overrides do not cover.", refs: [12217, 12700] },
-    ],
-  },
-];
-const others = [
-  { name: "aquasecurity/trivy", title: "Trivy", text: "Read Jenkins plugin licenses from MANIFEST.MF as a JAR license source.", ref: 10939 },
-  { name: "DataDog/guarddog", title: "GuardDog", text: "Linked findings to PyPI Inspector, with terminal-escape checks on package-controlled URLs.", ref: 797 },
-  { name: "ansible/ansible-lint", title: "ansible-lint", text: "Checked register projection keys instead of the whole mapping in var-naming.", ref: 5110 },
-  { name: "trailofbits/graphtage", title: "Graphtage", text: "Added INI files to the semantic diff using the standard library parser.", ref: 120 },
-];
-const projects = [
-  { name: "cloudtrail-quickscan", href: "/projects/cloudtrail-quickscan/", stack: "Python", text: "Explainable first-pass triage of AWS CloudTrail logs: root activity, MFA removal, administrator policies, permissions-boundary removal, logging changes, S3 exposure and public SSH/RDP ingress, with text or JSON reports." },
-  { name: "StudyPulse", href: "/projects/studypulse/", stack: "TypeScript · React · Cloudflare Workers · D1", text: "Study planner with a topic memory model and recall checks; model judgement is bounded and scores and rewards are computed deterministically on the server." },
-  { name: "jsonl-lens", href: "/projects/jsonl-lens/", stack: "Python", text: "Report for messy JSON Lines exports: missing versus null fields, type drift, nested paths and high-cardinality identifiers." },
-  { name: "socket-state-triage", href: "/projects/socket-state-triage/", stack: "C", text: "Dependency-free review of Linux socket listings that highlights wildcard listeners and broad privileged-port binds." },
-];
 const verifiedLabel = new Date(`${verifiedAt}T00:00:00Z`).toLocaleDateString(
   "en",
   { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" },
@@ -91,155 +20,85 @@ const schema = {
 
 <BaseLayout
   title="Résumé | Haitao Zheng, Cyber Security & Privacy student"
-  description={`Résumé of Haitao Zheng: B.Sc. Cyber Security & Privacy at H-BRS, ${mergedCount} merged pull requests to Trivy, Prowler, pyinfra, cfn-lint and more, security tools and languages.`}
+  description={`Résumé of Haitao Zheng: B.Sc. Cyber Security & Privacy at H-BRS, ${mergedCount} merged pull requests to pyinfra, cfn-lint, Prowler, Trivy and others, and security tools.`}
   ogType="profile"
   ogImage="/og/resume.png"
   structuredData={schema}
 >
   <main id="main-content" tabindex="-1" class="resume-page">
     <div class="resume-toolbar" data-print-hide>
-      <p>Generated from the same records as this site · verified {verifiedLabel}</p>
+      <p>Updated {verifiedLabel}</p>
       <span class="resume-actions">
-        <a class="button primary" href="/haitao-zheng-resume.pdf" download>Download PDF</a>
+        <a class="button primary" href="/haitao-zheng-resume.pdf" download>PDF</a>
+        <a class="button" href="/resume.md">Markdown</a>
         <button class="button" type="button" data-print>Print</button>
       </span>
     </div>
 
     <article class="sheet">
       <header class="cv-head">
-        <div>
-          <h1>Haitao Zheng</h1>
-          <p class="cv-title">Cyber Security &amp; Privacy (B.Sc.) student · Open-source contributor</p>
-        </div>
-        <ul class="cv-contact">
-          <li>Bonn, Germany</li>
-          <li><a href="mailto:h@tzheng.dev">h@tzheng.dev</a></li>
-          <li><a href="https://tzheng.dev/">tzheng.dev</a></li>
-          <li><a href="https://github.com/0xTaoZ">github.com/0xTaoZ</a></li>
-          <li><a href="https://www.linkedin.com/in/haitaozheng/">linkedin.com/in/haitaozheng</a></li>
-        </ul>
+        <h1>{header.name}</h1>
+        <p class="cv-contact">
+          {header.contact.map((item) => (item.url ? <a href={item.url}>{item.label}</a> : <span>{item.label}</span>))}
+        </p>
       </header>
 
-      <section class="cv-section cv-summary">
-        <p>
-          Cyber security undergraduate at Hochschule Bonn-Rhein-Sieg with
-          {" "}<strong>{mergedCount} merged pull requests</strong> to
-          {" "}{upstreamRepositories.length} open-source security and infrastructure
-          projects ({compactNumber(combinedStars)} GitHub stars combined), including
-          Trivy, Prowler, pyinfra and AWS CloudFormation's cfn-lint. I build small,
-          explainable security tools in Python, Java and C, and document each
-          change with its tests and limits.
-        </p>
+      <section class="cv-section">
+        <h2>Education</h2>
+        {education.map((item) => (
+          <div class="cv-row">
+            <p><b>{item.school}</b> · {item.detail}{item.note && <span class="cv-note"> · {item.note}</span>}</p>
+            <p class="cv-date">{item.when}</p>
+          </div>
+        ))}
       </section>
 
       <section class="cv-section">
-        <h2>Open-source contributions</h2>
-        {contributions.map((item) => (
+        <h2>Open source</h2>
+        {openSource.map((item) => (
           <div class="cv-entry">
-            <div class="cv-entry-head">
-              <h3>
-                <a href={`https://github.com/${item.name}`}>{item.title}</a>
-                <span class="cv-org">{item.about} · ★ {compactNumber(repo(item.name).stars)}</span>
-              </h3>
-              <p class="cv-date">{repo(item.name).merged} merged · {period(item.name)}</p>
+            <div class="cv-row">
+              <p><b><a href={item.url}>{item.title}</a></b> <span class="cv-org">{item.about}</span></p>
+              <p class="cv-date">{item.count} merged PRs · {item.when}</p>
             </div>
             <ul>
               {item.points.map((point) => (
                 <li>
                   {point.text}{" "}
-                  <span class="cv-refs">
-                    {point.refs.map((number) => <a href={pr(item.name, number)}>#{number}</a>)}
-                  </span>
+                  <span class="cv-refs">{point.refs.map((ref) => <a href={ref.url}>{ref.label}</a>)}</span>
                 </li>
               ))}
             </ul>
           </div>
         ))}
         <div class="cv-entry">
-          <div class="cv-entry-head">
-            <h3>Further merged work</h3>
-            <p class="cv-date">{others.length} merged · {period(...others.map((item) => item.name))}</p>
+          <div class="cv-row">
+            <p><b>Also merged</b></p>
+            <p class="cv-date">{otherOpenSource.when}</p>
           </div>
-          <ul class="cv-others">
-            {others.map((item) => (
-              <li>
-                <b>{item.title}</b> <span class="cv-org">★ {compactNumber(repo(item.name).stars)}</span>: {item.text}{" "}
-                <span class="cv-refs"><a href={pr(item.name, item.ref)}>#{item.ref}</a></span>
-              </li>
+          <p class="cv-inline">
+            {otherOpenSource.items.map((item) => (
+              <span><b>{item.title}</b> {item.text} <a class="cv-refs" href={item.ref.url}>{item.ref.label}</a></span>
             ))}
-          </ul>
+          </p>
         </div>
       </section>
 
       <section class="cv-section">
         <h2>Projects</h2>
-        <ul class="cv-projects">
-          {projects.map((project) => (
-            <li>
-              <p class="cv-project-head">
-                <a href={project.href}><b>{project.name}</b></a>
-                <span class="cv-org">{project.stack}</span>
-              </p>
-              <p>{project.text}</p>
-            </li>
-          ))}
-        </ul>
+        {projects.map((item) => (
+          <div class="cv-entry">
+            <p><b><a href={item.url}>{item.title}</a></b> <span class="cv-org">{item.stack}</span></p>
+            <p class="cv-text">{item.text}</p>
+          </div>
+        ))}
       </section>
 
-      <section class="cv-section cv-education">
-        <h2>Education</h2>
-        <div class="cv-entry">
-          <div class="cv-entry-head">
-            <h3>Hochschule Bonn-Rhein-Sieg (H-BRS) <span class="cv-org">Germany</span></h3>
-            <p class="cv-date">Oct 2025 – present</p>
-          </div>
-          <p class="cv-degree">B.Sc. Cyber Security &amp; Privacy</p>
-          <p>Java, Linux, networking protocols, SQL databases, mathematics and Technische Informatik; GDPR and privacy by design.</p>
-        </div>
-        <div class="cv-entry">
-          <div class="cv-entry-head">
-            <h3>FHM University of Applied Sciences <span class="cv-org">Bielefeld, Germany</span></h3>
-            <p class="cv-date">Dec 2024 – Jun 2025</p>
-          </div>
-          <p class="cv-degree">University preparation and Feststellungsprüfung (FSP)</p>
-          <p>Certified German C1 within the same six months.</p>
-        </div>
-        <div class="cv-entry">
-          <div class="cv-entry-head">
-            <h3>Harvard University, CS50x <span class="cv-org">Online course</span></h3>
-            <p class="cv-date">2024</p>
-          </div>
-          <p>Algorithms, data structures, C, Python, SQL and web development; independent final project.</p>
-        </div>
-        <div class="cv-entry">
-          <div class="cv-entry-head">
-            <h3>Xiamen Jimei Middle School <span class="cv-org">Xiamen, China</span></h3>
-            <p class="cv-date">Sep 2021 – Jun 2024</p>
-          </div>
-          <p>High school diploma, science track; Gaokao.</p>
-        </div>
-      </section>
-
-      <section class="cv-section cv-columns">
-        <div>
-          <h2>Skills</h2>
-          <dl class="cv-skills">
-            <div><dt>Languages</dt><dd>Python, Java, C, TypeScript, SQL</dd></div>
-            <div><dt>Security &amp; cloud</dt><dd>AWS CloudTrail, IAM, CloudFormation, ECS; Kubernetes; OpenSSH; IOC triage; license metadata</dd></div>
-            <div><dt>Engineering</dt><dd>Linux, Git, GitHub Actions, unit and regression tests, Cloudflare Workers and D1, React, Astro</dd></div>
-            <div><dt>Writing</dt><dd>{articleCount} technical articles at tzheng.dev/articles</dd></div>
-          </dl>
-        </div>
-        <div>
-          <h2>Languages</h2>
-          <dl class="cv-skills">
-            <div><dt>English</dt><dd>C2</dd></div>
-            <div><dt>German</dt><dd>C1</dd></div>
-            <div><dt>Mandarin</dt><dd>Native</dd></div>
-            <div><dt>Hokkien</dt><dd>Fluent</dd></div>
-            <div><dt>Japanese</dt><dd>A2</dd></div>
-          </dl>
-        </div>
+      <section class="cv-section">
+        <h2>Skills</h2>
+        <dl class="cv-skills">
+          {skills.map((item) => <div><dt>{item.label}</dt><dd>{item.text}</dd></div>)}
+        </dl>
       </section>
     </article>
   </main>
