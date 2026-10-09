@@ -23,7 +23,7 @@ const [featured, ...rest] = projects;
       <div class="project-track">
         <article class="project-feature reveal">
           <div class="project-feature-copy">
-            <p class="case-meta"><span>Featured build</span><span>{featured.data.type}</span></p>
+            <p class="case-meta"><span>Featured</span><span>{featured.data.type}</span></p>
             <h3><a href={`/projects/${entrySlug(featured)}/`}>{featured.data.title}</a></h3>
             <p class="project-excerpt">{featured.data.excerpt}</p>
             <ul class="stack-list" aria-label="Stack">
