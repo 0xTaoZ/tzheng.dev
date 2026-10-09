@@ -25,7 +25,9 @@ syncNav();
 const terminal = document.getElementById("terminal-output");
 if (terminal && !reducedMotion) {
   const text = JSON.parse(terminal.dataset.lines || "[]").join("\n");
-  terminal.style.minHeight = `${terminal.offsetHeight}px`;
+  // Keep the box at its final height so typing never moves the page below.
+  const box = terminal.parentElement;
+  box.style.minHeight = `${box.offsetHeight}px`;
   let index = 0;
   const type = () => {
     terminal.textContent = text.slice(0, index);

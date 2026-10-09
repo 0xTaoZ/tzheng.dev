@@ -73,18 +73,52 @@ async function mount(host: HTMLElement, days: Day[]) {
   scene3d.add(rim);
 
   // Camera orbits the skyline; pointer drag turns it, idle time turns it slowly.
-  const view = { angle: -0.42, tilt: 0.5, targetAngle: -0.42, targetTilt: 0.5, grow: reducedMotion ? 1 : 0 };
-  const radius = weeks * 0.6;
+  const view = { angle: -0.28, tilt: 0.42, targetAngle: -0.28, targetTilt: 0.42, grow: reducedMotion ? 1 : 0 };
+  // Fit the whole year: distance follows the horizontal field of view, so the
+  // calendar fills the stage on any width without cropping the tallest bars.
+  let radius = weeks;
+  const fit = () => {
+    const vertical = (camera.fov * Math.PI) / 180;
+    const horizontal = 2 * Math.atan(Math.tan(vertical / 2) * camera.aspect);
+    radius = ((weeks / 2 + 2) / Math.tan(horizontal / 2)) * 1.05;
+  };
+
+  // Month ticks along the front edge, positioned from the 3D scene each frame.
+  const ticks: { element: HTMLElement; point: InstanceType<typeof THREE.Vector3> }[] = [];
+  const tickLayer = document.createElement("div");
+  tickLayer.className = "skyline-ticks";
+  tickLayer.setAttribute("aria-hidden", "true");
+  days.forEach((day, index) => {
+    if (!day.date.endsWith("-01")) return;
+    const slot = index + offset;
+    const element = document.createElement("span");
+    element.textContent = new Date(`${day.date}T00:00:00Z`).toLocaleDateString("en", { month: "short", timeZone: "UTC" });
+    tickLayer.append(element);
+    ticks.push({ element, point: new THREE.Vector3(Math.floor(slot / 7) - weeks / 2, 0, 4.4) });
+  });
+  const projected = new THREE.Vector3();
+  const placeTicks = () => {
+    const width = stage.clientWidth;
+    const height = stage.clientHeight;
+    for (const tick of ticks) {
+      projected.copy(tick.point).project(camera);
+      const visible = projected.z < 1 && Math.abs(projected.x) < 1.05;
+      tick.element.style.opacity = visible ? "1" : "0";
+      tick.element.style.transform = `translate(${((projected.x + 1) / 2) * width}px, ${((1 - projected.y) / 2) * height}px) translate(-50%, 0)`;
+    }
+  };
+
   const resize = () => {
     const width = stage.clientWidth;
     const height = stage.clientHeight;
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
+    fit();
   };
   resize();
   addEventListener("resize", resize, { passive: true });
-  stage.append(canvas);
+  stage.append(canvas, tickLayer);
   host.classList.add("has-webgl");
 
   let dragging = false;
@@ -134,7 +168,8 @@ async function mount(host: HTMLElement, days: Day[]) {
     view.angle += (view.targetAngle - view.angle) * 0.06;
     view.tilt += (view.targetTilt - view.tilt) * 0.06;
     camera.position.set(Math.sin(view.angle) * radius, Math.sin(view.tilt) * radius * 0.75, Math.cos(view.angle) * radius);
-    camera.lookAt(0, 0.8, 0);
+    camera.lookAt(0, 1.6, 0);
+    placeTicks();
 
     if (view.grow < 1) {
       days.forEach((_, index) => {

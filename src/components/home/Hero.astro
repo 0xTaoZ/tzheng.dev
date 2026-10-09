@@ -113,8 +113,7 @@ const projectList =
         <span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span>
         <span>tao@tzheng.dev: ~</span>
       </div>
-      <pre id="terminal-output" class="terminal-output" data-lines={JSON.stringify(terminalLines)}>{terminalLines.join("\n")}</pre>
-      <span class="terminal-cursor" aria-hidden="true"></span>
+      <pre class="terminal-output"><span id="terminal-output" data-lines={JSON.stringify(terminalLines)}>{terminalLines.join("\n")}</span><span class="terminal-cursor" aria-hidden="true"></span></pre>
     </div>
     <nav class="start-here reveal delay-1" aria-label="Quick links" data-spotlight>
       <p class="label">Quick links</p>

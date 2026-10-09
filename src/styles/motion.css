@@ -41,6 +41,8 @@
 .skyline-heatmap i[data-level="3"] { background: #26a641; }
 .skyline-heatmap i[data-level="4"] { background: #39d353; }
 .skyline.has-webgl .skyline-heatmap { opacity: 0; pointer-events: none; }
+.skyline-ticks { position: absolute; inset: 0; pointer-events: none; }
+.skyline-ticks span { position: absolute; left: 0; top: 0; font: .68rem var(--font-mono); color: var(--text-3); white-space: nowrap; transition: opacity .3s ease; will-change: transform; }
 .skyline-tip { position: absolute; left: 0; top: 0; z-index: 2; margin: 0; padding: .3rem .55rem; border: 1px solid var(--line-strong); border-radius: 6px; background: #0b0e13; font: .72rem var(--font-mono); color: var(--text); white-space: nowrap; pointer-events: none; }
 .skyline figcaption { padding: 0 1.4rem 1.1rem; font-size: .74rem; color: var(--text-3); }
 
