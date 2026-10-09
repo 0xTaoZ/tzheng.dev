@@ -75,10 +75,21 @@ scene(async () => {
   const gl = canvas.getContext("webgl", { antialias: false, alpha: false, powerPreference: "low-power" });
   if (!gl) return;
 
-  const image = new Image();
-  image.decoding = "async";
-  image.src = innerWidth > 1200 ? "/img/earth-2200.jpg" : "/img/earth-1100.jpg";
-  await image.decode();
+  // Reuse the file the CSS backdrop already fetched: same width, best format
+  // the browser decodes, so the shader costs no extra download.
+  const width = innerWidth > 900 ? 2200 : 1100;
+  let image = new Image();
+  for (const format of ["avif", "webp", "jpg"]) {
+    image = new Image();
+    image.src = `/img/earth-${width}.${format}`;
+    try {
+      await image.decode();
+      break;
+    } catch {
+      continue;
+    }
+  }
+  if (!image.naturalWidth) return;
 
   const compile = (type: number, source: string) => {
     const shader = gl.createShader(type)!;
@@ -121,7 +132,9 @@ scene(async () => {
 
   const pointer = { x: 0.62, y: 0.42, tx: 0.62, ty: 0.42, strength: 0, target: finePointer ? 0 : 0.35 };
   const resize = () => {
-    const ratio = Math.min(devicePixelRatio || 1, 1.5);
+    // The backdrop sits under a dark gradient; rendering below device
+    // resolution is invisible and keeps the fragment shader cheap.
+    const ratio = Math.min(devicePixelRatio || 1, 1);
     canvas.width = Math.round(backdrop.clientWidth * ratio);
     canvas.height = Math.round(backdrop.clientHeight * ratio);
     gl.viewport(0, 0, canvas.width, canvas.height);

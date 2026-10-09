@@ -19,7 +19,7 @@ async function mount(host: HTMLElement, days: Day[]) {
   const tooltip = host.querySelector<HTMLElement>(".skyline-tip")!;
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "low-power" });
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75));
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   const canvas = renderer.domElement;
   canvas.setAttribute("aria-hidden", "true");

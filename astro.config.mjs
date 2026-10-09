@@ -28,9 +28,13 @@ for (const path of ["/", "/contributions/", "/about/"])
 export default defineConfig({
   compressHTML: true,
   site,
+  // Links are prerendered on hover through the Speculation Rules API, so the
+  // next page is usually ready before the click.
   prefetch: { prefetchAll: true, defaultStrategy: "hover" },
+  experimental: { clientPrerender: true },
   // Emit fonts and images as files; inlined data: URIs would need a looser CSP.
-  vite: { build: { assetsInlineLimit: 0 } },
+  // Three.js is one lazily loaded chunk of about 150 KB compressed.
+  vite: { build: { assetsInlineLimit: 0, chunkSizeWarningLimit: 800 } },
   integrations: [
     sitemap({
       filter: (page) => !page.includes("/404"),

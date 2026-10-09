@@ -8,6 +8,9 @@ import { SplitText } from "gsap/SplitText";
 import Lenis from "lenis";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
+// Mobile address bars resize the viewport while scrolling; recalculating on
+// every resize would make pinned sections jump.
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 export { gsap, ScrollTrigger, SplitText };
 
