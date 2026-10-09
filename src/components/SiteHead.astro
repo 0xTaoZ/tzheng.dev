@@ -127,6 +127,12 @@ const graph = {
   href="/rss.xml"
 />
 <script is:inline>
+  // Scripts run: hide reveal targets until the motion layer animates them,
+  // and show everything if it has not started within four seconds.
+  document.documentElement.classList.add("js");
+  setTimeout(() => {
+    if (!document.documentElement.classList.contains("motion-ready")) document.documentElement.classList.add("motion-failed");
+  }, 4000);
   // Tell the page-turn transition which way to turn on history navigation.
   addEventListener("pagereveal", (event) => {
     const activation = window.navigation && navigation.activation;

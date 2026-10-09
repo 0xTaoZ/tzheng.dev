@@ -1,0 +1,69 @@
+// Motion core: one GSAP ticker drives Lenis smooth scrolling and every
+// ScrollTrigger, so scroll-linked animation and the scroll position never
+// drift apart. Effects register as scenes and are skipped entirely when the
+// visitor prefers reduced motion.
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
+import Lenis from "lenis";
+
+gsap.registerPlugin(ScrollTrigger, SplitText);
+
+export { gsap, ScrollTrigger, SplitText };
+
+export const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+export const finePointer = matchMedia("(pointer: fine)").matches;
+
+export let lenis: Lenis | null = null;
+
+export function startMotion() {
+  document.documentElement.classList.add("motion-ready");
+  if (reducedMotion) return;
+
+  lenis = new Lenis({
+    duration: 1.15,
+    easing: (t) => 1 - Math.pow(1 - t, 4),
+    anchors: { offset: -72 },
+    prevent: (node) => node.closest?.("[data-lenis-prevent]") !== null,
+  });
+  lenis.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add((time) => lenis?.raf(time * 1000));
+  gsap.ticker.lagSmoothing(0);
+
+  // Overlays such as the command palette pause smooth scrolling.
+  new MutationObserver(() => {
+    const locked = document.documentElement.style.overflow === "hidden";
+    locked ? lenis?.stop() : lenis?.start();
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ["style"] });
+}
+
+type Scene = () => void | Promise<void>;
+const scenes: Scene[] = [];
+
+export const scene = (setup: Scene) => scenes.push(setup);
+
+export async function runScenes() {
+  for (const setup of scenes) {
+    try {
+      await setup();
+    } catch (error) {
+      // A failed effect must never take the page down with it.
+      console.warn("motion scene failed", error);
+    }
+  }
+  ScrollTrigger.refresh();
+}
+
+// Load a heavy scene (for example WebGL) only when its element is close to
+// the viewport.
+export const whenNear = (element: Element, load: () => void, margin = "600px") => {
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry.isIntersecting) return;
+      observer.disconnect();
+      load();
+    },
+    { rootMargin: margin },
+  );
+  observer.observe(element);
+};

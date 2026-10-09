@@ -21,19 +21,6 @@ const syncNav = () => nav?.classList.toggle("scrolled", scrollY > 8);
 addEventListener("scroll", syncNav, { passive: true });
 syncNav();
 
-// Reveal sections once as they enter the viewport.
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-      entry.target.classList.add("active");
-      revealObserver.unobserve(entry.target);
-    }
-  },
-  { rootMargin: "0px 0px -8% 0px", threshold: 0.05 },
-);
-document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
-
 // Terminal intro: type the server-rendered text once.
 const terminal = document.getElementById("terminal-output");
 if (terminal && !reducedMotion) {

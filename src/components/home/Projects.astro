@@ -19,43 +19,48 @@ const [featured, ...rest] = projects;
       </p>
     </SectionHeader>
 
-    <article class="project-feature reveal">
-      <div class="project-feature-copy">
-        <p class="case-meta"><span>Featured build</span><span>{featured.data.type}</span></p>
-        <h3><a href={`/projects/${entrySlug(featured)}/`}>{featured.data.title}</a></h3>
-        <p class="project-excerpt">{featured.data.excerpt}</p>
-        <ul class="stack-list" aria-label="Stack">
-          {featured.data.stack.map((item) => <li>{item}</li>)}
-        </ul>
-        <div class="project-links">
-          <a class="text-link" href={`/projects/${entrySlug(featured)}/`}>Read the case study <span aria-hidden="true">→</span></a>
-          {featured.data.github && <a class="text-link muted" href={featured.data.github}>Source <span aria-hidden="true">↗</span></a>}
-        </div>
-      </div>
-      <dl class="fact-grid">
-        {featured.data.homepageFacts.map((fact) => (
-          <div><dt>{fact.label}</dt><dd>{fact.text}</dd></div>
-        ))}
-      </dl>
-    </article>
-
-    <div class="project-grid" data-spotlight>
-      {rest.map((project) => (
-        <article class="project-card reveal">
-          <p class="case-meta"><span>{project.data.type}</span></p>
-          <h3><a href={`/projects/${entrySlug(project)}/`}>{project.data.title}</a></h3>
-          <p class="project-excerpt">{project.data.excerpt}</p>
-          <dl class="fact-list">
-            {project.data.homepageFacts.map((fact) => (
+    <div class="project-rail">
+      <div class="project-track">
+        <article class="project-feature reveal">
+          <div class="project-feature-copy">
+            <p class="case-meta"><span>Featured build</span><span>{featured.data.type}</span></p>
+            <h3><a href={`/projects/${entrySlug(featured)}/`}>{featured.data.title}</a></h3>
+            <p class="project-excerpt">{featured.data.excerpt}</p>
+            <ul class="stack-list" aria-label="Stack">
+              {featured.data.stack.map((item) => <li>{item}</li>)}
+            </ul>
+            <div class="project-links">
+              <a class="text-link" href={`/projects/${entrySlug(featured)}/`}>Read the case study <span aria-hidden="true">→</span></a>
+              {featured.data.github && <a class="text-link muted" href={featured.data.github}>Source <span aria-hidden="true">↗</span></a>}
+            </div>
+          </div>
+          <dl class="fact-grid">
+            {featured.data.homepageFacts.map((fact) => (
               <div><dt>{fact.label}</dt><dd>{fact.text}</dd></div>
             ))}
           </dl>
-          <ul class="stack-list" aria-label="Stack">
-            {project.data.stack.map((item) => <li>{item}</li>)}
-          </ul>
-          <a class="text-link" href={`/projects/${entrySlug(project)}/`}>Read the case study <span aria-hidden="true">→</span></a>
         </article>
-      ))}
+
+        <div class="project-grid" data-spotlight>
+          {rest.map((project) => (
+            <article class="project-card reveal">
+              <p class="case-meta"><span>{project.data.type}</span></p>
+              <h3><a href={`/projects/${entrySlug(project)}/`}>{project.data.title}</a></h3>
+              <p class="project-excerpt">{project.data.excerpt}</p>
+              <dl class="fact-list">
+                {project.data.homepageFacts.map((fact) => (
+                  <div><dt>{fact.label}</dt><dd>{fact.text}</dd></div>
+                ))}
+              </dl>
+              <ul class="stack-list" aria-label="Stack">
+                {project.data.stack.map((item) => <li>{item}</li>)}
+              </ul>
+              <a class="text-link" href={`/projects/${entrySlug(project)}/`}>Read the case study <span aria-hidden="true">→</span></a>
+            </article>
+          ))}
+        </div>
+      </div>
+      <div class="rail-progress" aria-hidden="true"><span></span></div>
     </div>
   </div>
 </section>

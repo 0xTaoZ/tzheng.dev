@@ -26,11 +26,12 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   padding: 0 var(--gutter);
 }
 
-.reveal { opacity: 0; transform: translateY(10px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
-.reveal.active { opacity: 1; transform: none; }
-.reveal.delay-1 { transition-delay: .08s; }
+/* Reveal targets are hidden only when scripts run; the motion layer (GSAP)
+   animates them in, and .motion-failed shows them if it never starts. */
+.js .reveal { opacity: 0; }
+.reveal.active, .motion-failed .reveal { opacity: 1 !important; transform: none !important; }
 /* The first screen animates with CSS alone so it never waits for script. */
-.hero .reveal { opacity: 1; transform: none; animation: rise .7s var(--ease) both; }
+.js .hero .reveal, .hero .reveal { opacity: 1; transform: none; animation: rise .7s var(--ease) both; }
 .hero .reveal.delay-1 { animation-delay: .08s; }
 @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
@@ -170,8 +171,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .hero-backdrop::after {
   content: ""; position: absolute; inset: 0;
   background:
-    linear-gradient(90deg, var(--bg) 0%, rgba(7,9,12,.82) 40%, rgba(7,9,12,.35) 75%, rgba(7,9,12,.6) 100%),
-    linear-gradient(180deg, rgba(7,9,12,.55) 0%, rgba(7,9,12,0) 30%, var(--bg) 100%);
+    linear-gradient(90deg, rgba(7,9,12,.78) 0%, rgba(7,9,12,.42) 36%, rgba(7,9,12,0) 66%, rgba(7,9,12,.3) 100%),
+    linear-gradient(180deg, rgba(7,9,12,.5) 0%, rgba(7,9,12,0) 28%, rgba(7,9,12,0) 62%, var(--bg) 100%);
 }
 @media (max-width: 900px) {
   .hero-backdrop {
@@ -206,7 +207,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--line);
 }
 @media (min-width: 560px) { .hero-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.hero-stats > div { display: flex; flex-direction: column-reverse; gap: .2rem; padding: .85rem 1rem; background: rgba(9, 11, 15, .88); }
+.hero-stats > div { display: flex; flex-direction: column-reverse; gap: .2rem; padding: .85rem 1rem; background: rgba(9, 11, 15, .7); backdrop-filter: blur(10px); }
 .hero-stats dt { font: .68rem var(--font-mono); color: var(--text-3); }
 .hero-stats dd { font-size: 1.55rem; font-weight: 650; letter-spacing: -.03em; font-variant-numeric: tabular-nums; color: #fff; }
 .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-top: 1.8rem; }
@@ -255,7 +256,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   position: relative;
   border: 1px solid rgba(57, 255, 136, .18);
   border-radius: var(--radius-lg);
-  background: #05070a;
+  background: rgba(5, 7, 10, .72);
+  backdrop-filter: blur(14px) saturate(130%);
   overflow: hidden;
 }
 .terminal-bar {
@@ -286,7 +288,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   display: grid; grid-template-columns: 1fr auto; gap: .1rem 1rem;
   padding: .85rem 1rem;
   border: 1px solid var(--line); border-radius: var(--radius);
-  background: rgba(12, 15, 20, .7);
+  background: rgba(12, 15, 20, .55);
+  backdrop-filter: blur(12px);
   transition: border-color .2s ease, background .2s ease;
 }
 .start-here a:hover { border-color: var(--line-strong); background: var(--surface-2); }

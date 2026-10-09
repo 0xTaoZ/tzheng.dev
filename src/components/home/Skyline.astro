@@ -1,0 +1,29 @@
+---
+import { calendar } from "../../lib/contributions";
+const total = calendar.reduce((sum, day) => sum + day.count, 0);
+const activeDays = calendar.filter((day) => day.count > 0).length;
+const busiest = calendar.reduce((best, day) => (day.count > best.count ? day : best), calendar[0]);
+const label = (date: string) =>
+  new Date(`${date}T00:00:00Z`).toLocaleDateString("en", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+const max = Math.max(1, busiest.count);
+const level = (count: number) => (count === 0 ? 0 : Math.min(4, Math.ceil((count / max) * 4)));
+const offset = new Date(`${calendar[0].date}T00:00:00Z`).getUTCDay();
+---
+
+<figure class="skyline reveal" data-skyline data-days={JSON.stringify(calendar)}>
+  <div class="skyline-head">
+    <p class="panel-label"><span>A year on GitHub</span><span>{label(calendar[0].date)} – {label(calendar.at(-1)!.date)}</span></p>
+    <p class="skyline-facts">
+      <span><b>{total}</b> public contributions</span>
+      <span><b>{activeDays}</b> active days</span>
+      <span>busiest <b>{label(busiest.date)}</b> ({busiest.count})</span>
+    </p>
+  </div>
+  <div class="skyline-stage">
+    <div class="skyline-heatmap" style={`--offset:${offset}`} role="img" aria-label={`${total} public GitHub contributions on ${activeDays} days over the past year`}>
+      {calendar.map((day) => <i data-level={level(day.count)} title={`${day.count} · ${day.date}`}></i>)}
+    </div>
+    <p class="skyline-tip" hidden></p>
+  </div>
+  <figcaption>Public contribution calendar from github.com/0xTaoZ. Drag to turn it; hover a bar for the day.</figcaption>
+</figure>

@@ -1,0 +1,19 @@
+---
+import { compactNumber, upstreamRepositories } from "../../lib/contributions";
+const items = [...upstreamRepositories].sort((a, b) => b.stars - a.stars);
+---
+
+<div class="marquee" data-marquee aria-label="Upstream repositories with merged pull requests">
+  <div class="marquee-track">
+    {[0, 1].map((copy) => (
+      <ul aria-hidden={copy === 1 ? "true" : undefined}>
+        {items.map((repository) => (
+          <li>
+            <span class="marquee-name">{repository.label}</span>
+            <span class="marquee-meta">{repository.merged} merged · ★ {compactNumber(repository.stars)}</span>
+          </li>
+        ))}
+      </ul>
+    ))}
+  </div>
+</div>

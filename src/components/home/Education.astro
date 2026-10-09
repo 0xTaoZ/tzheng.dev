@@ -53,31 +53,34 @@ const schools = [
 <section id="education" class="section">
   <div class="container">
     <SectionHeader index="04" title="Education" />
-    <ol class="edu-timeline">
-      {schools.map((school) => (
-        <li class:list={["edu-item", "reveal", school.current && "current"]}>
-          <div class="edu-when">
-            <time>{school.period}</time>
-          </div>
-          <div class="edu-body">
-            <div class="edu-head">
-              <span class="edu-logo">
-                <img src={school.logo} alt="" width="40" height="40" loading="lazy" decoding="async" />
-              </span>
-              <div>
-                <h3>{school.institution}</h3>
-                <p class="edu-place">{school.place}</p>
-              </div>
+    <div class="edu-wrap">
+      <span class="edu-line" aria-hidden="true"></span>
+      <ol class="edu-timeline">
+        {schools.map((school) => (
+          <li class:list={["edu-item", "reveal", school.current && "current"]}>
+            <div class="edu-when">
+              <time>{school.period}</time>
             </div>
-            <p class="edu-program">{school.program}</p>
-            <dl class="edu-details">
-              {school.details.map(([term, text]) => (
-                <div><dt>{term}</dt><dd>{text}</dd></div>
-              ))}
-            </dl>
-          </div>
-        </li>
-      ))}
-    </ol>
+            <div class="edu-body">
+              <div class="edu-head">
+                <span class="edu-logo">
+                  <img src={school.logo} alt="" width="40" height="40" loading="lazy" decoding="async" />
+                </span>
+                <div>
+                  <h3>{school.institution}</h3>
+                  <p class="edu-place">{school.place}</p>
+                </div>
+              </div>
+              <p class="edu-program">{school.program}</p>
+              <dl class="edu-details">
+                {school.details.map(([term, text]) => (
+                  <div><dt>{term}</dt><dd>{text}</dd></div>
+                ))}
+              </dl>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
   </div>
 </section>
