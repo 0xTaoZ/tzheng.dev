@@ -14,7 +14,12 @@ ScrollTrigger.config({ ignoreMobileResize: true });
 
 export { gsap, ScrollTrigger, SplitText };
 
-export const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+// Adaptive loading: data saver or a very small device gets the static page,
+// the same as reduced motion. WebGL scenes check `lowPower` separately.
+const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8;
+export const lowPower = Boolean(connection?.saveData) || memory <= 2 || (navigator.hardwareConcurrency ?? 8) <= 2;
+export const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches || Boolean(connection?.saveData);
 export const finePointer = matchMedia("(pointer: fine)").matches;
 
 export let lenis: Lenis | null = null;

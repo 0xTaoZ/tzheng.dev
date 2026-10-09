@@ -26,6 +26,18 @@ PRs, merge dates, repository stars and the open-PR count together with the
 verification date, then review the diff. Homepage totals, the monthly chart
 and the contribution ledger are derived from that file.
 
+## Motion
+
+Homepage motion lives in `src/motion/`. `core.ts` runs Lenis smooth
+scrolling from the GSAP ticker and keeps ScrollTrigger in sync; each effect
+registers as a scene (`scenes.ts`, `hero-gl.ts`, `skyline.ts`) and a failing
+scene never breaks the page. The hero backdrop is a raw WebGL fragment
+shader; the contribution skyline loads Three.js only when it nears the
+viewport. Content pages load `smooth.ts` (Lenis only). Reduced motion, data
+saver and very small devices get the static page; without scripts, CSS
+scroll-driven animations handle reveals. Animate only `transform` and
+`opacity`, and check new effects for layout shift and long tasks.
+
 ## Images and share cards
 
 Optimized portrait, logo and education images live in `public/img/` and are

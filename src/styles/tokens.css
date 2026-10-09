@@ -87,9 +87,9 @@ code, kbd, pre, samp { font-family: var(--font-mono); }
 @media (prefers-reduced-motion: no-preference) {
   @view-transition { navigation: auto; }
   .nav, .site-nav { view-transition-name: site-nav; }
-  ::view-transition-group(root) { animation-duration: .7s; }
-  ::view-transition-old(root) { transform-origin: 0 50%; animation: page-turn-out .7s cubic-bezier(.65, 0, .35, 1) both; }
-  ::view-transition-new(root) { transform-origin: 100% 50%; animation: page-turn-in .7s cubic-bezier(.65, 0, .35, 1) both; }
+  ::view-transition-group(root) { animation-duration: .55s; }
+  ::view-transition-old(root) { transform-origin: 0 50%; animation: page-turn-out .55s cubic-bezier(.65, 0, .35, 1) both; }
+  ::view-transition-new(root) { transform-origin: 100% 50%; animation: page-turn-in .55s cubic-bezier(.65, 0, .35, 1) both; }
   html:active-view-transition-type(back)::view-transition-old(root) { transform-origin: 100% 50%; animation-name: page-turn-back-out; }
   html:active-view-transition-type(back)::view-transition-new(root) { transform-origin: 0 50%; animation-name: page-turn-back-in; }
   ::view-transition-group(site-nav) { animation-duration: .4s; }
@@ -106,4 +106,27 @@ kbd {
   display: inline-grid; place-items: center; min-width: 1.35rem; height: 1.35rem; padding: 0 .3rem;
   border: 1px solid var(--line-strong); border-bottom-width: 2px; border-radius: 5px;
   font: .68rem var(--font-mono); color: inherit;
+}
+
+/* Lenis smooth scrolling (homepage and content pages). */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* The scrollbar gutter is reserved so nothing shifts when it appears. */
+html { scrollbar-gutter: stable; scrollbar-color: #2a313b transparent; }
+
+/* Headlines break into balanced lines; paragraphs avoid a lone last word. */
+h1, h2, h3 { text-wrap: balance; }
+p, li, dd { text-wrap: pretty; }
+
+/* Buttons and controls compress slightly under the finger or the pointer. */
+.btn, .button, .text-link, .icon-link, .kbd-button, .search-button, .nav-github, .contact-actions a, .start-here a {
+  transition-property: color, background-color, border-color, transform, opacity;
+  transition-timing-function: cubic-bezier(.2, .7, .2, 1);
+}
+.btn:active, .button:active, .icon-link:active, .kbd-button:active, .search-button:active, .nav-github:active, .start-here a:active, .contact-actions a:active {
+  transform: scale(.97);
+  transition-duration: .08s;
 }

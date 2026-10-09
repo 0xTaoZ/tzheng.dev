@@ -2,7 +2,7 @@
 // the pointer lights up the city lights beneath it like a torch, and stars
 // twinkle in the dark sky. Raw WebGL, no library; the CSS background stays
 // in place if WebGL is unavailable.
-import { finePointer, reducedMotion, scene } from "./core";
+import { finePointer, lowPower, reducedMotion, scene } from "./core";
 
 const vertex = `
 attribute vec2 position;
@@ -68,7 +68,7 @@ void main() {
 
 scene(async () => {
   const backdrop = document.querySelector<HTMLElement>(".hero-backdrop");
-  if (!backdrop || reducedMotion) return;
+  if (!backdrop || reducedMotion || lowPower) return;
   const canvas = document.createElement("canvas");
   canvas.className = "hero-gl";
   canvas.setAttribute("aria-hidden", "true");

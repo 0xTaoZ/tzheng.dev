@@ -1,7 +1,7 @@
 // Contribution skyline: a year of public GitHub contributions as instanced
 // 3D bars. Three.js is imported only when the section approaches the
 // viewport; the server-rendered heatmap stays visible as the fallback.
-import { finePointer, gsap, reducedMotion, scene, whenNear } from "./core";
+import { finePointer, gsap, lowPower, reducedMotion, scene, whenNear } from "./core";
 
 type Day = { date: string; count: number };
 
@@ -9,7 +9,7 @@ scene(() => {
   const host = document.querySelector<HTMLElement>("[data-skyline]");
   if (!host) return;
   const days: Day[] = JSON.parse(host.dataset.days ?? "[]");
-  if (!days.length) return;
+  if (!days.length || lowPower) return;
   whenNear(host, () => void mount(host, days).catch((error) => console.warn("skyline", error)));
 });
 

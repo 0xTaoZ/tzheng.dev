@@ -79,7 +79,9 @@ scene(() => {
     gsap.to(batch, { opacity: 1, y: 0, duration: 1, ease: "expo.out", stagger: 0.08, overwrite: true });
   const pinned = blocks.filter((element) => pinnedIn(element));
   ScrollTrigger.batch(blocks.filter((element) => !pinnedIn(element)), { start: "top 90%", once: true, onEnter: enter });
-  if (pinned.length) ScrollTrigger.batch(pinned, { start: "top 90%", once: true, onEnter: enter, pinnedContainer: pinnedIn(pinned[0]) });
+  // Batch triggers cannot account for a pin, so blocks inside it get their own.
+  for (const element of pinned)
+    ScrollTrigger.create({ trigger: element, start: "top 90%", once: true, pinnedContainer: pinnedIn(element), onEnter: () => enter([element]) });
 });
 
 // ---------- Hero: the backdrop sinks and the copy lifts away on scroll.
