@@ -13,7 +13,7 @@ await copyFile("dist/sitemap-index.xml", "dist/sitemap.xml");
 const policy = (hashes) =>
   [
     "default-src 'self'",
-    `script-src 'self' 'inline-speculation-rules'${hashes.map((hash) => ` '${hash}'`).join("")}`,
+    `script-src 'self'${hashes.map((hash) => ` '${hash}'`).join("")}`,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
     "font-src 'self'",

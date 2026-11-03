@@ -7,6 +7,8 @@ import {
   mergedPRs,
   upstreamRepositories,
 } from "../../lib/contributions";
+import { disclosures } from "../../data/disclosures";
+const [disclosure] = disclosures;
 interface Props {
   terminalLines: string[];
 }
@@ -19,43 +21,36 @@ const cfnLintCount = mergedPRs.filter(
 ).length;
 const byStars = [...upstreamRepositories].sort((a, b) => b.stars - a.stars);
 const named = byStars.slice(0, 4).map((repository) => repository.label);
-const others = byStars.length - named.length;
-const projectList =
-  others > 0
-    ? `${named.join(", ")} and ${others} more`
-    : `${named.slice(0, -1).join(", ")} and ${named.at(-1)}`;
+const projectList = `${named.slice(0, -1).join(", ")} and ${named.at(-1)}`;
 ---
 
 <section class="hero" id="top">
   <div class="hero-backdrop" aria-hidden="true"></div>
   <div class="container hero-grid">
     <div class="hero-copy reveal">
-      <p class="hero-eyebrow">
-        <span class="status-dot" aria-hidden="true"></span>
-        <span>Cyber Security &amp; Privacy · <span class="nowrap">H-BRS</span> · Bonn, Germany</span>
-      </p>
       <h1 class="hero-title">
         <span class="word"><span>Haitao</span></span>
         <span class="word"><span>Zheng</span></span>
         <span class="hero-alias">(Tao)</span>
       </h1>
       <p class="hero-role">
-        Blue team, cloud security <span aria-hidden="true">·</span> Systems &amp;
-        infrastructure engineering
+        Blue team and cloud security, systems and infrastructure engineering
       </p>
       <p class="hero-lede">
-        I build small, explainable security tools and send fixes upstream to
-        the projects I use: {mergedCount} merged pull requests to {projectList}.
+        Cyber Security &amp; Privacy student at <span class="nowrap">H-BRS</span> in
+        Bonn, Germany. I build small, explainable security tools and send fixes
+        upstream to the projects I use, among them {projectList}. Red Hat Product Security credited me with discovering
+        <a href="#disclosure" class="hero-cve">{disclosure.id}</a> in {disclosure.product}.
       </p>
       <dl class="hero-stats">
-        <div><dt>merged upstream PRs</dt><dd data-count>{mergedCount}</dd></div>
-        <div><dt>upstream repositories</dt><dd data-count>{upstreamRepositories.length}</dd></div>
-        <div><dt>combined stars</dt><dd data-count>{compactNumber(combinedStars)}</dd></div>
-        <div><dt>technical articles</dt><dd data-count>{articleCount}</dd></div>
+        <div><dt>merged PRs</dt><dd>{mergedCount}</dd></div>
+        <div><dt>repositories</dt><dd>{upstreamRepositories.length}</dd></div>
+        <div><dt>combined stars</dt><dd>{compactNumber(combinedStars)}</dd></div>
+        <div><dt>articles</dt><dd>{articleCount}</dd></div>
       </dl>
       <div class="hero-actions">
         <a href="#contributions" class="btn btn-primary">View contributions</a>
-        <a href="#projects" class="btn">View projects</a>
+        <a href="#projects" class="btn btn-ghost">View projects</a>
         <a href="/resume/" class="btn btn-ghost">Résumé</a>
         <span class="hero-icons">
           <a href="https://github.com/0xTaoZ" class="icon-link" aria-label="Haitao Zheng on GitHub">
@@ -93,7 +88,6 @@ const projectList =
         />
       </picture>
       <figcaption class="profile-card">
-        <p class="profile-head"><span>Profile</span><span>Germany</span></p>
         <p class="profile-summary">
           Security tooling, cloud logs, IOC workflows, and static-first web
           systems.
@@ -110,27 +104,26 @@ const projectList =
   <div class="container hero-lower">
     <div class="terminal reveal" aria-label="Terminal summary">
       <div class="terminal-bar">
-        <span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span>
         <span>tao@tzheng.dev: ~</span>
       </div>
       <pre class="terminal-output"><span id="terminal-output" data-lines={JSON.stringify(terminalLines)}>{terminalLines.join("\n")}</span><span class="terminal-cursor" aria-hidden="true"></span></pre>
     </div>
-    <nav class="start-here reveal delay-1" aria-label="Quick links" data-spotlight>
-      <p class="label">Quick links</p>
+    <nav class="start-here reveal delay-1" aria-label="Quick links">
+      <p class="list-label">Quick links</p>
       <a href="/projects/cloudtrail-quickscan/">
         <span class="start-kind">project / tool</span>
         <span class="start-title">cloudtrail-quickscan</span>
-        <span class="start-meta">AWS logs · detection checks</span>
+        <span class="start-meta">AWS logs and detection checks</span>
       </a>
       <a href="/projects/cfn-lint-contribution/">
         <span class="start-kind">open source / PR</span>
         <span class="start-title">cfn-lint contribution</span>
-        <span class="start-meta">CloudFormation · {cfnLintCount} merged PRs</span>
+        <span class="start-meta">CloudFormation, {cfnLintCount} merged PRs</span>
       </a>
       <a href="/articles/">
         <span class="start-kind">writing / blog</span>
         <span class="start-title">Technical articles</span>
-        <span class="start-meta">{articleCount} notes · monthly archive</span>
+        <span class="start-meta">{articleCount} notes, archived by month</span>
       </a>
     </nav>
   </div>

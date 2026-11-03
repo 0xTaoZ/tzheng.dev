@@ -28,10 +28,9 @@ for (const path of ["/", "/contributions/", "/about/"])
 export default defineConfig({
   compressHTML: true,
   site,
-  // Links are prerendered on hover through the Speculation Rules API, so the
-  // next page is usually ready before the click.
+  // Browsers without Speculation Rules still prefetch on hover. The prerender
+  // rules live in SiteHead, where the Content-Security-Policy can hash them.
   prefetch: { prefetchAll: true, defaultStrategy: "hover" },
-  experimental: { clientPrerender: true },
   // Emit fonts and images as files; inlined data: URIs would need a looser CSP.
   // Three.js is one lazily loaded chunk of about 150 KB compressed.
   vite: { build: { assetsInlineLimit: 0, chunkSizeWarningLimit: 800 } },

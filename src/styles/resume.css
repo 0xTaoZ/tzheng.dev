@@ -21,6 +21,7 @@
 .sheet a:hover { text-decoration: underline; }
 .cv-head { text-align: center; padding-bottom: 3mm; }
 .cv-head h1 { margin: 0; font-size: 20pt; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; color: #0b0f16; }
+.cv-title { margin: .8mm 0 0 !important; font-size: 10pt; color: #3a4350; }
 .cv-contact { margin-top: 1.4mm !important; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 2.4mm; font-size: 8.8pt; color: #3a4350; }
 .cv-contact > * + *::before { content: "·"; margin-right: 2.4mm; color: #9aa2ad; }
 .cv-section { padding-top: 3mm; }

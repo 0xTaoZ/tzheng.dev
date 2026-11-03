@@ -2,7 +2,7 @@
 import "../styles/resume.css";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { mergedCount, verifiedAt } from "../lib/contributions";
-import { header, education, openSource, otherOpenSource, projects, skills } from "../data/resume";
+import { header, education, security, openSource, otherOpenSource, projects, skills } from "../data/resume";
 
 const verifiedLabel = new Date(`${verifiedAt}T00:00:00Z`).toLocaleDateString(
   "en",
@@ -38,6 +38,7 @@ const schema = {
     <article class="sheet">
       <header class="cv-head">
         <h1>{header.name}</h1>
+        <p class="cv-title">{header.title}</p>
         <p class="cv-contact">
           {header.contact.map((item) => (item.url ? <a href={item.url}>{item.label}</a> : <span>{item.label}</span>))}
         </p>
@@ -49,6 +50,15 @@ const schema = {
           <div class="cv-row">
             <p><b>{item.school}</b> · {item.detail}{item.note && <span class="cv-note"> · {item.note}</span>}</p>
             <p class="cv-date">{item.when}</p>
+          </div>
+        ))}
+      </section>
+
+      <section class="cv-section">
+        <h2>Security</h2>
+        {security.map((item) => (
+          <div class="cv-row">
+            <p><b>{item.id}</b> · {item.product}<span class="cv-note"> · {item.text}</span></p>
           </div>
         ))}
       </section>

@@ -16,7 +16,6 @@ import {
   verifiedAt,
 } from "../lib/contributions";
 const peak = Math.max(...monthlyMerged.map((month) => month.count));
-const mostMerged = upstreamRepositories[0].merged;
 const verifiedLabel = new Date(`${verifiedAt}T00:00:00Z`).toLocaleDateString(
   "en",
   { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" },
@@ -25,24 +24,23 @@ const verifiedLabel = new Date(`${verifiedAt}T00:00:00Z`).toLocaleDateString(
 
     {showTotals && (
     <dl class="stat-row reveal" aria-label="Contribution summary">
-      <div><dt>Merged upstream PRs</dt><dd data-count>{mergedCount}</dd></div>
-      <div><dt>Upstream repositories</dt><dd data-count>{repositoryCount}</dd></div>
-      <div><dt>Combined GitHub stars</dt><dd data-count>{compactNumber(combinedStars)}</dd></div>
-      <div><dt>Open PRs in review</dt><dd data-count>{openCount}</dd></div>
+      <div><dt>Merged upstream PRs</dt><dd>{mergedCount}</dd></div>
+      <div><dt>Upstream repositories</dt><dd>{repositoryCount}</dd></div>
+      <div><dt>Combined GitHub stars</dt><dd>{compactNumber(combinedStars)}</dd></div>
+      <div><dt>Open PRs in review</dt><dd>{openCount}</dd></div>
     </dl>
     )}
 
     <div class="upstream-board reveal">
       <div class="panel upstream-list">
-        <p class="panel-label"><span>Merged into</span><span>PRs · stars</span></p>
+        <p class="panel-label"><span>Merged into</span><span class="repo-columns"><span>PRs</span><span>Stars</span></span></p>
         <ol>
           {upstreamRepositories.map((repository) => (
             <li>
               <a href={repository.url}>
                 <span class="repo-name"><span class="repo-owner">{repository.owner}/</span>{repository.repo}</span>
-                <span class="repo-bar" aria-hidden="true"><span style={`--share:${(repository.merged / mostMerged) * 100}%`}></span></span>
                 <span class="repo-count">{repository.merged}</span>
-                <span class="repo-stars">★ {compactNumber(repository.stars)}</span>
+                <span class="repo-stars">{compactNumber(repository.stars)}</span>
               </a>
             </li>
           ))}

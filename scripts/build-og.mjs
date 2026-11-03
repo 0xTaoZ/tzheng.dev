@@ -51,15 +51,15 @@ const fitTitle = (text, maxWidth) => {
 const background = `
   <defs>
     <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
-      <path d="M48 0H0V48" fill="none" stroke="rgba(125,211,252,0.07)" stroke-width="1"/>
+      <path d="M48 0H0V48" fill="none" stroke="rgba(214,224,240,0.05)" stroke-width="1"/>
     </pattern>
     <radialGradient id="glowA" cx="0.12" cy="0.05" r="0.7">
       <stop offset="0" stop-color="#38bdf8" stop-opacity="0.22"/>
       <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="glowB" cx="0.92" cy="0.95" r="0.6">
-      <stop offset="0" stop-color="#39ff88" stop-opacity="0.12"/>
-      <stop offset="1" stop-color="#39ff88" stop-opacity="0"/>
+      <stop offset="0" stop-color="#f2b661" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#f2b661" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#000" stop-opacity="0"/>
@@ -74,10 +74,10 @@ const background = `
 
 const footer = (right = "tzheng.dev") => `
   <line x1="72" y1="520" x2="${width - 72}" y2="520" stroke="rgba(148,163,184,0.18)"/>
-  <circle cx="80" cy="566" r="6" fill="#39ff88"/>
+  <circle cx="80" cy="566" r="6" fill="#f2b661"/>
   <text x="100" y="574" font-family="${sans}" font-size="26" font-weight="700" fill="#f8fafc">Haitao Zheng</text>
   <text x="285" y="574" font-family="${mono}" font-size="20" fill="#94a3b8">Cyber Security &amp; Privacy · H-BRS</text>
-  <text x="${width - 72}" y="574" text-anchor="end" font-family="${mono}" font-size="22" fill="#7dd3fc">${escape(right)}</text>`;
+  <text x="${width - 72}" y="574" text-anchor="end" font-family="${mono}" font-size="22" fill="#aeb5c1">${escape(right)}</text>`;
 
 const card = ({ kicker, title, meta, command, titleWidth = 1000 }) => {
   const { size, lines } = fitTitle(title, titleWidth);
@@ -86,10 +86,10 @@ const card = ({ kicker, title, meta, command, titleWidth = 1000 }) => {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
     ${background}
     <rect x="72" y="62" rx="18" ry="18" width="${kicker.length * 12.6 + 46}" height="36" fill="rgba(8,20,33,0.75)" stroke="rgba(125,211,252,0.3)"/>
-    <circle cx="94" cy="80" r="4" fill="#39ff88"/>
+    <circle cx="94" cy="80" r="4" fill="#f2b661"/>
     <text x="108" y="86" font-family="${mono}" font-size="19" fill="#bae6fd">${escape(kicker)}</text>
     ${lines.map((line, i) => `<text x="72" y="${top + (i + 1) * lineHeight}" font-family="${sans}" font-size="${size}" font-weight="700" letter-spacing="-1.5" fill="#ffffff">${escape(line)}</text>`).join("")}
-    <text x="72" y="${top + lines.length * lineHeight + 56}" font-family="${mono}" font-size="24" fill="#39ff88">${escape(command)}</text>
+    <text x="72" y="${top + lines.length * lineHeight + 56}" font-family="${mono}" font-size="24" fill="#f2b661">${escape(command)}</text>
     <text x="72" y="${top + lines.length * lineHeight + 96}" font-family="${mono}" font-size="21" fill="#94a3b8">${escape(meta)}</text>
     ${footer()}
   </svg>`;
@@ -121,8 +121,8 @@ await render(
     <text x="72" y="200" font-family="${sans}" font-size="92" font-weight="700" letter-spacing="-4" fill="#ffffff">HAITAO</text>
     <text x="72" y="292" font-family="${sans}" font-size="92" font-weight="700" letter-spacing="-4" fill="#ffffff">ZHENG</text>
     <text x="72" y="346" font-family="${sans}" font-size="30" fill="#cbd5e1">Cyber Security &amp; Privacy · Systems</text>
-    <text x="72" y="410" font-family="${mono}" font-size="24" fill="#39ff88">$ upstream --merged</text>
-    <text x="72" y="448" font-family="${mono}" font-size="24" fill="#39ff88">${contributions.merged.length} PRs / ${repositories} projects</text>
+    <text x="72" y="410" font-family="${mono}" font-size="24" fill="#f2b661">$ upstream --merged</text>
+    <text x="72" y="448" font-family="${mono}" font-size="24" fill="#f2b661">${contributions.merged.length} PRs / ${repositories} projects</text>
     ${footer("tzheng.dev")}
   </svg>`,
   path.join(root, "default.png"),

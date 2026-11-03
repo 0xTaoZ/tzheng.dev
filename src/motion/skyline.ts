@@ -25,7 +25,6 @@ async function mount(host: HTMLElement, days: Day[]) {
   canvas.setAttribute("aria-hidden", "true");
 
   const scene3d = new THREE.Scene();
-  scene3d.fog = new THREE.Fog(0x07090c, 38, 90);
   const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 200);
 
   // Layout: weeks run along x, weekdays along z, like the calendar on GitHub.
@@ -38,9 +37,9 @@ async function mount(host: HTMLElement, days: Day[]) {
   geometry.translate(0, 0.5, 0);
   const material = new THREE.MeshStandardMaterial({ roughness: 0.55, metalness: 0.1 });
   const mesh = new THREE.InstancedMesh(geometry, material, days.length);
-  const base = new THREE.Color(0x15201b);
-  const low = new THREE.Color(0x1e6b43);
-  const high = new THREE.Color(0x39ff88);
+  const base = new THREE.Color(0x101216);
+  const low = new THREE.Color(0x9a6a28);
+  const high = new THREE.Color(0xffd492);
   const matrix = new THREE.Matrix4();
   const heights: number[] = [];
   days.forEach((day, index) => {
@@ -58,17 +57,17 @@ async function mount(host: HTMLElement, days: Day[]) {
 
   const floor = new THREE.Mesh(
     new THREE.PlaneGeometry(weeks + 6, 14),
-    new THREE.MeshStandardMaterial({ color: 0x0b0e13, roughness: 1 }),
+    new THREE.MeshStandardMaterial({ color: 0x090b0f, roughness: 1 }),
   );
   floor.rotation.x = -Math.PI / 2;
   floor.position.y = -0.01;
   scene3d.add(floor);
 
-  scene3d.add(new THREE.HemisphereLight(0xbfd9ff, 0x07090c, 1.1));
-  const sun = new THREE.DirectionalLight(0xffffff, 2.2);
+  scene3d.add(new THREE.HemisphereLight(0xcfd8ea, 0x4a3518, 1.7));
+  const sun = new THREE.DirectionalLight(0xfff2dc, 2);
   sun.position.set(-18, 30, 22);
   scene3d.add(sun);
-  const rim = new THREE.DirectionalLight(0x39ff88, 0.6);
+  const rim = new THREE.DirectionalLight(0xffc56e, 0.9);
   rim.position.set(20, 8, -20);
   scene3d.add(rim);
 
@@ -81,6 +80,7 @@ async function mount(host: HTMLElement, days: Day[]) {
     const vertical = (camera.fov * Math.PI) / 180;
     const horizontal = 2 * Math.atan(Math.tan(vertical / 2) * camera.aspect);
     radius = ((weeks / 2 + 2) / Math.tan(horizontal / 2)) * 1.05;
+    scene3d.fog = new THREE.Fog(0x090b0f, radius * 0.75, radius * 1.9);
   };
 
   // Month ticks along the front edge, positioned from the 3D scene each frame.
@@ -88,8 +88,11 @@ async function mount(host: HTMLElement, days: Day[]) {
   const tickLayer = document.createElement("div");
   tickLayer.className = "skyline-ticks";
   tickLayer.setAttribute("aria-hidden", "true");
+  // Phones get every other month so the labels do not collide.
+  const every = stage.clientWidth < 600 ? 2 : 1;
+  let month = 0;
   days.forEach((day, index) => {
-    if (!day.date.endsWith("-01")) return;
+    if (!day.date.endsWith("-01") || month++ % every) return;
     const slot = index + offset;
     const element = document.createElement("span");
     element.textContent = new Date(`${day.date}T00:00:00Z`).toLocaleDateString("en", { month: "short", timeZone: "UTC" });

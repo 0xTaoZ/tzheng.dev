@@ -22,7 +22,6 @@ const months = [...new Set(all.map(articleMonth))].sort().reverse();
 <section id="notes" class="section">
   <div class="container">
     <SectionHeader
-      index="04"
       title="Writing"
       link={{ href: "/articles/", label: `All ${all.length} articles` }}
     >
@@ -36,7 +35,7 @@ const months = [...new Set(all.map(articleMonth))].sort().reverse();
           {selected.map((article) => (
             <li>
               <a href={`/articles/${entrySlug(article)}/`}>
-                <span class="row-meta">{article.data.category} · {readingTime(article)}</span>
+                <span class="row-meta">{article.data.category}, {readingTime(article)}</span>
                 <span class="row-title">{article.data.title}</span>
                 <span class="row-excerpt">{article.data.excerpt}</span>
               </a>
@@ -60,7 +59,7 @@ const months = [...new Set(all.map(articleMonth))].sort().reverse();
           {months.map((month) => <a href={`/articles/#month-${month}`}>{monthLabel(month)}</a>)}
         </nav>
         <p class="feed-links">
-          <a class="text-link" href="/articles/">Search the archive <span aria-hidden="true">→</span></a>
+          <a class="text-link" href="/articles/">Search the archive</a>
           <a class="text-link muted" href="/rss.xml">RSS</a>
         </p>
       </div>

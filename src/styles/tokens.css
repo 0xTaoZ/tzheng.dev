@@ -18,31 +18,41 @@
   descent-override: 30%;
   line-gap-override: 0%;
 }
+@font-face {
+  font-family: "Schibsted Grotesk Fallback";
+  src: local("Arial"), local("Helvetica"), local("Liberation Sans");
+  size-adjust: 99.6%;
+  ascent-override: 98.4%;
+  descent-override: 26.1%;
+  line-gap-override: 0%;
+}
 
-/* Shared design tokens for the homepage and the content pages. One neutral
-   scale, one terminal accent, one link colour; type does most of the work. */
+/* Shared design tokens for the homepage and the content pages. Neutrals lean
+   toward the night sky in the hero; the one accent is the sodium colour of the
+   city lights in the same photograph. It marks live data and links only. */
 :root {
   color-scheme: dark;
-  --bg: #07090c;
-  --surface: #0c0f14;
-  --surface-2: #11151b;
-  --line: rgba(255, 255, 255, 0.075);
-  --line-strong: rgba(255, 255, 255, 0.15);
-  --text: #e9edf2;
-  --text-2: #aab3c0;
-  --text-3: #808b9b;
-  --accent: #39ff88;
-  --accent-dim: rgba(57, 255, 136, 0.14);
-  --link: #9fd2ff;
-  --blue: #7dd3fc;
+  --bg: #090b0f;
+  --surface: #0e1116;
+  --surface-2: #141820;
+  --line: rgba(214, 224, 240, 0.09);
+  --line-strong: rgba(214, 224, 240, 0.18);
+  --text: #e8ebf0;
+  --text-2: #aeb5c1;
+  --text-3: #868f9d;
+  --accent: #f2b661;
+  --accent-dim: rgba(242, 182, 97, 0.14);
+  --link: #f2c78a;
+  --blue: var(--text-3);
   --muted: var(--text-2);
-  --radius: 10px;
-  --radius-lg: 14px;
+  --radius: 6px;
+  --radius-lg: 8px;
   --container: 1120px;
   --gutter: clamp(1rem, 4vw, 2rem);
+  --font-display: "Schibsted Grotesk Variable", "Schibsted Grotesk Fallback", var(--font-sans);
   --font-sans: "Inter Variable", "Inter Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: "JetBrains Mono Variable", "JetBrains Mono Fallback", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 html {
@@ -59,11 +69,14 @@ body {
 }
 
 code, kbd, pre, samp { font-family: var(--font-mono); }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; }
 
-::selection { background: rgba(57, 255, 136, 0.25); color: #fff; }
+html { scrollbar-color: #2b303a var(--bg); }
+input, textarea { caret-color: var(--accent); }
+::selection { background: rgba(242, 182, 97, 0.28); color: #fff; }
 
 :focus-visible {
-  outline: 2px solid var(--link);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 4px;
 }

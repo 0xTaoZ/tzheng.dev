@@ -1,6 +1,6 @@
 {
-  "verifiedAt": "2026-10-08",
-  "openCount": 21,
+  "verifiedAt": "2026-11-03",
+  "openCount": 13,
   "open": [
     {
       "repository": "prowler-cloud/prowler",
@@ -14,13 +14,6 @@
       "number": 12980,
       "title": "fix(alibabacloud): read RDS whitelist from security_iplist",
       "url": "https://github.com/prowler-cloud/prowler/pull/12980",
-      "openedAt": "2026-10-08"
-    },
-    {
-      "repository": "aws-cloudformation/cfn-lint",
-      "number": 4740,
-      "title": "fix(lambda): update SnapStart supported regions",
-      "url": "https://github.com/aws-cloudformation/cfn-lint/pull/4740",
       "openedAt": "2026-10-08"
     },
     {
@@ -45,13 +38,6 @@
       "openedAt": "2026-09-29"
     },
     {
-      "repository": "pyinfra-dev/pyinfra",
-      "number": 1983,
-      "title": "fix(api): omit variadic kwargs from auto labels",
-      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1983",
-      "openedAt": "2026-09-29"
-    },
-    {
       "repository": "bridgecrewio/checkov",
       "number": 7706,
       "title": "fix(kubernetes): correlate secret rules with resourceNames",
@@ -73,53 +59,11 @@
       "openedAt": "2026-09-29"
     },
     {
-      "repository": "pyinfra-dev/pyinfra",
-      "number": 1982,
-      "title": "fix(operations.git): allow chowned repo pulls",
-      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1982",
-      "openedAt": "2026-09-29"
-    },
-    {
-      "repository": "pyinfra-dev/pyinfra",
-      "number": 1981,
-      "title": "fix(api): strip su password prompt from fact output",
-      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1981",
-      "openedAt": "2026-09-29"
-    },
-    {
       "repository": "prowler-cloud/prowler",
       "number": 12902,
       "title": "fix(sdk): skip M365 outbound preset policies",
       "url": "https://github.com/prowler-cloud/prowler/pull/12902",
       "openedAt": "2026-09-29"
-    },
-    {
-      "repository": "pyinfra-dev/pyinfra",
-      "number": 1980,
-      "title": "fix(connectors.ssh): preserve nested ProxyJump sockets",
-      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1980",
-      "openedAt": "2026-09-29"
-    },
-    {
-      "repository": "aws-cloudformation/cfn-lint",
-      "number": 4730,
-      "title": "fix: handle SAM RestApi stage references",
-      "url": "https://github.com/aws-cloudformation/cfn-lint/pull/4730",
-      "openedAt": "2026-09-29"
-    },
-    {
-      "repository": "pyinfra-dev/pyinfra",
-      "number": 1979,
-      "title": "docs(operations.files): warn rsync deletes extra files",
-      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1979",
-      "openedAt": "2026-09-29"
-    },
-    {
-      "repository": "pyinfra-dev/pyinfra",
-      "number": 1971,
-      "title": "fix(connectors.ssh): match host CAs on custom ports",
-      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1971",
-      "openedAt": "2026-09-22"
     },
     {
       "repository": "Yelp/detect-secrets",
@@ -152,140 +96,28 @@
   ],
   "repositories": {
     "aquasecurity/trivy": {
-      "stars": 38297
+      "stars": 38935
     },
     "prowler-cloud/prowler": {
-      "stars": 14989
+      "stars": 15160
     },
     "pyinfra-dev/pyinfra": {
-      "stars": 6027
+      "stars": 6068
     },
     "ansible/ansible-lint": {
-      "stars": 3919
+      "stars": 3932
     },
     "aws-cloudformation/cfn-lint": {
-      "stars": 2641
+      "stars": 2646
     },
     "trailofbits/graphtage": {
-      "stars": 2488
+      "stars": 2494
     },
     "DataDog/guarddog": {
-      "stars": 1228
+      "stars": 1241
     }
   },
   "calendar": [
-    {
-      "date": "2025-10-05",
-      "count": 0
-    },
-    {
-      "date": "2025-10-06",
-      "count": 0
-    },
-    {
-      "date": "2025-10-07",
-      "count": 0
-    },
-    {
-      "date": "2025-10-08",
-      "count": 0
-    },
-    {
-      "date": "2025-10-09",
-      "count": 0
-    },
-    {
-      "date": "2025-10-10",
-      "count": 0
-    },
-    {
-      "date": "2025-10-11",
-      "count": 0
-    },
-    {
-      "date": "2025-10-12",
-      "count": 0
-    },
-    {
-      "date": "2025-10-13",
-      "count": 0
-    },
-    {
-      "date": "2025-10-14",
-      "count": 0
-    },
-    {
-      "date": "2025-10-15",
-      "count": 0
-    },
-    {
-      "date": "2025-10-16",
-      "count": 0
-    },
-    {
-      "date": "2025-10-17",
-      "count": 0
-    },
-    {
-      "date": "2025-10-18",
-      "count": 0
-    },
-    {
-      "date": "2025-10-19",
-      "count": 0
-    },
-    {
-      "date": "2025-10-20",
-      "count": 1
-    },
-    {
-      "date": "2025-10-21",
-      "count": 0
-    },
-    {
-      "date": "2025-10-22",
-      "count": 0
-    },
-    {
-      "date": "2025-10-23",
-      "count": 0
-    },
-    {
-      "date": "2025-10-24",
-      "count": 0
-    },
-    {
-      "date": "2025-10-25",
-      "count": 0
-    },
-    {
-      "date": "2025-10-26",
-      "count": 0
-    },
-    {
-      "date": "2025-10-27",
-      "count": 0
-    },
-    {
-      "date": "2025-10-28",
-      "count": 0
-    },
-    {
-      "date": "2025-10-29",
-      "count": 0
-    },
-    {
-      "date": "2025-10-30",
-      "count": 0
-    },
-    {
-      "date": "2025-10-31",
-      "count": 0
-    },
-    {
-      "date": "2025-11-01",
-      "count": 0
-    },
     {
       "date": "2025-11-02",
       "count": 0
@@ -1649,9 +1481,176 @@
     {
       "date": "2026-10-08",
       "count": 16
+    },
+    {
+      "date": "2026-10-09",
+      "count": 1
+    },
+    {
+      "date": "2026-10-10",
+      "count": 1
+    },
+    {
+      "date": "2026-10-11",
+      "count": 1
+    },
+    {
+      "date": "2026-10-12",
+      "count": 1
+    },
+    {
+      "date": "2026-10-13",
+      "count": 9
+    },
+    {
+      "date": "2026-10-14",
+      "count": 5
+    },
+    {
+      "date": "2026-10-15",
+      "count": 1
+    },
+    {
+      "date": "2026-10-16",
+      "count": 5
+    },
+    {
+      "date": "2026-10-17",
+      "count": 1
+    },
+    {
+      "date": "2026-10-18",
+      "count": 0
+    },
+    {
+      "date": "2026-10-19",
+      "count": 3
+    },
+    {
+      "date": "2026-10-20",
+      "count": 3
+    },
+    {
+      "date": "2026-10-21",
+      "count": 0
+    },
+    {
+      "date": "2026-10-22",
+      "count": 0
+    },
+    {
+      "date": "2026-10-23",
+      "count": 0
+    },
+    {
+      "date": "2026-10-24",
+      "count": 0
+    },
+    {
+      "date": "2026-10-25",
+      "count": 0
+    },
+    {
+      "date": "2026-10-26",
+      "count": 0
+    },
+    {
+      "date": "2026-10-27",
+      "count": 0
+    },
+    {
+      "date": "2026-10-28",
+      "count": 0
+    },
+    {
+      "date": "2026-10-29",
+      "count": 0
+    },
+    {
+      "date": "2026-10-30",
+      "count": 3
+    },
+    {
+      "date": "2026-10-31",
+      "count": 0
+    },
+    {
+      "date": "2026-11-01",
+      "count": 1
+    },
+    {
+      "date": "2026-11-02",
+      "count": 2
+    },
+    {
+      "date": "2026-11-03",
+      "count": 4
     }
   ],
   "merged": [
+    {
+      "repository": "aws-cloudformation/cfn-lint",
+      "number": 4745,
+      "title": "fix(formats): register log group name validation correctly",
+      "url": "https://github.com/aws-cloudformation/cfn-lint/pull/4745",
+      "mergedAt": "2026-10-20"
+    },
+    {
+      "repository": "aws-cloudformation/cfn-lint",
+      "number": 4740,
+      "title": "fix(lambda): update SnapStart supported regions",
+      "url": "https://github.com/aws-cloudformation/cfn-lint/pull/4740",
+      "mergedAt": "2026-10-20"
+    },
+    {
+      "repository": "aws-cloudformation/cfn-lint",
+      "number": 4730,
+      "title": "fix: handle SAM RestApi stage references",
+      "url": "https://github.com/aws-cloudformation/cfn-lint/pull/4730",
+      "mergedAt": "2026-10-20"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1971,
+      "title": "fix(connectors.ssh): match host CAs on custom ports",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1971",
+      "mergedAt": "2026-10-13"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1983,
+      "title": "fix(api): omit variadic kwargs from auto labels",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1983",
+      "mergedAt": "2026-10-13"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1982,
+      "title": "fix(operations.git): allow chowned repo pulls",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1982",
+      "mergedAt": "2026-10-13"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1981,
+      "title": "fix(api): strip su password prompt from fact output",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1981",
+      "mergedAt": "2026-10-13"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1980,
+      "title": "fix(connectors.ssh): preserve nested ProxyJump sockets",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1980",
+      "mergedAt": "2026-10-13"
+    },
+    {
+      "repository": "pyinfra-dev/pyinfra",
+      "number": 1979,
+      "title": "docs(operations.files): warn rsync deletes extra files",
+      "url": "https://github.com/pyinfra-dev/pyinfra/pull/1979",
+      "mergedAt": "2026-10-13"
+    },
     {
       "repository": "pyinfra-dev/pyinfra",
       "number": 1950,

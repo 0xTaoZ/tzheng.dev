@@ -56,7 +56,9 @@ while (!existsSync(output) || (await stat(output)).size === 0) {
   await new Promise((resolve) => setTimeout(resolve, 500));
 }
 await new Promise((resolve) => setTimeout(resolve, 1000));
-const exited = new Promise((resolve) => chrome.once("exit", resolve));
+const exited = chrome.exitCode === null && chrome.signalCode === null
+  ? new Promise((resolve) => chrome.once("exit", resolve))
+  : Promise.resolve();
 chrome.kill();
 await exited;
 server.close();

@@ -1,4 +1,4 @@
-import { finePointer, gsap, lenis, reducedMotion, scene, ScrollTrigger, SplitText } from "./core";
+import { gsap, lenis, reducedMotion, scene, ScrollTrigger, SplitText } from "./core";
 
 const all = <T extends Element = HTMLElement>(selector: string, root: ParentNode = document) =>
   [...root.querySelectorAll<T>(selector)] as T[];
@@ -28,7 +28,6 @@ scene(() => {
         pin: true,
         scrub: 1,
         invalidateOnRefresh: true,
-        onUpdate: (self) => section.style.setProperty("--rail-progress", self.progress.toFixed(4)),
       },
     });
     return () => {
@@ -40,7 +39,7 @@ scene(() => {
   });
 });
 
-// ---------- Headings and intros: lines rise out of a mask.
+// ---------- Headings: lines rise out of a mask.
 scene(() => {
   if (reducedMotion) return;
   for (const heading of all(".section h2, .system-band h2, .contact-panel h2")) {
@@ -53,18 +52,6 @@ scene(() => {
       scrollTrigger: { trigger: heading, start: "top 88%", once: true, pinnedContainer: pinnedIn(heading) },
     });
   }
-  for (const lede of all(".section-lede")) {
-    const split = SplitText.create(lede, { type: "lines", mask: "lines" });
-    gsap.from(split.lines, {
-      yPercent: 100,
-      opacity: 0,
-      duration: 1,
-      ease: "expo.out",
-      stagger: 0.07,
-      delay: 0.15,
-      scrollTrigger: { trigger: lede, start: "top 90%", once: true, pinnedContainer: pinnedIn(lede) },
-    });
-  }
 });
 
 // ---------- Blocks fade up in batches as they arrive.
@@ -74,9 +61,9 @@ scene(() => {
     blocks.forEach((element) => element.classList.add("active"));
     return;
   }
-  gsap.set(blocks, { opacity: 0, y: 36 });
+  gsap.set(blocks, { opacity: 0, y: 16 });
   const enter = (batch: Element[]) =>
-    gsap.to(batch, { opacity: 1, y: 0, duration: 1, ease: "expo.out", stagger: 0.08, overwrite: true });
+    gsap.to(batch, { opacity: 1, y: 0, duration: 0.8, ease: "expo.out", stagger: 0.06, overwrite: true });
   const pinned = blocks.filter((element) => pinnedIn(element));
   ScrollTrigger.batch(blocks.filter((element) => !pinnedIn(element)), { start: "top 90%", once: true, onEnter: enter });
   // Batch triggers cannot account for a pin, so blocks inside it get their own.
@@ -108,35 +95,13 @@ scene(() => {
   });
 });
 
-// ---------- Counters run up to their value once.
-scene(() => {
-  if (reducedMotion) return;
-  for (const element of all("[data-count]")) {
-    const final = element.textContent?.trim() ?? "";
-    const match = final.match(/^([\d.]+)(\D*)$/);
-    if (!match) continue;
-    const decimals = (match[1].split(".")[1] ?? "").length;
-    const value = { n: 0 };
-    element.textContent = `${(0).toFixed(decimals)}${match[2]}`;
-    gsap.to(value, {
-      n: parseFloat(match[1]),
-      duration: 1.8,
-      ease: "expo.out",
-      scrollTrigger: { trigger: element, start: "top 92%", once: true },
-      onUpdate: () => (element.textContent = `${value.n.toFixed(decimals)}${match[2]}`),
-      onComplete: () => (element.textContent = final),
-    });
-  }
-});
-
-// ---------- Chart and repository bars grow into place.
+// ---------- Monthly bars grow into place.
 scene(() => {
   if (reducedMotion) return;
   for (const board of all(".upstream-board")) {
     const timeline = gsap.timeline({ scrollTrigger: { trigger: board, start: "top 80%", once: true } });
     timeline
-      .from(all(".repo-bar span", board), { scaleX: 0, transformOrigin: "left", duration: 1.2, ease: "expo.out", stagger: 0.06 })
-      .from(all(".merge-fill", board), { scaleY: 0, transformOrigin: "bottom", duration: 1.2, ease: "expo.out", stagger: 0.1 }, 0.1)
+      .from(all(".merge-fill", board), { scaleY: 0, transformOrigin: "bottom", duration: 1.2, ease: "expo.out", stagger: 0.1 })
       .from(all(".merge-value", board), { opacity: 0, y: 8, duration: 0.6, stagger: 0.1 }, 0.5);
   }
 });
@@ -174,12 +139,6 @@ scene(() => {
       onToggle: (self) => self.isActive && activate(index),
     }),
   );
-  ScrollTrigger.create({
-    trigger: story,
-    start: "top center",
-    end: "bottom center",
-    onUpdate: (self) => story.style.setProperty("--story-progress", self.progress.toFixed(4)),
-  });
 });
 
 // ---------- Marquee of upstream repositories; scroll speed pushes it along.
@@ -188,11 +147,9 @@ scene(() => {
   const track = marquee?.querySelector<HTMLElement>(".marquee-track");
   if (!marquee || !track || reducedMotion) return;
   const loop = gsap.to(track, { xPercent: -50, duration: 38, ease: "none", repeat: -1 });
-  const skew = gsap.quickTo(track, "skewX", { duration: 0.5, ease: "power3" });
   lenis?.on("scroll", ({ velocity }: { velocity: number }) => {
     const v = gsap.utils.clamp(-40, 40, velocity);
     loop.timeScale(1 + Math.abs(v) / 6);
-    skew(gsap.utils.clamp(-6, 6, -v / 3));
   });
 });
 
@@ -217,45 +174,5 @@ scene(() => {
       onEnter: () => item.classList.add("is-lit"),
       onLeaveBack: () => item.classList.remove("is-lit"),
     });
-  }
-});
-
-// ---------- Pointer details: portrait tilt and card spotlights.
-scene(() => {
-  if (!finePointer || reducedMotion) return;
-  const portrait = document.querySelector<HTMLElement>(".hero-portrait");
-  const picture = portrait?.querySelector<HTMLElement>("picture");
-  if (portrait && picture) {
-    const rotateX = gsap.quickTo(picture, "rotationX", { duration: 0.6, ease: "power3" });
-    const rotateY = gsap.quickTo(picture, "rotationY", { duration: 0.6, ease: "power3" });
-    gsap.set(picture, { transformPerspective: 1200 });
-    picture.addEventListener("pointermove", (event) => {
-      const rect = picture.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / rect.width;
-      const y = (event.clientY - rect.top) / rect.height;
-      portrait.classList.add("is-tracking");
-      rotateY((x - 0.5) * 12);
-      rotateX((0.5 - y) * 9);
-      picture.style.setProperty("--gx", `${x * 100}%`);
-      picture.style.setProperty("--gy", `${y * 100}%`);
-    });
-    picture.addEventListener("pointerleave", () => {
-      portrait.classList.remove("is-tracking");
-      rotateX(0);
-      rotateY(0);
-    });
-  }
-  for (const group of all("[data-spotlight]")) {
-    group.addEventListener(
-      "pointermove",
-      (event) => {
-        for (const card of group.children as HTMLCollectionOf<HTMLElement>) {
-          const rect = card.getBoundingClientRect();
-          card.style.setProperty("--sx", `${event.clientX - rect.left}px`);
-          card.style.setProperty("--sy", `${event.clientY - rect.top}px`);
-        }
-      },
-      { passive: true },
-    );
   }
 });

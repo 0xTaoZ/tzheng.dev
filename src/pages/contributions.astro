@@ -13,6 +13,7 @@ import {
   upstreamRepositories,
 } from "../lib/contributions";
 import { entrySlug, formatDate } from "../lib/content";
+import { disclosures } from "../data/disclosures";
 const repositoryGroups = upstreamRepositories.map((repository) => ({
   ...repository,
   prs: mergedPRs
@@ -65,6 +66,14 @@ const schema = {
     </header>
 
     <ContributionBoard />
+
+    {disclosures.map((item) => (
+      <section id="disclosure" class="disclosure-record">
+        <h2>{item.id}</h2>
+        <p>{item.product}. {item.summary}</p>
+        <p>{item.status}</p>
+      </section>
+    ))}
 
     <div class="contrib-columns">
       <section id="why" class="contrib-why">

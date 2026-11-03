@@ -10,9 +10,9 @@
 .command-results li a[aria-selected="true"] { background: var(--surface-2); color: #fff; }
 .command-kind { grid-row: span 2; font: .66rem/2 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
 .command-title { font-size: .93rem; font-weight: 550; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.command-meta { font: .7rem var(--font-mono); color: var(--text-3); }
+.command-meta { font: .8rem var(--font-sans); color: var(--text-3); }
 .command-results mark { background: none; color: var(--accent); }
 .command-empty { padding: 1rem .7rem; font-size: .9rem; color: var(--text-3); }
-.command-foot { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; margin: 0; padding: .6rem 1rem; border-top: 1px solid var(--line); font: .7rem var(--font-mono); color: var(--text-3); }
+.command-foot { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; margin: 0; padding: .6rem 1rem; border-top: 1px solid var(--line); font: .8rem var(--font-sans); color: var(--text-3); }
 .command-foot kbd, .command-field kbd { min-width: 1.2rem; height: 1.2rem; font-size: .62rem; }
 @media (max-width: 560px) { .command-foot { display: none; } }

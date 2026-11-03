@@ -37,9 +37,9 @@ PYTHONPATH=src python3 -m cloudtrail_quickscan samples/cloudtrail_sample.json --
 
 ## Security questions covered
 
-The current checks cover failed logins, root activity, MFA removal, administrator policy attachments, IAM permissions-boundary removal, logging changes, S3 exposure changes, denied API calls, and public SSH/RDP ingress.
+The current checks cover failed logins, root activity, MFA removal, administrator policy attachments, IAM permissions-boundary removal, GuardDuty, Security Hub and Config being turned off, logging changes, S3 exposure changes, denied API calls, and public SSH/RDP ingress.
 
-A boundary-removal event is worth attention because it changes the ceiling on an identity's effective permissions. That is a different question from whether an access key was created or a policy was attached.
+A boundary-removal event is worth attention because it changes the ceiling on an identity's effective permissions. That is a different question from whether an access key was created or a policy was attached. Monitoring-disable and boundary-removal findings skip calls that carry an `errorCode`, because a denied attempt did not change anything; it still shows up as a denied call.
 
 ## Verification and investigation
 

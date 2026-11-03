@@ -3,12 +3,12 @@ import SectionHeader from "./SectionHeader.astro";
 import ContributionBoard from "../ContributionBoard.astro";
 import CaseStory from "./CaseStory.astro";
 import Skyline from "./Skyline.astro";
+import { disclosures } from "../../data/disclosures";
 ---
 
 <section id="contributions" class="section">
   <div class="container">
     <SectionHeader
-      index="01"
       title="Open source"
       link={{ href: "/contributions/", label: "All merged PRs" }}
     >
@@ -16,6 +16,19 @@ import Skyline from "./Skyline.astro";
         Fixes I needed in tools I use, sent upstream and merged after review.
       </p>
     </SectionHeader>
+
+    {disclosures.map((item) => (
+      <article id="disclosure" class="disclosure reveal">
+        <div>
+          <h3 class="disclosure-id">{item.id}</h3>
+          <p class="disclosure-product">{item.product}</p>
+        </div>
+        <div>
+          <p class="disclosure-text">{item.summary}</p>
+          <p class="disclosure-status">{item.status}</p>
+        </div>
+      </article>
+    ))}
 
     <ContributionBoard showTotals={false} />
 

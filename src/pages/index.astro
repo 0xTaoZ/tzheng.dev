@@ -10,6 +10,7 @@ import {
   upstreamRepositories,
   verifiedAt,
 } from "../lib/contributions";
+import { disclosures } from "../data/disclosures";
 import HomeNavigation from "../components/home/Navigation.astro";
 import HomeHero from "../components/home/Hero.astro";
 import HomeContributions from "../components/home/Contributions.astro";
@@ -38,12 +39,15 @@ const terminalLines = [
   "",
   "$ upstream --merged",
   `${mergedCount} PRs / ${repositoryCount} projects / ${verifiedAt}`,
+  "",
+  "$ disclosures",
+  `${disclosures[0].id} / ${disclosures[0].product}`,
 ];
 const leading = [...upstreamRepositories]
   .sort((a, b) => b.stars - a.stars)
   .slice(0, 4)
   .map((repository) => repository.label);
-const description = `Haitao Zheng (Tao), Cyber Security & Privacy student at H-BRS, Germany. ${mergedCount} merged PRs to ${leading.slice(0, -1).join(", ")} and ${leading.at(-1)}; security tools and notes.`;
+const description = `Haitao Zheng (Tao), Cyber Security & Privacy student at H-BRS, Germany. ${mergedCount} merged PRs to ${leading.slice(0, -1).join(", ")} and ${leading.at(-1)}; credited with ${disclosures[0].id}.`;
 const profileSchema = {
   "@type": "ProfilePage",
   "@id": "https://tzheng.dev/#profile",

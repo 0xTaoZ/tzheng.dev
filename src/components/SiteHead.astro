@@ -1,7 +1,9 @@
 ---
 import "@fontsource-variable/inter/wght.css";
 import "@fontsource-variable/jetbrains-mono/wght.css";
+import "@fontsource-variable/schibsted-grotesk/wght.css";
 import interLatin from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
+import displayLatin from "@fontsource-variable/schibsted-grotesk/files/schibsted-grotesk-latin-wght-normal.woff2?url";
 import { existsSync } from "node:fs";
 import { person } from "../lib/identity";
 interface Props {
@@ -69,7 +71,7 @@ const graph = {
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#07090c" />
+<meta name="theme-color" content="#090b0f" />
 <meta name="color-scheme" content="dark" />
 <title>{title}</title>
 <meta name="description" content={description} />
@@ -80,7 +82,14 @@ const graph = {
 />
 <meta name="referrer" content="strict-origin-when-cross-origin" />
 <link rel="canonical" href={canonical} />
+<script type="speculationrules" is:inline set:html={JSON.stringify({
+  prerender: [{
+    where: { and: [{ href_matches: "/*" }, { not: { href_matches: ["/*.pdf", "/*.xml", "/*.md", "/*.json"] } }] },
+    eagerness: "moderate",
+  }],
+})} />
 <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
+<link rel="preload" href={displayLatin} as="font" type="font/woff2" crossorigin />
 <link rel="me" href="https://github.com/0xTaoZ" />
 <link rel="me" href="https://www.linkedin.com/in/haitaozheng/" />
 <link rel="icon" href="/favicon.png" type="image/png" />
