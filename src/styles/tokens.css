@@ -1,7 +1,9 @@
-/* Fallback faces sized to match Inter and JetBrains Mono, so the swap from
-   the system font to the web font moves nothing on the page. Ratios measured
-   in the browser: Inter is 6.84% wider than Arial; the monospace widths match.
-   ascent/descent = font metric / size-adjust. */
+/* Self-hosted Erode (Fontshare, ITF Free Font License) plus metric-adjusted
+   fallbacks, so the swap from the system font moves nothing on the page. */
+@font-face { font-family: "Erode"; src: url("/fonts/erode-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Erode"; src: url("/fonts/erode-400i.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Erode"; src: url("/fonts/erode-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Erode"; src: url("/fonts/erode-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
 @font-face {
   font-family: "JetBrains Mono Fallback";
   src: local("Menlo"), local("Consolas"), local("Courier New"), local("Liberation Mono");
@@ -11,11 +13,11 @@
   line-gap-override: 0%;
 }
 @font-face {
-  font-family: "Schibsted Grotesk Fallback";
-  src: local("Arial"), local("Helvetica"), local("Liberation Sans");
-  size-adjust: 99.6%;
-  ascent-override: 98.4%;
-  descent-override: 26.1%;
+  font-family: "Erode Fallback";
+  src: local("Georgia"), local("Times New Roman");
+  size-adjust: 94%;
+  ascent-override: 96%;
+  descent-override: 28%;
   line-gap-override: 0%;
 }
 
@@ -41,8 +43,8 @@
   --radius-lg: 8px;
   --container: 1120px;
   --gutter: clamp(1rem, 4vw, 2rem);
-  --font-display: "Schibsted Grotesk Variable", "Schibsted Grotesk Fallback", var(--font-sans);
-  --font-sans: "Schibsted Grotesk Variable", "Schibsted Grotesk Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-display: "Erode", "Erode Fallback", Georgia, serif;
+  --font-sans: "Erode", "Erode Fallback", Georgia, serif;
   --font-mono: "JetBrains Mono Variable", "JetBrains Mono Fallback", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --ease: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);

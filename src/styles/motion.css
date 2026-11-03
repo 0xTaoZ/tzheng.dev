@@ -15,15 +15,6 @@
 .hero-backdrop.has-gl { background-image: none !important; opacity: 1; }
 .hero-backdrop.has-gl .hero-gl { opacity: 1; }
 
-/* ---------- Marquee ---------- */
-.marquee { overflow: hidden; padding: 1.1rem 0; }
-.marquee-track { display: flex; width: max-content; will-change: transform; }
-.marquee ul { display: flex; gap: 3.5rem; padding-right: 3.5rem; margin: 0; list-style: none; }
-.marquee li { display: inline-flex; align-items: baseline; gap: .8rem; white-space: nowrap; }
-.marquee-name { font-family: var(--font-display); font-size: clamp(1.3rem, 2.4vw, 1.9rem); font-weight: 560; letter-spacing: -.025em; color: var(--text); }
-.marquee-meta { font: .8125rem var(--font-sans); color: var(--text-3); }
-@media (prefers-reduced-motion: reduce) { .marquee-track { flex-wrap: wrap; width: auto; } .marquee ul[aria-hidden] { display: none; } }
-
 /* ---------- Contribution skyline ---------- */
 .skyline { margin: 3.5rem 0 0; }
 .skyline-head { padding: 0; }
@@ -97,12 +88,12 @@
 #projects.is-horizontal .rail-count { display: block; font-size: 1rem; color: var(--text-3); font-variant-numeric: tabular-nums; }
 
 /* ---------- Rolling figures: each digit rolls up to its value once ---------- */
-.hero-stats dd, .stat-row dd { font-variant-numeric: tabular-nums; }
+.stat-row dd { font-variant-numeric: tabular-nums; }
 .roll-said { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .roll-digits { display: inline-flex; }
 .roll-col { display: inline-block; height: 1lh; overflow: clip; }
 .roll-strip { display: flex; flex-direction: column; transform: translateY(calc(var(--d) * -1lh)); }
-.roll-strip > span { height: 1lh; }
+.roll-strip > span { height: 1lh; align-self: flex-start; }
 .roll:not(.is-in) .roll-strip { transform: none; }
 .roll.is-in .roll-strip { transition: transform 1.1s var(--ease-expo) calc(var(--i) * 70ms + var(--roll-delay, 0ms)); }
 .hero-stats .roll { --roll-delay: 300ms; }
@@ -141,3 +132,5 @@
 /* Control sizes: a 44px target, and nav labels stay on one line. */
 .btn { min-height: 44px; }
 .nav-links a, .site-nav nav a { white-space: nowrap; }
+
+@media (hover: none) { .fine-only { display: none; } }

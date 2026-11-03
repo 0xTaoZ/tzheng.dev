@@ -12,18 +12,12 @@ const builtOn = new Date().toISOString().slice(0, 10);
 ---
 
 <footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-meta">
-      <p>© 2026 Haitao Zheng</p>
-      {commit && (
-        <p class="build">
-          Built {builtOn} from{" "}
-          <a href={`https://github.com/0xTaoZ/tzheng.dev/commit/${commit}`}>{commit.slice(0, 7)}</a>
-        </p>
-      )}
+  <div class="footer-top">
+    <div>
+      <p class="footer-invite">Talk to me about security.</p>
+      <a class="footer-button" href="mailto:h@tzheng.dev">Email h@tzheng.dev</a>
     </div>
     <nav aria-label="Footer">
-      <a href="mailto:h@tzheng.dev">Email</a>
       <a href="https://github.com/0xTaoZ">GitHub</a>
       <a href="https://www.linkedin.com/in/haitaozheng/">LinkedIn</a>
       <a href="/about/">About</a>
@@ -34,27 +28,34 @@ const builtOn = new Date().toISOString().slice(0, 10);
       <a href="/legal/#datenschutz">Datenschutz</a>
     </nav>
   </div>
+  <p class="footer-meta">
+    © 2026 Haitao Zheng.{commit && <> Built {builtOn} from <a href={`https://github.com/0xTaoZ/tzheng.dev/commit/${commit}`}>{commit.slice(0, 7)}</a>.</>}
+  </p>
+  <p class="footer-name" aria-hidden="true">haitao zheng</p>
 </footer>
 
 <style>
-  .site-footer { border-top: 1px solid var(--line, var(--line)); padding: 2rem 0 2.5rem; color: var(--text-2, var(--text-2)); }
-  .footer-inner {
+  .site-footer { position: relative; overflow: clip; margin-top: 7.5rem; padding-top: clamp(3.5rem, 8vw, 7rem); background: var(--surface); color: var(--text-2); }
+  .footer-top, .footer-meta {
     max-width: calc(var(--container, 1120px) + 2 * var(--gutter, 2rem));
-    margin: 0 auto;
-    padding: 0 var(--gutter, 2rem);
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1.5rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter, 2rem);
   }
-  p { margin: 0; font-size: .85rem; }
-  .build { margin-top: .3rem; font: .72rem var(--font-mono, ui-monospace, monospace); color: var(--text-3, var(--text-3)); }
-  nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .6rem 1.3rem; }
-  a { color: inherit; font-size: .85rem; text-decoration: none; }
-  .build a { font-size: inherit; }
-  a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: .25rem; }
-  @media (max-width: 760px) {
-    .footer-inner { flex-direction: column; }
-    nav { justify-content: flex-start; }
+  .footer-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; }
+  .footer-invite { margin: 0 0 1.4rem; max-width: 12ch; font: 500 clamp(2rem, 1.3rem + 3.2vw, 4rem)/1.02 var(--font-display); letter-spacing: -.03em; color: var(--accent); }
+  .footer-button { display: inline-block; min-height: 44px; padding: .7rem 1.2rem; background: var(--accent); color: var(--bg); font-weight: 500; text-decoration: none; transition: transform .14s var(--ease), background-color .2s ease; }
+  .footer-button:hover { background: var(--ink); }
+  .footer-button:active { transform: scale(.97); transition-duration: .1s; }
+  nav { display: grid; gap: .25rem; align-content: start; }
+  nav a { color: inherit; text-decoration: none; }
+  nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: .2em; }
+  .footer-meta { margin-top: clamp(2.5rem, 5vw, 4.5rem); font-size: .8125rem; color: var(--text-3); }
+  .footer-meta a { color: inherit; text-decoration: underline; text-underline-offset: .2em; }
+  .footer-name { margin: clamp(1.5rem, 3vw, 2.5rem) 0 -.14em; padding-inline: clamp(1rem, 2.2vw, 2rem); font: 500 19.4vw/.84 var(--font-display); letter-spacing: -.055em; white-space: nowrap; color: var(--accent); transform-origin: 50% 100%; }
+  @media (max-width: 720px) {
+    .footer-top { grid-template-columns: 1fr; }
+    nav { display: flex; flex-wrap: wrap; gap: 0 1.1rem; }
+    nav a { display: inline-flex; align-items: center; min-height: 44px; }
+    .footer-button { display: flex; align-items: center; justify-content: center; min-height: 54px; border-radius: 12px; font-size: 1.0625rem; }
   }
 </style>

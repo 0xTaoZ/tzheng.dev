@@ -33,7 +33,7 @@ const verifiedLabel = new Date(`${verifiedAt}T00:00:00Z`).toLocaleDateString(
 
     <div class="upstream-board reveal">
       <div class="panel upstream-list">
-        <p class="panel-label"><span>Merged into</span><span class="repo-columns"><span>PRs</span><span>Stars</span></span></p>
+        <p class="panel-label" style="padding-inline: .7rem"><span>Merged into</span><span class="repo-columns"><span>PRs</span><span>Stars</span></span></p>
         <ol>
           {upstreamRepositories.map((repository) => (
             <li>

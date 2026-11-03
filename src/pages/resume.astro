@@ -48,7 +48,7 @@ const schema = {
         <h2>Education</h2>
         {education.map((item) => (
           <div class="cv-row">
-            <p><b>{item.school}</b> · {item.detail}{item.note && <span class="cv-note"> · {item.note}</span>}</p>
+            <p><b>{item.school}</b><span class="cv-sep">·</span>{item.detail}{item.note && <span class="cv-note"><span class="cv-sep">·</span>{item.note}</span>}</p>
             <p class="cv-date">{item.when}</p>
           </div>
         ))}
@@ -58,7 +58,7 @@ const schema = {
         <h2>Security</h2>
         {security.map((item) => (
           <div class="cv-row">
-            <p><b>{item.id}</b> · {item.product}<span class="cv-note"> · {item.text}</span></p>
+            <p><b>{item.id}</b><span class="cv-sep">·</span>{item.product}<span class="cv-note"><span class="cv-sep">·</span>{item.text}</span></p>
           </div>
         ))}
       </section>
@@ -69,7 +69,7 @@ const schema = {
           <div class="cv-entry">
             <div class="cv-row">
               <p><b><a href={item.url}>{item.title}</a></b> <span class="cv-org">{item.about}</span></p>
-              <p class="cv-date">{item.count} merged PRs · {item.when}</p>
+              <p class="cv-date">{item.count} merged PRs<span class="cv-sep">·</span>{item.when}</p>
             </div>
             <ul>
               {item.points.map((point) => (

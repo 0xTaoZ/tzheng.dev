@@ -13,12 +13,13 @@
 
 .upstream-board { display: grid; gap: 3rem; margin-bottom: 1rem; }
 @media (min-width: 1000px) { .upstream-board { grid-template-columns: minmax(0, 1.35fr) minmax(0, .65fr); gap: 4rem; } }
-.upstream-list li + li { border-top: 1px solid var(--line); }
+.upstream-list li:nth-child(odd) { background: var(--surface); }
+.upstream-list li a { padding-inline: .7rem; }
 .upstream-list a {
   display: grid; grid-template-columns: minmax(0, 1fr) 2rem 3.4rem; align-items: center; gap: .9rem;
   padding: .6rem 0; font: .8125rem var(--font-sans); color: var(--text);
 }
-.upstream-list a:hover .repo-name { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: .25rem; }
+@media (hover: hover) and (pointer: fine) { .upstream-list a:hover .repo-name { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: .25rem; } }
 .repo-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .repo-owner { color: var(--text-3); }
 .repo-columns { display: grid; grid-template-columns: 2rem 3.4rem; gap: .9rem; text-align: right; }

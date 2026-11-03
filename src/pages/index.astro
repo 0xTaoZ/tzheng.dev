@@ -20,9 +20,9 @@ import HomeArticles from "../components/home/Articles.astro";
 import HomeEducation from "../components/home/Education.astro";
 import HomeToolkit from "../components/home/Toolkit.astro";
 import HomeAbout from "../components/home/About.astro";
+import MobileDock from "../components/MobileDock.astro";
 import HomeFooter from "../components/home/Footer.astro";
 import HomeContact from "../components/home/Contact.astro";
-import HomeMarquee from "../components/home/Marquee.astro";
 const projects = selectHomepageProjects(await getCollection("projects"));
 const terminalLines = [
   "$ whoami",
@@ -83,7 +83,6 @@ const profileSchema = {
     <HomeNavigation />
     <main id="main-content" tabindex="-1">
       <HomeHero terminalLines={terminalLines} />
-      <HomeMarquee />
       <HomeContributions />
       <HomeProjects />
       <HomeArticles />
@@ -94,6 +93,7 @@ const profileSchema = {
       <HomeContact />
     </main>
     <HomeFooter />
+    <MobileDock home />
     <script>
       import "../scripts/home.js";
       import "../motion/index";

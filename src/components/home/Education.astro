@@ -72,11 +72,14 @@ const schools = [
                 </div>
               </div>
               <p class="edu-program">{school.program}</p>
-              <dl class="edu-details">
-                {school.details.map(([term, text]) => (
-                  <div><dt>{term}</dt><dd>{text}</dd></div>
-                ))}
-              </dl>
+              <details class="edu-more" open data-phone-closed={school.current ? undefined : ""}>
+                <summary>Details</summary>
+                <dl class="edu-details">
+                  {school.details.map(([term, text]) => (
+                    <div><dt>{term}</dt><dd>{text}</dd></div>
+                  ))}
+                </dl>
+              </details>
             </div>
           </li>
         ))}

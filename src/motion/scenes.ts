@@ -1,4 +1,4 @@
-import { finePointer, gsap, lenis, reducedMotion, scene, ScrollTrigger, SplitText } from "./core";
+import { finePointer, gsap, reducedMotion, scene, ScrollTrigger, SplitText } from "./core";
 
 const all = <T extends Element = HTMLElement>(selector: string, root: ParentNode = document) =>
   [...root.querySelectorAll<T>(selector)] as T[];
@@ -113,6 +113,13 @@ scene(() => {
     }
     element.classList.add("roll");
     element.replaceChildren(said, shown);
+    // Each column takes the width of its own digit, so the figure keeps its natural spacing.
+    const em = parseFloat(getComputedStyle(element).fontSize);
+    for (const col of all(".roll-col", shown)) {
+      const strip = col.firstElementChild as HTMLElement;
+      const digit = strip.children[Number(strip.style.getPropertyValue("--d"))] as HTMLElement;
+      col.style.width = `${digit.getBoundingClientRect().width / em}em`;
+    }
     ScrollTrigger.create({ trigger: element, start: "top 92%", once: true, onEnter: () => element.classList.add("is-in") });
   }
 });
@@ -242,26 +249,12 @@ scene(() => {
   );
 });
 
-// ---------- Marquee of upstream repositories; scroll speed pushes it along.
+// ---------- The name in the footer grows into place as the page ends.
 scene(() => {
-  const marquee = document.querySelector<HTMLElement>("[data-marquee]");
-  const track = marquee?.querySelector<HTMLElement>(".marquee-track");
-  if (!marquee || !track || reducedMotion) return;
-  const loop = gsap.to(track, { xPercent: -50, duration: 38, ease: "none", repeat: -1 });
-  const skew = gsap.quickTo(track, "skewX", { duration: 0.5, ease: "power3" });
-  lenis?.on("scroll", ({ velocity }: { velocity: number }) => {
-    const v = gsap.utils.clamp(-40, 40, velocity);
-    loop.timeScale(1 + Math.abs(v) / 6);
-    skew(gsap.utils.clamp(-4, 4, -v / 3));
-  });
-  // The loop rests off screen and while someone is reading or focusing it.
-  let visible = false;
-  let held = false;
-  const sync = () => (visible && !held ? loop.play() : loop.pause());
-  ScrollTrigger.create({ trigger: marquee, start: "top bottom", end: "bottom top", onToggle: (self) => { visible = self.isActive; sync(); } });
-  for (const [event, value] of [["pointerenter", true], ["pointerleave", false], ["focusin", true], ["focusout", false]] as const)
-    marquee.addEventListener(event, () => { held = value; sync(); });
-  loop.pause();
+  if (reducedMotion) return;
+  const name = document.querySelector(".footer-name");
+  if (name)
+    gsap.fromTo(name, { scale: 0.94 }, { scale: 1, ease: "none", scrollTrigger: { trigger: ".site-footer", start: "top bottom", end: "bottom bottom", scrub: true } });
 });
 
 // ---------- Portrait: a slight tilt that follows the pointer and settles back.
@@ -304,5 +297,56 @@ scene(() => {
       onEnter: () => item.classList.add("is-lit"),
       onLeaveBack: () => item.classList.remove("is-lit"),
     });
+  }
+});
+
+// ---------- Phones: the three fixes become a segmented control, and the project
+// cards report their position as they are swiped.
+scene(() => {
+  if (!matchMedia("(max-width: 720px)").matches) return;
+  const story = document.querySelector<HTMLElement>("[data-case-story]");
+  const steps = story ? all(".case-step", story) : [];
+  if (story && steps.length) {
+    const tabs = document.createElement("div");
+    tabs.className = "case-tabs";
+    tabs.setAttribute("role", "tablist");
+    tabs.setAttribute("aria-label", "Three fixes");
+    const thumb = document.createElement("span");
+    thumb.className = "case-tabs-thumb";
+    thumb.setAttribute("aria-hidden", "true");
+    tabs.append(thumb);
+    const buttons = steps.map((step, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.setAttribute("role", "tab");
+      button.textContent = step.querySelector("h3")?.textContent ?? "";
+      button.addEventListener("click", () => select(index));
+      tabs.append(button);
+      return button;
+    });
+    const select = (index: number) => {
+      thumb.style.setProperty("--tab", String(index));
+      buttons.forEach((button, i) => button.setAttribute("aria-selected", String(i === index)));
+      steps.forEach((step, i) => step.classList.toggle("is-tab", i === index));
+      if (!reducedMotion) gsap.fromTo(steps[index], { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out", overwrite: true });
+      ScrollTrigger.refresh();
+    };
+    story.classList.add("has-tabs");
+    story.before(tabs);
+    select(0);
+  }
+  const track = document.querySelector<HTMLElement>(".project-track");
+  const count = document.querySelector<HTMLElement>(".rail-count");
+  if (track && count) {
+    const items = all(".project-feature, .project-card", track);
+    const show = (index: number) => (count.textContent = `${index + 1} of ${items.length}`);
+    show(0);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) if (entry.isIntersecting) show(items.indexOf(entry.target as HTMLElement));
+      },
+      { root: track, threshold: 0.6 },
+    );
+    items.forEach((item) => observer.observe(item));
   }
 });
