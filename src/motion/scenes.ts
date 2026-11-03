@@ -1,4 +1,4 @@
-import { finePointer, gsap, reducedMotion, scene, ScrollTrigger, SplitText } from "./core";
+import { finePointer, touchLayout, gsap, reducedMotion, scene, ScrollTrigger, SplitText } from "./core";
 
 const all = <T extends Element = HTMLElement>(selector: string, root: ParentNode = document) =>
   [...root.querySelectorAll<T>(selector)] as T[];
@@ -195,7 +195,7 @@ scene(() => {
       scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true },
     },
   );
-  if (matchMedia("(max-width: 720px)").matches) {
+  if (touchLayout) {
     gsap.fromTo(".hero-portrait picture", { yPercent: 0, scale: 1 }, { yPercent: 14, scale: 1.08, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: () => `+=${innerHeight}`, scrub: true } });
     return;
   }
@@ -247,8 +247,8 @@ scene(() => {
   steps.forEach((step, index) =>
     ScrollTrigger.create({
       trigger: step,
-      start: () => (innerWidth <= 720 ? "top 62%" : "top center"),
-      end: () => (innerWidth <= 720 ? "bottom 62%" : "bottom center"),
+      start: () => (touchLayout ? "top 62%" : "top center"),
+      end: () => (touchLayout ? "bottom 62%" : "bottom center"),
       onToggle: (self) => self.isActive && activate(index),
     }),
   );

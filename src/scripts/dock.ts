@@ -95,6 +95,6 @@ if (sheet) {
 }
 
 // Education: on a phone only the current school stays open.
-if (matchMedia("(max-width: 720px)").matches) {
+if (matchMedia("(max-width: 720px), (max-width: 1099px) and (pointer: coarse)").matches) {
   for (const details of document.querySelectorAll<HTMLDetailsElement>("[data-phone-closed]")) details.open = false;
 }

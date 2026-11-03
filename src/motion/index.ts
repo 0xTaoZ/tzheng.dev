@@ -1,12 +1,12 @@
 // Homepage motion entry: register scenes, then start the shared clock.
-import { runScenes, scene, startMotion } from "./core";
+import { coarsePointer, runScenes, scene, startMotion, touchLayout } from "./core";
 import "./scenes";
 import "./hero-gl";
 import "./skyline";
 
-// Phone-only libraries are loaded on phones and nowhere else.
+// Touch libraries are loaded on touch screens and nowhere else.
 scene(async () => {
-  if (matchMedia("(max-width: 720px)").matches) (await import("./phone")).setup();
+  if (touchLayout || coarsePointer) (await import("./phone")).setup();
 });
 
 startMotion();

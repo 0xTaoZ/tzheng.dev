@@ -4,7 +4,7 @@
 import EmblaCarousel from "embla-carousel";
 import { animate, press } from "motion";
 import { WebHaptics } from "web-haptics";
-import { gsap, reducedMotion, ScrollTrigger, SplitText } from "./core";
+import { gsap, reducedMotion, ScrollTrigger, SplitText, touchLayout } from "./core";
 
 const all = <T extends Element = HTMLElement>(selector: string, root: ParentNode = document) =>
   [...root.querySelectorAll<T>(selector)] as T[];
@@ -149,6 +149,8 @@ function scenes() {
 
 export function setup() {
   pressable();
+  // Touch screens wide enough for the desktop layout keep its scenes.
+  if (!touchLayout) return;
   caseTabs();
   for (const row of all(".skill-table, .selected-list")) swipe(row);
   if (!reducedMotion) scenes();

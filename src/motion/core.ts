@@ -21,6 +21,9 @@ const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory
 export const lowPower = Boolean(connection?.saveData) || memory <= 2 || (navigator.hardwareConcurrency ?? 8) <= 2;
 export const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches || Boolean(connection?.saveData);
 export const finePointer = matchMedia("(pointer: fine)").matches;
+// Phones and touch tablets in portrait share the touch layout (see mobile.css).
+export const touchLayout = matchMedia("(max-width: 720px), (max-width: 1099px) and (pointer: coarse)").matches;
+export const coarsePointer = matchMedia("(pointer: coarse)").matches;
 
 export let lenis: Lenis | null = null;
 

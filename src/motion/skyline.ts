@@ -1,7 +1,7 @@
 // Contribution skyline: a year of public GitHub contributions as instanced
 // 3D bars. Three.js is imported only when the section approaches the
 // viewport; the server-rendered heatmap stays visible as the fallback.
-import { finePointer, gsap, lowPower, reducedMotion, scene, ScrollTrigger, whenNear } from "./core";
+import { finePointer, touchLayout, gsap, lowPower, reducedMotion, scene, ScrollTrigger, whenNear } from "./core";
 
 type Day = { date: string; count: number };
 
@@ -10,7 +10,7 @@ scene(() => {
   if (!host) return;
   const days: Day[] = JSON.parse(host.dataset.days ?? "[]");
   if (!days.length || lowPower) return;
-  if (!reducedMotion && matchMedia("(max-width: 720px)").matches) host.classList.add("is-flight");
+  if (!reducedMotion && touchLayout) host.classList.add("is-flight");
   whenNear(host, () => void mount(host, days).catch((error) => console.warn("skyline", error)));
 });
 
@@ -159,7 +159,7 @@ async function mount(host: HTMLElement, days: Day[]) {
 
   // On a phone the scroll is the camera: it starts on the whole year and flies
   // in over the most recent months while the stage is held.
-  const flight = !reducedMotion && matchMedia("(max-width: 720px)").matches;
+  const flight = !reducedMotion && touchLayout;
   if (flight) {
     mesh.scale.y = 1.7;
     const running: number[] = [];
