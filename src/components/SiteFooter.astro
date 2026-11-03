@@ -54,6 +54,7 @@ const builtOn = new Date().toISOString().slice(0, 10);
   .footer-name { margin: clamp(1.5rem, 3vw, 2.5rem) 0 -.14em; padding-inline: clamp(1rem, 2.2vw, 2rem); font: 500 19.4vw/.84 var(--font-display); letter-spacing: -.055em; white-space: nowrap; color: var(--accent); transform-origin: 50% 100%; }
   @media (max-width: 720px) {
     .footer-top { grid-template-columns: 1fr; }
+    .footer-name { white-space: normal; font-size: 30vw; line-height: .86; margin-top: 2rem; }
     nav { display: flex; flex-wrap: wrap; gap: 0 1.1rem; }
     nav a { display: inline-flex; align-items: center; min-height: 44px; }
     .footer-button { display: flex; align-items: center; justify-content: center; min-height: 54px; border-radius: 12px; font-size: 1.0625rem; }

@@ -4,14 +4,20 @@ const dock = document.querySelector<HTMLElement>("[data-dock]");
 const sheet = document.querySelector<HTMLDialogElement>("[data-sheet]");
 
 if (dock) {
+  const hero = document.querySelector(".hero");
+  const syncHero = (y: number) => dock.classList.toggle("is-hero", Boolean(hero) && y < innerHeight * 0.75);
+  syncHero(scrollY);
   let last = scrollY;
   let ticking = false;
   const update = () => {
     ticking = false;
     const y = scrollY;
-    const atEnd = y + innerHeight >= document.documentElement.scrollHeight - 80;
+    const atEnd = y + innerHeight >= document.documentElement.scrollHeight - innerHeight * 0.6;
+    syncHero(y);
     if (Math.abs(y - last) < 8 && !atEnd) return;
-    dock.classList.toggle("is-away", y > last && y > 240 && !atEnd);
+    // The footer has its own email button, and the name runs to the screen edge.
+    dock.classList.toggle("is-away", (y > last && y > 240) || atEnd);
+    syncHero(y);
     last = y;
   };
   addEventListener(

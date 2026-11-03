@@ -14,8 +14,8 @@ The homepage is composed from `src/components/home/` by
 `src/pages/index.astro`. Its original presentation is retained in local CSS and
 interaction assets; no browser-time CSS compiler is required.
 Shared design tokens (colours, type, spacing) live in `src/styles/tokens.css`;
-`home.css` styles the homepage and `global.css` the content pages. Inter and
-JetBrains Mono are self-hosted through Fontsource. Articles and project case studies use typed Markdown collections;
+`home.css` styles the homepage and `global.css` the content pages. Erode (Fontshare) and
+JetBrains Mono (Fontsource) are self-hosted. Articles and project case studies use typed Markdown collections;
 existing detail URLs are preserved. A single sitemap integration generates
 the index, with last-modified dates from frontmatter and the contribution
 snapshot; the postbuild step preserves `/sitemap.xml` as an alias.

@@ -1,7 +1,7 @@
 // Contribution skyline: a year of public GitHub contributions as instanced
 // 3D bars. Three.js is imported only when the section approaches the
 // viewport; the server-rendered heatmap stays visible as the fallback.
-import { finePointer, gsap, lowPower, reducedMotion, scene, whenNear } from "./core";
+import { finePointer, gsap, lowPower, reducedMotion, scene, ScrollTrigger, whenNear } from "./core";
 
 type Day = { date: string; count: number };
 
@@ -10,6 +10,7 @@ scene(() => {
   if (!host) return;
   const days: Day[] = JSON.parse(host.dataset.days ?? "[]");
   if (!days.length || lowPower) return;
+  if (!reducedMotion && matchMedia("(max-width: 720px)").matches) host.classList.add("is-flight");
   whenNear(host, () => void mount(host, days).catch((error) => console.warn("skyline", error)));
 });
 
@@ -72,7 +73,7 @@ async function mount(host: HTMLElement, days: Day[]) {
   scene3d.add(rim);
 
   // Camera orbits the skyline; pointer drag turns it, idle time turns it slowly.
-  const view = { angle: -0.28, tilt: 0.42, targetAngle: -0.28, targetTilt: 0.42, grow: reducedMotion ? 1 : 0 };
+  const view = { angle: -0.28, tilt: 0.42, targetAngle: -0.28, targetTilt: 0.42, grow: reducedMotion ? 1 : 0, zoom: 1, pan: 0 };
   // Fit the whole year: distance follows the horizontal field of view, so the
   // calendar fills the stage on any width without cropping the tallest bars.
   let radius = weeks;
@@ -135,6 +136,7 @@ async function mount(host: HTMLElement, days: Day[]) {
     canvas.setPointerCapture(event.pointerId);
   });
   canvas.addEventListener("pointerup", () => (dragging = false));
+  canvas.addEventListener("pointercancel", () => (dragging = false));
   const raycaster = new THREE.Raycaster();
   const ndc = new THREE.Vector2(9, 9);
   canvas.addEventListener("pointermove", (event) => {
@@ -155,6 +157,39 @@ async function mount(host: HTMLElement, days: Day[]) {
 
   if (!reducedMotion) gsap.to(view, { grow: 1, duration: 2.2, ease: "expo.out" });
 
+  // On a phone the scroll is the camera: it starts on the whole year and flies
+  // in over the most recent months while the stage is held.
+  const flight = !reducedMotion && matchMedia("(max-width: 720px)").matches;
+  if (flight) {
+    mesh.scale.y = 1.7;
+    const running: number[] = [];
+    days.reduce((sum, day, index) => (running[index] = sum + day.count), 0);
+    const now = document.createElement("p");
+    now.className = "skyline-now";
+    now.setAttribute("aria-hidden", "true");
+    now.innerHTML = "<b>0</b><span></span>";
+    stage.append(now);
+    view.targetAngle = view.angle = -0.75;
+    view.targetTilt = view.tilt = 0.6;
+    ScrollTrigger.refresh();
+    ScrollTrigger.create({
+      trigger: host,
+      start: "top 8%",
+      end: "bottom bottom",
+      onUpdate: (self) => {
+        const p = self.progress;
+        const reached = Math.floor(p * (days.length - 1));
+        const day = days[reached];
+        now.querySelector("b")!.textContent = String(running[reached]);
+        now.querySelector("span")!.textContent = `contributions by ${new Date(`${day.date}T00:00:00Z`).toLocaleDateString("en", { month: "short", year: "numeric", timeZone: "UTC" })}`;
+        view.targetAngle = -0.75 + p * 1.15;
+        view.targetTilt = 0.6 - p * 0.32;
+        view.zoom = 1 - p * 0.58;
+        view.pan = p * weeks * 0.3;
+      },
+    });
+  }
+
   let visible = true;
   new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
@@ -167,11 +202,12 @@ async function mount(host: HTMLElement, days: Day[]) {
   function render() {
     if (!visible) return;
     idle += 1;
-    if (!dragging && idle > 90 && !reducedMotion) view.targetAngle += 0.0009;
+    if (!flight && !dragging && idle > 90 && !reducedMotion) view.targetAngle += 0.0009;
     view.angle += (view.targetAngle - view.angle) * 0.06;
     view.tilt += (view.targetTilt - view.tilt) * 0.06;
-    camera.position.set(Math.sin(view.angle) * radius, Math.sin(view.tilt) * radius * 0.75, Math.cos(view.angle) * radius);
-    camera.lookAt(0, 1.6, 0);
+    camera.position.set(Math.sin(view.angle) * radius * view.zoom, Math.sin(view.tilt) * radius * 0.75 * view.zoom, Math.cos(view.angle) * radius * view.zoom);
+    camera.position.x += view.pan;
+    camera.lookAt(view.pan, 1.6, 0);
     placeTicks();
 
     if (view.grow < 1) {

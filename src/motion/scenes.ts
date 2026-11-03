@@ -195,6 +195,10 @@ scene(() => {
       scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true },
     },
   );
+  if (matchMedia("(max-width: 720px)").matches) {
+    gsap.fromTo(".hero-portrait picture", { yPercent: 0, scale: 1 }, { yPercent: 14, scale: 1.08, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: () => `+=${innerHeight}`, scrub: true } });
+    return;
+  }
   gsap.to(".hero-grid", {
     yPercent: -6,
     opacity: 0.2,
@@ -225,6 +229,7 @@ scene(() => {
   const activate = (index: number) => {
     if (index === current) return;
     current = index;
+    story.dispatchEvent(new CustomEvent("casechange", { detail: index }));
     steps.forEach((step, i) => step.classList.toggle("is-active", i === index));
     dots.forEach((dot, i) => dot.classList.toggle("is-active", i === index));
     panels.forEach((panel, i) => {
@@ -242,8 +247,8 @@ scene(() => {
   steps.forEach((step, index) =>
     ScrollTrigger.create({
       trigger: step,
-      start: "top center",
-      end: "bottom center",
+      start: () => (innerWidth <= 720 ? "top 62%" : "top center"),
+      end: () => (innerWidth <= 720 ? "bottom 62%" : "bottom center"),
       onToggle: (self) => self.isActive && activate(index),
     }),
   );
@@ -297,56 +302,5 @@ scene(() => {
       onEnter: () => item.classList.add("is-lit"),
       onLeaveBack: () => item.classList.remove("is-lit"),
     });
-  }
-});
-
-// ---------- Phones: the three fixes become a segmented control, and the project
-// cards report their position as they are swiped.
-scene(() => {
-  if (!matchMedia("(max-width: 720px)").matches) return;
-  const story = document.querySelector<HTMLElement>("[data-case-story]");
-  const steps = story ? all(".case-step", story) : [];
-  if (story && steps.length) {
-    const tabs = document.createElement("div");
-    tabs.className = "case-tabs";
-    tabs.setAttribute("role", "tablist");
-    tabs.setAttribute("aria-label", "Three fixes");
-    const thumb = document.createElement("span");
-    thumb.className = "case-tabs-thumb";
-    thumb.setAttribute("aria-hidden", "true");
-    tabs.append(thumb);
-    const buttons = steps.map((step, index) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.setAttribute("role", "tab");
-      button.textContent = step.querySelector("h3")?.textContent ?? "";
-      button.addEventListener("click", () => select(index));
-      tabs.append(button);
-      return button;
-    });
-    const select = (index: number) => {
-      thumb.style.setProperty("--tab", String(index));
-      buttons.forEach((button, i) => button.setAttribute("aria-selected", String(i === index)));
-      steps.forEach((step, i) => step.classList.toggle("is-tab", i === index));
-      if (!reducedMotion) gsap.fromTo(steps[index], { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out", overwrite: true });
-      ScrollTrigger.refresh();
-    };
-    story.classList.add("has-tabs");
-    story.before(tabs);
-    select(0);
-  }
-  const track = document.querySelector<HTMLElement>(".project-track");
-  const count = document.querySelector<HTMLElement>(".rail-count");
-  if (track && count) {
-    const items = all(".project-feature, .project-card", track);
-    const show = (index: number) => (count.textContent = `${index + 1} of ${items.length}`);
-    show(0);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) if (entry.isIntersecting) show(items.indexOf(entry.target as HTMLElement));
-      },
-      { root: track, threshold: 0.6 },
-    );
-    items.forEach((item) => observer.observe(item));
   }
 });

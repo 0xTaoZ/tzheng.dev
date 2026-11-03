@@ -24,10 +24,13 @@
     "@astrojs/sitemap": "3.7.4",
     "@fontsource-variable/jetbrains-mono": "5.3.0",
     "astro": "7.3.5",
+    "embla-carousel": "^8.6.0",
     "gsap": "3.15.0",
     "lenis": "1.3.26",
+    "motion": "^14.9.0",
     "three": "0.186.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "web-haptics": "^0.0.6"
   },
   "devDependencies": {
     "@types/three": "0.186.0"

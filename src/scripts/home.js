@@ -34,7 +34,12 @@ if (terminal && !reducedMotion) {
     index += text[index] === "\n" ? 1 : 2;
     if (index <= text.length + 1) setTimeout(type, text[index - 1] === "\n" ? 70 : 12);
   };
-  type();
+  // Start once the terminal is on screen, which on a phone is after some scrolling.
+  new IntersectionObserver((entries, observer) => {
+    if (!entries[0].isIntersecting) return;
+    observer.disconnect();
+    type();
+  }, { threshold: 0.2 }).observe(box);
 }
 
 // Mobile menu.

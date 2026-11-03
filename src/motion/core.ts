@@ -33,6 +33,12 @@ export function startMotion() {
     easing: (t) => 1 - Math.pow(1 - t, 4),
     anchors: { offset: -72 },
     prevent: (node) => node.closest?.("[data-lenis-prevent]") !== null,
+    // Phones get the same weighted scroll as the desktop.
+    syncTouch: true,
+    syncTouchLerp: 0.085,
+    touchInertiaExponent: 1.7,
+    allowNestedScroll: true,
+    gestureOrientation: "vertical",
   });
   lenis.on("scroll", ScrollTrigger.update);
   gsap.ticker.add((time) => lenis?.raf(time * 1000));

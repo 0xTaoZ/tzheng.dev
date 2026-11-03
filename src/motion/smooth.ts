@@ -10,6 +10,9 @@ if (!matchMedia("(prefers-reduced-motion: reduce)").matches && !saveData) {
     easing: (t) => 1 - Math.pow(1 - t, 4),
     anchors: { offset: -72 },
     prevent: (node) => node.closest?.("[data-lenis-prevent]") !== null,
+    syncTouch: true,
+    syncTouchLerp: 0.085,
+    allowNestedScroll: true,
   });
   const raf = (time: number) => {
     lenis.raf(time);
