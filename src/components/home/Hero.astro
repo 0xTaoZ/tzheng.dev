@@ -43,10 +43,10 @@ const projectList = `${named.slice(0, -1).join(", ")} and ${named.at(-1)}`;
         <a href="#disclosure" class="hero-cve">{disclosure.id}</a> in {disclosure.product}.
       </p>
       <dl class="hero-stats">
-        <div><dt>merged PRs</dt><dd>{mergedCount}</dd></div>
-        <div><dt>repositories</dt><dd>{upstreamRepositories.length}</dd></div>
-        <div><dt>combined stars</dt><dd>{compactNumber(combinedStars)}</dd></div>
-        <div><dt>articles</dt><dd>{articleCount}</dd></div>
+        <div><dt>merged PRs</dt><dd data-roll>{mergedCount}</dd></div>
+        <div><dt>repositories</dt><dd data-roll>{upstreamRepositories.length}</dd></div>
+        <div><dt>combined stars</dt><dd data-roll>{compactNumber(combinedStars)}</dd></div>
+        <div><dt>articles</dt><dd data-roll>{articleCount}</dd></div>
       </dl>
       <div class="hero-actions">
         <a href="#contributions" class="btn btn-primary">View contributions</a>

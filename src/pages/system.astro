@@ -13,8 +13,7 @@ const projects = await getCollection("projects");
   <header class="sys-hero shell">
     <div class="hero-grid">
       <div class="hero-narrative">
-        <span class="eyebrow">BEHIND THIS SITE</span>
-        <h1 class="sys-title">System design</h1>
+                <h1 class="sys-title">System design</h1>
         <p class="sys-subtitle">Content records, frontend components and the static delivery path for tzheng.dev.</p>
         <div class="narrative-text">
           <p>The homepage keeps its custom visual presentation. Articles and project cases use typed records and stable routes.</p>
@@ -24,14 +23,14 @@ const projects = await getCollection("projects");
       <aside class="hero-profile">
         <div class="sys-card profile-card">
           <div class="sys-card-inner">
-            <h3 class="profile-heading">SYSTEM PROFILE</h3>
+            <h3 class="profile-heading">System profile</h3>
             <div class="profile-grid">
-              <div class="profile-fact"><b>RUNTIME MODEL</b><span>Static</span></div>
-              <div class="profile-fact"><b>FRAMEWORK</b><span>Astro {pkg.dependencies.astro}</span></div>
-              <div class="profile-fact"><b>CONTENT</b><span>Markdown collections</span></div>
-              <div class="profile-fact"><b>BUILD</b><span>Node 24</span></div>
-              <div class="profile-fact"><b>SOURCE OF TRUTH</b><span>Git</span></div>
-              <div class="profile-fact"><b>DELIVERY</b><span>GitHub Pages &rarr; Cloudflare Edge</span></div>
+              <div class="profile-fact"><b>Runtime model</b><span>Static</span></div>
+              <div class="profile-fact"><b>Framework</b><span>Astro {pkg.dependencies.astro}</span></div>
+              <div class="profile-fact"><b>Content</b><span>Markdown collections</span></div>
+              <div class="profile-fact"><b>Build</b><span>Node 24</span></div>
+              <div class="profile-fact"><b>Source of truth</b><span>Git</span></div>
+              <div class="profile-fact"><b>Delivery</b><span>GitHub Pages &rarr; Cloudflare Edge</span></div>
             </div>
           </div>
         </div>
@@ -64,7 +63,7 @@ const projects = await getCollection("projects");
     <!-- Desktop Story Rail -->
     <aside class="rail-wrapper">
       <nav class="story-rail" aria-label="Chapters Desktop">
-        <div class="rail-label">THE STORY RAIL</div>
+        <div class="rail-label">Chapters</div>
         <div class="rail-track">
           <ul class="rail-list">
             <li><a href="#origin" class="ch-link" aria-current="page">Origin</a></li>
@@ -83,7 +82,7 @@ const projects = await getCollection("projects");
       
       <!-- 01 ORIGIN -->
       <section id="origin" class="chapter reveal">
-        <h2 class="ch-kicker">01 &mdash; From Interface to System</h2>
+        <h2 class="ch-kicker">From Interface to System</h2>
         <h3 class="ch-heading">The interface could grow. The content model could not.</h3>
         <p>tzheng.dev began as a highly customized personal homepage.</p>
         <p>The original architecture was built around visual identity: custom HTML, CSS, JavaScript, motion, terminal-inspired interactions, project presentations, and a deliberately cinematic first impression.</p>
@@ -99,7 +98,7 @@ const projects = await getCollection("projects");
         <div class="sys-card reveal">
           <div class="sys-card-inner ba-grid">
             <div class="ba-col">
-              <div class="ba-label">BEFORE</div>
+              <div class="ba-label">Before</div>
               <ul>
                 <li>Custom homepage</li>
                 <li>Hardcoded content</li>
@@ -110,7 +109,7 @@ const projects = await getCollection("projects");
             </div>
             <div class="ba-arrow">&rarr;</div>
             <div class="ba-col ba-after">
-              <div class="ba-label ba-label-accent">AFTER</div>
+              <div class="ba-label ba-label-accent">After</div>
               <ul>
                 <li>Identity layer</li>
                 <li>Structured content</li>
@@ -126,7 +125,7 @@ const projects = await getCollection("projects");
 
       <!-- 02 ARCHITECTURE -->
       <section id="architecture" class="chapter reveal">
-        <h2 class="ch-kicker">02 &mdash; The Architecture</h2>
+        <h2 class="ch-kicker">The Architecture</h2>
         <h3 class="ch-heading">Prebuilt pages for public content.</h3>
         <p>Most content on tzheng.dev is public and read-heavy.</p>
         <p>Visitors do not need accounts to read a project. An article does not need a database query on every request. A portfolio does not need an authenticated application runtime merely because such a stack is available.</p>
@@ -156,42 +155,42 @@ const projects = await getCollection("projects");
         <div class="sys-card reveal">
           <div class="sys-card-inner flow-row">
             <div class="flow-node">
-              <h4>AUTHORING</h4>
-              <span>Astro pages &middot; Markdown &middot; HTML/CSS/JS</span>
+              <h4>Authoring</h4>
+              <span>Astro pages, Markdown, HTML/CSS/JS</span>
             </div>
             <div class="flow-sep">&rarr;</div>
             <div class="flow-node flow-highlight">
-              <h4>SOURCE OF TRUTH</h4>
-              <span>Git repository &middot; GitHub</span>
+              <h4>Source of truth</h4>
+              <span>Git repository, GitHub</span>
             </div>
             <div class="flow-sep">&rarr;</div>
             <div class="flow-node">
               <h4>CI</h4>
-              <span>GitHub Actions &middot; Node 24 &middot; npm ci</span>
+              <span>GitHub Actions, Node 24, npm ci</span>
             </div>
             <div class="flow-sep">&rarr;</div>
             <div class="flow-node">
-              <h4>BUILD</h4>
-              <span>Astro &middot; npm run build</span>
+              <h4>Build</h4>
+              <span>Astro, npm run build</span>
             </div>
             <div class="flow-sep">&rarr;</div>
             <div class="flow-node">
-              <h4>ARTIFACT</h4>
+              <h4>Artifact</h4>
               <span>dist/</span>
             </div>
             <div class="flow-sep">&rarr;</div>
             <div class="flow-node">
-              <h4>HOSTING</h4>
+              <h4>Hosting</h4>
               <span>GitHub Pages</span>
             </div>
             <div class="flow-sep">&rarr;</div>
             <div class="flow-node">
-              <h4>EDGE</h4>
+              <h4>Edge</h4>
               <span>Cloudflare</span>
             </div>
             <div class="flow-sep">&rarr;</div>
             <div class="flow-node">
-              <h4>VISITOR</h4>
+              <h4>Visitor</h4>
               <span>Browser</span>
             </div>
           </div>
@@ -205,14 +204,14 @@ const projects = await getCollection("projects");
 
       <!-- 03 CONTENT -->
       <section id="content" class="chapter reveal">
-        <h2 class="ch-kicker">03 &mdash; Content as a System</h2>
+        <h2 class="ch-kicker">Content as a System</h2>
         <h3 class="ch-heading">One content record, several page views.</h3>
         <p>Homepage cards, indexes and detail routes read typed collection records.</p>
         <p>Articles and projects are no longer treated as permanent fragments inside a large homepage. They exist as independent Markdown documents inside structured collections.</p>
 
         <div class="sys-card reveal" style="margin: 2rem 0;">
           <div class="sys-card-inner">
-            <h4 class="schema-title">DIRECTORY STRUCTURE</h4>
+            <h4 class="schema-title">Directory structure</h4>
             <pre class="dir-tree"><code>src/
 ├── content.config.ts
 └── content/
@@ -226,7 +225,7 @@ const projects = await getCollection("projects");
         <div class="schema-row">
           <div class="sys-card reveal">
             <div class="sys-card-inner">
-              <h4 class="schema-title">ARTICLE SCHEMA</h4>
+              <h4 class="schema-title">Article schema</h4>
               <pre><code>title: z.string()
 slug: z.string().optional()
 date: z.coerce.date()
@@ -244,7 +243,7 @@ readingTime: z.string().optional()  // estimated from the body when absent</code
           </div>
           <div class="sys-card reveal">
             <div class="sys-card-inner">
-              <h4 class="schema-title">PROJECT SCHEMA</h4>
+              <h4 class="schema-title">Project schema</h4>
               <pre><code>title: z.string()
 slug: z.string().optional()
 date: z.coerce.date()
@@ -275,15 +274,15 @@ outcome: z.string().optional()</code></pre>
           <div class="sys-card-inner pipeline">
             <div class="pipe-node">Markdown FILE</div>
             <div class="pipe-sep">&darr;</div>
-            <div class="pipe-node">SCHEMA VALIDATION</div>
+            <div class="pipe-node">Schema validation</div>
             <div class="pipe-sep">&darr;</div>
-            <div class="pipe-node">CONTENT COLLECTION</div>
+            <div class="pipe-node">Content collection</div>
             <div class="pipe-sep">&darr;</div>
-            <div class="pipe-node">GENERATED ROUTE</div>
+            <div class="pipe-node">Generated route</div>
             <div class="pipe-sep">&darr;</div>
-            <div class="pipe-node">SHARED LAYOUT</div>
+            <div class="pipe-node">Shared layout</div>
             <div class="pipe-sep">&darr;</div>
-            <div class="pipe-node pipe-accent">STATIC PAGE</div>
+            <div class="pipe-node pipe-accent">Static page</div>
           </div>
         </div>
 
@@ -294,20 +293,20 @@ outcome: z.string().optional()</code></pre>
 
       <!-- 04 DELIVERY -->
       <section id="delivery" class="chapter reveal">
-        <h2 class="ch-kicker">04 &mdash; From Commit to Production</h2>
+        <h2 class="ch-kicker">From Commit to Production</h2>
         <h3 class="ch-heading">The repository is the source. <code>dist/</code> is the product.</h3>
         <p>Every meaningful change begins in Git. Code, content, configuration, metadata, and interface changes enter the same version-controlled history. That makes changes reviewable, traceable, and reversible.</p>
         <p>But moving from directly publishable files to Astro introduced an important new boundary. The repository itself is no longer the finished website. It is source code. The production website has to be built.</p>
         
         <div class="sys-card reveal" style="margin: 2rem 0;">
           <div class="sys-card-inner pipeline">
-            <div class="pipe-node">PUSH TO MAIN</div>
+            <div class="pipe-node">Push to main</div>
             <div class="pipe-sep">&darr;</div>
-            <div class="pipe-node">GITHUB ACTIONS</div>
+            <div class="pipe-node">Github actions</div>
             <div class="pipe-sep">&darr;</div>
-            <div class="pipe-node">CHECKOUT (actions/checkout@v4)</div>
+            <div class="pipe-node">Checkout (actions/checkout@v4)</div>
             <div class="pipe-sep">&darr;</div>
-            <div class="pipe-node">NODE 24 (actions/setup-node@v4)</div>
+            <div class="pipe-node">Node 24 (actions/setup-node@v4)</div>
             <div class="pipe-sep">&darr;</div>
             <div class="pipe-node">npm ci</div>
             <div class="pipe-sep">&darr;</div>
@@ -315,13 +314,13 @@ outcome: z.string().optional()</code></pre>
             <div class="pipe-sep">&darr;</div>
             <div class="pipe-node">dist/</div>
             <div class="pipe-sep">&darr;</div>
-            <div class="pipe-node">UPLOAD PAGES ARTIFACT</div>
+            <div class="pipe-node">Upload pages artifact</div>
             <div class="pipe-sep">&darr;</div>
-            <div class="pipe-node">DEPLOY TO GITHUB PAGES</div>
+            <div class="pipe-node">Deploy to github pages</div>
             <div class="pipe-sep">&darr;</div>
-            <div class="pipe-node">CLOUDFLARE EDGE</div>
+            <div class="pipe-node">Cloudflare edge</div>
             <div class="pipe-sep">&darr;</div>
-            <div class="pipe-node pipe-accent">VISITOR</div>
+            <div class="pipe-node pipe-accent">Visitor</div>
           </div>
         </div>
 
@@ -335,7 +334,7 @@ outcome: z.string().optional()</code></pre>
 
       <!-- 05 INTERFACE -->
       <section id="interface" class="chapter reveal">
-        <h2 class="ch-kicker">05 &mdash; The Interface Layer</h2>
+        <h2 class="ch-kicker">The Interface Layer</h2>
         <h3 class="ch-heading">Preserve identity without letting the interface own the architecture.</h3>
         <p>The website has two different jobs. The first is to create identity. The second is to carry information. Those jobs do not need the same visual intensity.</p>
         <p>The homepage retains its dark palette, Earth background, terminal and custom motion. Its sections are native Astro components; project and article cards read the same records as their detail pages.</p>
@@ -344,13 +343,13 @@ outcome: z.string().optional()</code></pre>
         <div class="sys-card reveal" style="margin: 2.5rem 0;">
           <div class="sys-card-inner layer-stack">
             <div class="layer-box layer-identity">
-              <h4>IDENTITY LAYER</h4>
-              <p>cinematic &middot; interactive &middot; motion-aware &middot; brand-heavy &middot; terminal-inspired</p>
+              <h4>Identity layer</h4>
+              <p>cinematic, interactive, motion-aware, brand-heavy, terminal-inspired</p>
             </div>
             <div class="layer-sep">&updownarrow;</div>
             <div class="layer-box layer-content">
-              <h4>CONTENT LAYER</h4>
-              <p>structured &middot; readable &middot; predictable &middot; content-driven &middot; schema-validated</p>
+              <h4>Content layer</h4>
+              <p>structured, readable, predictable, content-driven, schema-validated</p>
             </div>
           </div>
         </div>
@@ -358,14 +357,14 @@ outcome: z.string().optional()</code></pre>
         <p>Shared interface patterns create continuity between those layers: navigation, metadata, chips, typography hierarchy, spacing rules, cards, footer signals, and the interaction language.</p>
         <p>The design system is deliberately lightweight. The project does not introduce an external UI framework simply to prove that one could be used. Custom CSS remains appropriate where the visual system is specific to the site. Astro provides structure where structure is needed.</p>
         
-        <h4 class="ch-sub">RESPONSIVE TRANSFORMATION</h4>
+        <h4 class="ch-sub">Responsive transformation</h4>
 
         <div class="callout-block">Desktop and mobile are not scaled versions of the same composition.</div>
         
         <div class="sys-card reveal" style="margin: 2rem 0;">
           <div class="sys-card-inner transform-grid">
             <div class="transform-col">
-              <div class="transform-label">DESKTOP</div>
+              <div class="transform-label">Desktop</div>
               <ul>
                 <li>Persistent Story Rail</li>
                 <li>Horizontal Architecture Flow</li>
@@ -375,7 +374,7 @@ outcome: z.string().optional()</code></pre>
               </ul>
             </div>
             <div class="transform-col transform-accent">
-              <div class="transform-label transform-label-accent">MOBILE</div>
+              <div class="transform-label transform-label-accent">Mobile</div>
               <ul>
                 <li>Sticky Chapter Bar</li>
                 <li>Vertical System Flow</li>
@@ -395,7 +394,7 @@ outcome: z.string().optional()</code></pre>
 
       <!-- 06 PROBLEMS -->
       <section id="problems" class="chapter reveal">
-        <h2 class="ch-kicker">06 &mdash; What Broke Along the Way</h2>
+        <h2 class="ch-kicker">What Broke Along the Way</h2>
         <h3 class="ch-heading">Migration decisions and recorded commits.</h3>
         <p>The difficult part was not choosing a framework. It was deciding what to preserve, what to rebuild, and where the boundaries actually belonged.</p>
 
@@ -404,11 +403,11 @@ outcome: z.string().optional()</code></pre>
             <div class="sys-card-inner">
               <h4 class="challenge-title">Challenge 01 &mdash; Migrating Without Flattening the Interface</h4>
               <div class="pdr-grid">
-                <div class="pdr-label">PROBLEM</div>
+                <div class="pdr-label">Problem</div>
                 <div class="pdr-value">The content model needed to change without destroying the original visual identity.</div>
-                <div class="pdr-label pdr-decision">DECISION</div>
+                <div class="pdr-label pdr-decision">Decision</div>
                 <div class="pdr-value">Preserve the stable visual layer and rebuild the architecture underneath it.</div>
-                <div class="pdr-label pdr-result">RESULT</div>
+                <div class="pdr-label pdr-result">Result</div>
                 <div class="pdr-value">The site gained structured content and generated routes without becoming a generic framework rewrite.</div>
               </div>
             </div>
@@ -418,11 +417,11 @@ outcome: z.string().optional()</code></pre>
             <div class="sys-card-inner">
               <h4 class="challenge-title">Challenge 02 &mdash; Changing the Deployment Boundary</h4>
               <div class="pdr-grid">
-                <div class="pdr-label">PROBLEM</div>
+                <div class="pdr-label">Problem</div>
                 <div class="pdr-value">After the Astro migration, source files were no longer equivalent to the finished website.</div>
-                <div class="pdr-label pdr-decision">DECISION</div>
+                <div class="pdr-label pdr-decision">Decision</div>
                 <div class="pdr-value">Make <code>dist/</code> the explicit deployable artifact. Never deploy source directly.</div>
-                <div class="pdr-label pdr-result">RESULT</div>
+                <div class="pdr-label pdr-result">Result</div>
                 <div class="pdr-value">Source, build, artifact, deployment, and delivery became separate failure boundaries.</div>
               </div>
             </div>
@@ -432,11 +431,11 @@ outcome: z.string().optional()</code></pre>
             <div class="sys-card-inner">
               <h4 class="challenge-title">Challenge 03 &mdash; Build Systems Expose Parser Boundaries</h4>
               <div class="pdr-grid">
-                <div class="pdr-label">PROBLEM</div>
+                <div class="pdr-label">Problem</div>
                 <div class="pdr-value">Source that looked harmless as page copy broke the Astro production build when unescaped syntax crossed parser boundaries.</div>
-                <div class="pdr-label pdr-decision">DECISION</div>
+                <div class="pdr-label pdr-decision">Decision</div>
                 <div class="pdr-value">Treat <code>npm run build</code> as part of development, not as the final publishing button.</div>
-                <div class="pdr-label pdr-result">RESULT</div>
+                <div class="pdr-label pdr-result">Result</div>
                 <div class="pdr-value">Production parser failures became pre-deployment feedback instead of deployment surprises.</div>
               </div>
             </div>
@@ -446,18 +445,18 @@ outcome: z.string().optional()</code></pre>
             <div class="sys-card-inner">
               <h4 class="challenge-title">Challenge 04 &mdash; Mobile Is Not Desktop at a Smaller Size</h4>
               <div class="pdr-grid">
-                <div class="pdr-label">PROBLEM</div>
+                <div class="pdr-label">Problem</div>
                 <div class="pdr-value">Desktop interactions did not always translate correctly to touch devices and narrower layouts.</div>
-                <div class="pdr-label pdr-decision">DECISION</div>
+                <div class="pdr-label pdr-decision">Decision</div>
                 <div class="pdr-value">Change interaction behavior where necessary instead of protecting implementation uniformity.</div>
-                <div class="pdr-label pdr-result">RESULT</div>
+                <div class="pdr-label pdr-result">Result</div>
                 <div class="pdr-value">Navigation, contact behavior, layout, and interactions became device-aware.</div>
               </div>
             </div>
           </div>
         </div>
 
-        <h4 class="ch-sub" style="margin-top: 4rem;">MIGRATION LOG: JULY 2026</h4>
+        <h4 class="ch-sub" style="margin-top: 4rem;">Migration log, July 2026</h4>
         
         <div class="migration-log">
           <div class="sys-card reveal">
@@ -542,7 +541,7 @@ outcome: z.string().optional()</code></pre>
 
       <!-- 07 SECURITY -->
       <section id="security" class="chapter reveal">
-        <h2 class="ch-kicker">07 &mdash; Security Through Less Surface</h2>
+        <h2 class="ch-kicker">Security Through Less Surface</h2>
         <h3 class="ch-heading">Security begins by removing infrastructure the system does not need.</h3>
         <p>Static architecture does not mean zero attack surface.</p>
         <p>The system still depends on account security, repository permissions, the dependency supply chain, CI/CD permissions, build integrity, hosting configuration, DNS, edge infrastructure, and client-side code.</p>
@@ -550,12 +549,12 @@ outcome: z.string().optional()</code></pre>
 
         <div class="callout-block">Static output reduces runtime responsibilities. Build and account security still matter.</div>
         
-        <h4 class="ch-sub">TRUST SURFACE</h4>
+        <h4 class="ch-sub">Trust surface</h4>
 
         <div class="trust-row">
           <div class="sys-card reveal">
             <div class="sys-card-inner">
-              <h4 class="trust-title trust-exists">IDENTITY & ACCESS</h4>
+              <h4 class="trust-title trust-exists">Identity & access</h4>
               <ul class="trust-list">
                 <li>GitHub Account</li>
                 <li>Repository Permissions</li>
@@ -565,7 +564,7 @@ outcome: z.string().optional()</code></pre>
           </div>
           <div class="sys-card reveal">
             <div class="sys-card-inner">
-              <h4 class="trust-title trust-exists">SUPPLY CHAIN</h4>
+              <h4 class="trust-title trust-exists">Supply chain</h4>
               <ul class="trust-list">
                 <li>package.json</li>
                 <li>package-lock.json</li>
@@ -577,7 +576,7 @@ outcome: z.string().optional()</code></pre>
           </div>
           <div class="sys-card reveal">
             <div class="sys-card-inner">
-              <h4 class="trust-title trust-exists">BUILD & DEPLOYMENT</h4>
+              <h4 class="trust-title trust-exists">Build & deployment</h4>
               <ul class="trust-list">
                 <li>GitHub Actions Workflow</li>
                 <li>Scoped Permissions</li>
@@ -588,7 +587,7 @@ outcome: z.string().optional()</code></pre>
           </div>
           <div class="sys-card reveal">
             <div class="sys-card-inner">
-              <h4 class="trust-title trust-exists">DELIVERY</h4>
+              <h4 class="trust-title trust-exists">Delivery</h4>
               <ul class="trust-list">
                 <li>DNS Configuration</li>
                 <li>Cloudflare Edge</li>
@@ -598,7 +597,7 @@ outcome: z.string().optional()</code></pre>
           </div>
           <div class="sys-card reveal">
             <div class="sys-card-inner">
-              <h4 class="trust-title trust-exists">CLIENT</h4>
+              <h4 class="trust-title trust-exists">Client</h4>
               <ul class="trust-list">
                 <li>Browser JavaScript</li>
                 <li>DOM Interactions</li>
@@ -608,16 +607,16 @@ outcome: z.string().optional()</code></pre>
           </div>
         </div>
 
-        <h4 class="ch-sub">CI/CD BOUNDARIES</h4>
+        <h4 class="ch-sub">Ci/cd boundaries</h4>
         <p>The deployment workflow requests only the permissions required for its real job. It explicitly scopes the permissions required for GitHub Pages deployment instead of relying on unrestricted repository write access:</p>
 
         <div class="sys-card reveal" style="margin-bottom: 2rem;">
           <div class="sys-card-inner pipeline">
-            <div class="pipe-node">SOURCE (Repository)</div>
+            <div class="pipe-node">Source (Repository)</div>
             <div class="pipe-sep">&darr;</div>
-            <div class="pipe-node">BUILD IDENTITY (GitHub Actions)</div>
+            <div class="pipe-node">Build identity (GitHub Actions)</div>
             <div class="pipe-sep">&darr;</div>
-            <div class="pipe-node">SCOPED PERMISSIONS
+            <div class="pipe-node">Scoped permissions
               <ul class="perm-list">
                 <li>contents: read</li>
                 <li>pages: write</li>
@@ -625,9 +624,9 @@ outcome: z.string().optional()</code></pre>
               </ul>
             </div>
             <div class="pipe-sep">&darr;</div>
-            <div class="pipe-node">ARTIFACT (dist/)</div>
+            <div class="pipe-node">Artifact (dist/)</div>
             <div class="pipe-sep">&darr;</div>
-            <div class="pipe-node pipe-accent">DEPLOYMENT (GitHub Pages)</div>
+            <div class="pipe-node pipe-accent">Deployment (GitHub Pages)</div>
           </div>
         </div>
 
@@ -635,7 +634,7 @@ outcome: z.string().optional()</code></pre>
           View deployment workflow &nearr;
         </a>
 
-        <h4 class="ch-sub">WHAT THE SYSTEM INTENTIONALLY AVOIDS</h4>
+        <h4 class="ch-sub">What the system intentionally avoids</h4>
         <div class="sys-card reveal">
           <div class="sys-card-inner">
             <ul class="trust-list">
@@ -650,10 +649,10 @@ outcome: z.string().optional()</code></pre>
         </div>
         <p style="margin-top: 1.5rem;">The current reading and contact flows do not require a backend. A future authenticated feature would need a separate assessment of credentials, sessions and operational responsibility.</p>
 
-        <h4 class="ch-sub">RESIDUAL RISK</h4>
+        <h4 class="ch-sub">Residual risk</h4>
         <div class="sys-card reveal">
           <div class="sys-card-inner">
-            <h4 class="trust-title trust-absent">WHAT STATIC ARCHITECTURE DOES NOT SOLVE</h4>
+            <h4 class="trust-title trust-absent">What static architecture does not solve</h4>
             <ul class="trust-list" style="columns: 1;">
               <li>Account takeover</li>
               <li>Repository compromise</li>
@@ -668,11 +667,11 @@ outcome: z.string().optional()</code></pre>
         </div>
         <p style="margin-top: 1.5rem;">A mature security posture should describe its residual risk rather than hide it. A compromised source repository, a malicious dependency, an unsafe workflow change, a DNS mistake, or vulnerable client-side code remain meaningful risks. Security is not one feature. It is the collection of trust boundaries the system chooses to keep.</p>
 
-        <h4 class="ch-sub">TRADE-OFFS</h4>
+        <h4 class="ch-sub">Trade-offs</h4>
         <div class="trust-row">
           <div class="sys-card reveal">
             <div class="sys-card-inner">
-              <h4 class="trust-title trust-exists">WHAT THE SYSTEM GAINS</h4>
+              <h4 class="trust-title trust-exists">What the system gains</h4>
               <ul class="trust-list">
                 <li>Static delivery</li>
                 <li>Version-controlled content</li>
@@ -686,7 +685,7 @@ outcome: z.string().optional()</code></pre>
           </div>
           <div class="sys-card reveal">
             <div class="sys-card-inner">
-              <h4 class="trust-title trust-absent">WHAT THE SYSTEM GIVES UP</h4>
+              <h4 class="trust-title trust-absent">What the system gives up</h4>
               <ul class="trust-list">
                 <li>No live database editor</li>
                 <li>No public user system</li>
@@ -707,7 +706,6 @@ outcome: z.string().optional()</code></pre>
       <!-- THE PRINCIPLE -->
       <div class="sys-card principle-card reveal" style="margin-top: 6rem; margin-bottom: 2rem;">
         <div class="sys-card-inner">
-          <h4 class="principle-title">THE PRINCIPLE</h4>
           <h2 class="principle-heading">Complexity has to earn its place.</h2>
           <div class="principle-body">
             <p>tzheng.dev is not designed to use the largest possible stack. It is designed so that every major layer has a reason to exist.</p>
@@ -733,7 +731,7 @@ outcome: z.string().optional()</code></pre>
    =================================================================== */
 
 /* --- Reveal animation (same as index.html) --- */
-.reveal {
+.js .reveal {
     opacity: 0;
     transform: translateY(10px);
     transition: opacity .6s var(--ease), transform .6s var(--ease);
@@ -767,11 +765,11 @@ outcome: z.string().optional()</code></pre>
     line-height: 0.96;
     letter-spacing: -0.065em;
     font-weight: 700;
-    color: #fff;
+    color: var(--ink);
     margin: 1rem 0;
 }
 .sys-subtitle {
-    color: #dbeafe;
+    color: var(--text-2);
     font-size: clamp(1.05rem, 2vw, 1.35rem);
     line-height: 1.6;
     font-weight: 300;
@@ -793,9 +791,8 @@ outcome: z.string().optional()</code></pre>
 /* --- Profile card specifics --- */
 .profile-card { width: 100%; }
 .profile-heading {
-    font: 700 .72rem var(--font-mono);
+    font: 700 .72rem var(--font-sans);
     color: var(--muted);
-    letter-spacing: .12em;
     margin: 0 0 1.2rem 0;
 }
 .profile-grid {
@@ -806,11 +803,11 @@ outcome: z.string().optional()</code></pre>
 .profile-fact b {
     display: block;
     color: var(--muted);
-    font: 500 .68rem var(--font-mono);
+    font: 500 .68rem var(--font-sans);
     margin-bottom: .25rem;
 }
 .profile-fact span {
-    color: #f8fafc;
+    color: var(--ink);
     font-size: .88rem;
     font-weight: 500;
 }
@@ -887,12 +884,12 @@ outcome: z.string().optional()</code></pre>
     font: .8rem var(--font-mono);
     padding: .3rem .6rem;
     border-radius: 6px;
-    transition: all .3s ease;
+    transition: color .2s ease, background-color .2s ease, border-color .2s ease;
 }
 .chapter-list-mobile .ch-link[aria-current="page"] {
-    color: #fff;
-    background: rgba(170, 179, 192,.15);
-        border: 1px solid rgba(170, 179, 192,.25);
+    color: var(--ink);
+    background: rgba(125, 211, 252,.15);
+        border: 1px solid rgba(125, 211, 252,.25);
 }
 
 /* --- Two-column layout --- */
@@ -922,9 +919,8 @@ outcome: z.string().optional()</code></pre>
     }
 }
 .rail-label {
-    font: .7rem var(--font-mono);
+    font: .7rem var(--font-sans);
     color: var(--blue);
-    letter-spacing: .12em;
     margin-bottom: 1.5rem;
 }
 .rail-track {
@@ -949,11 +945,11 @@ outcome: z.string().optional()</code></pre>
     position: relative;
 }
 .rail-list .ch-link:hover {
-    color: #fff;
+    color: var(--ink);
     transform: translateX(5px);
 }
 .rail-list .ch-link[aria-current="page"] {
-    color: #fff;
+    color: var(--ink);
     transform: translateX(8px);
 }
 .rail-list .ch-link::before {
@@ -963,14 +959,14 @@ outcome: z.string().optional()</code></pre>
     top: 50%;
     transform: translateY(-50%);
     width: 3px;
-    height: 0;
+    height: 20px;
     background: var(--blue);
     border-radius: 4px;
-    box-shadow: 0 0 15px var(--blue);
-    transition: height .3s ease;
+    transform: translateY(-50%) scaleY(0);
+    transition: transform .25s var(--ease);
 }
 .rail-list .ch-link[aria-current="page"]::before {
-    height: 20px;
+    transform: translateY(-50%) scaleY(1);
 }
 
 /* --- Story content --- */
@@ -983,15 +979,14 @@ outcome: z.string().optional()</code></pre>
     scroll-margin-top: 140px;
 }
 .ch-kicker {
-    font: .9rem var(--font-mono);
+    font: .9rem var(--font-sans);
     color: var(--blue);
-    letter-spacing: .05em;
     margin: 0 0 1.2rem 0;
 }
 .ch-heading {
     font-size: 1.8rem;
     font-weight: 600;
-    color: #fff;
+    color: var(--ink);
     line-height: 1.3;
     margin: 0 0 2rem 0;
 }
@@ -1004,8 +999,8 @@ outcome: z.string().optional()</code></pre>
 }
 .chapter code {
     color: var(--green);
-    background: rgba(242, 182, 97,.08);
-    border: 1px solid rgba(242, 182, 97,.14);
+    background: rgba(57, 255, 136,.08);
+    border: 1px solid rgba(57, 255, 136,.14);
     border-radius: .45rem;
     padding: .1rem .35rem;
     font: .88rem var(--font-mono);
@@ -1038,13 +1033,12 @@ outcome: z.string().optional()</code></pre>
     background: rgba(2,6,14,.32);
 }
 .ba-after {
-    border-color: rgba(170, 179, 192,.25);
-    background: rgba(170, 179, 192,.06);
+    border-color: rgba(125, 211, 252,.25);
+    background: rgba(125, 211, 252,.06);
     }
 .ba-label {
-    font: 700 .72rem var(--font-mono);
+    font: 700 .72rem var(--font-sans);
     color: var(--muted);
-    letter-spacing: .1em;
     margin-bottom: .9rem;
 }
 .ba-label-accent { color: var(--blue); }
@@ -1054,22 +1048,21 @@ outcome: z.string().optional()</code></pre>
     margin: 0;
 }
 .ba-col li {
-    color: #cbd5e1;
+    color: var(--text-2);
     font-size: .9rem;
     margin-bottom: .55rem;
 }
-.ba-after li { color: #f8fafc; }
+.ba-after li { color: var(--ink); }
 .ba-arrow {
     font-size: 1.5rem;
     color: var(--blue);
-    text-shadow: 0 0 12px var(--blue);
 }
 @media (max-width: 639px) {
     .ba-arrow { transform: rotate(90deg); }
 }
 
 /* --- Architecture chip row --- */
-.arch-intro { color: #f8fafc; margin-bottom: 1rem; }
+.arch-intro { color: var(--ink); margin-bottom: 1rem; }
 .chip-row { display: flex; flex-wrap: wrap; gap: .5rem; }
 
 /* --- Flow diagrams --- */
@@ -1099,21 +1092,19 @@ outcome: z.string().optional()</code></pre>
 .flow-node h4 {
     font: 700 .68rem var(--font-mono);
     color: var(--blue);
-    letter-spacing: .1em;
     margin: 0 0 .5rem 0;
 }
 .flow-node span {
-    color: #f8fafc;
+    color: var(--ink);
     font-size: .85rem;
 }
 .flow-highlight {
-    border-color: rgba(170, 179, 192,.35);
-    background: rgba(170, 179, 192,.06);
+    border-color: rgba(125, 211, 252,.35);
+    background: rgba(125, 211, 252,.06);
     }
 .flow-sep {
     color: var(--blue);
     font-size: 1.2rem;
-    text-shadow: 0 0 10px var(--blue);
 }
 @media (max-width: 767px) {
     .flow-sep { transform: rotate(90deg); }
@@ -1132,7 +1123,6 @@ outcome: z.string().optional()</code></pre>
 .schema-title {
     font: 700 .72rem var(--font-mono);
     color: var(--muted);
-    letter-spacing: .1em;
     margin: 0 0 1rem 0;
     padding-bottom: .75rem;
     border-bottom: 1px solid rgba(148,163,184,.12);
@@ -1152,21 +1142,20 @@ outcome: z.string().optional()</code></pre>
 }
 .pipe-node {
     font: 700 .8rem var(--font-mono);
-    color: #f8fafc;
+    color: var(--ink);
     padding: .75rem 1.5rem;
     border: 1px solid rgba(148,163,184,.12);
     border-radius: 10px;
     background: rgba(2,6,14,.32);
 }
 .pipe-accent {
-    border-color: rgba(170, 179, 192,.35);
-    background: rgba(170, 179, 192,.08);
+    border-color: rgba(125, 211, 252,.35);
+    background: rgba(125, 211, 252,.08);
     color: var(--blue);
     }
 .pipe-sep {
     color: var(--blue);
     font-size: 1.1rem;
-    text-shadow: 0 0 10px var(--blue);
 }
 
 /* --- Layer stack --- */
@@ -1183,9 +1172,8 @@ outcome: z.string().optional()</code></pre>
     background: rgba(2,6,14,.32);
 }
 .layer-identity {
-    border-color: rgba(170, 179, 192,.3);
-    background: rgba(170, 179, 192,.05);
-    box-shadow: inset 0 0 20px rgba(170, 179, 192,.06);
+    border-color: rgba(125, 211, 252,.3);
+    background: rgba(125, 211, 252,.05);
 }
 .layer-box h4 {
     font: 700 .82rem var(--font-mono);
@@ -1193,16 +1181,15 @@ outcome: z.string().optional()</code></pre>
     margin: 0 0 .6rem 0;
 }
 .layer-box p {
-    color: #f8fafc;
+    color: var(--ink);
     font-size: .92rem;
     margin: 0;
 }
 .layer-content h4 { color: var(--muted); }
-.layer-content p { color: #cbd5e1; }
+.layer-content p { color: var(--text-2); }
 .layer-sep {
     font-size: 1.5rem;
     color: var(--blue);
-    text-shadow: 0 0 12px var(--blue);
 }
 
 /* --- Challenge blocks --- */
@@ -1214,7 +1201,7 @@ outcome: z.string().optional()</code></pre>
 }
 .challenge-title {
     font-size: 1.15rem;
-    color: #f8fafc;
+    color: var(--ink);
     font-weight: 600;
     margin: 0 0 1.2rem 0;
 }
@@ -1227,12 +1214,12 @@ outcome: z.string().optional()</code></pre>
     border-top: 1px solid rgba(148,163,184,.10);
 }
 .pdr-label {
-    font: 700 .72rem var(--font-mono);
+    font: 700 .72rem var(--font-sans);
     color: var(--blue);
 }
 .pdr-decision { color: var(--green); }
 .pdr-value {
-    color: #cbd5e1;
+    color: var(--text-2);
     font-size: .92rem;
     line-height: 1.55;
 }
@@ -1249,7 +1236,6 @@ outcome: z.string().optional()</code></pre>
 }
 .trust-title {
     font: 700 .76rem var(--font-mono);
-    letter-spacing: .1em;
     margin: 0 0 1rem 0;
 }
 .trust-exists { color: var(--blue); }
@@ -1260,7 +1246,7 @@ outcome: z.string().optional()</code></pre>
     margin: 0;
 }
 .trust-list li {
-    color: #cbd5e1;
+    color: var(--text-2);
     font-size: .92rem;
     margin-bottom: .55rem;
 }
@@ -1288,7 +1274,7 @@ outcome: z.string().optional()</code></pre>
 }
 
 /* --- RESULT label in PDR grid --- */
-.pdr-result { color: var(--violet, #c084fc); }
+.pdr-result { color: var(--accent); }
 
 /* --- Migration log --- */
 .migration-log {
@@ -1317,12 +1303,12 @@ outcome: z.string().optional()</code></pre>
     font: 500 .72rem var(--font-mono);
     color: var(--blue);
     text-decoration: none;
-    border-bottom: 1px dashed rgba(170, 179, 192,.3);
+    border-bottom: 1px dashed rgba(125, 211, 252,.3);
     transition: color .2s ease;
 }
-.migration-sha:hover { color: #fff; }
+.migration-sha:hover { color: var(--ink); }
 .migration-title {
-    color: #f8fafc;
+    color: var(--ink);
     font-size: .92rem;
     font-weight: 600;
     display: block;
@@ -1353,10 +1339,10 @@ outcome: z.string().optional()</code></pre>
     margin-top: 1.5rem;
     font: 500 .78rem var(--font-mono);
     color: var(--blue);
-    border-bottom: 1px dashed rgba(170, 179, 192,.3);
+    border-bottom: 1px dashed rgba(125, 211, 252,.3);
     transition: color .2s ease;
 }
-.evidence-link:hover { color: #fff; }
+.evidence-link:hover { color: var(--ink); }
 
 /* --- Workflow permissions --- */
 .perm-list {
@@ -1378,13 +1364,12 @@ outcome: z.string().optional()</code></pre>
 .principle-title {
     font: 700 .76rem var(--font-mono);
     color: var(--blue);
-    letter-spacing: .12em;
     margin: 0 0 1.5rem 0;
 }
 .principle-heading {
     font-size: clamp(1.8rem, 4vw, 3rem);
     font-weight: 700;
-    color: #fff;
+    color: var(--ink);
     line-height: 1.15;
     letter-spacing: -.04em;
     margin: 0 0 2rem 0;
@@ -1403,7 +1388,7 @@ outcome: z.string().optional()</code></pre>
     gap: .5rem;
 }
 .principle-rules p {
-    color: #dbeafe;
+    color: var(--text-2);
     font-size: 1.05rem;
     font-weight: 500;
     margin: 0;
@@ -1411,9 +1396,8 @@ outcome: z.string().optional()</code></pre>
 
 /* --- Sub-heading inside chapters --- */
 .ch-sub {
-    font: 700 .76rem var(--font-mono);
+    font: 700 .76rem var(--font-sans);
     color: var(--blue);
-    letter-spacing: .08em;
     margin: 4rem 0 1.5rem 0;
 }
 
@@ -1440,29 +1424,27 @@ outcome: z.string().optional()</code></pre>
     margin: 0;
 }
 .transform-col li {
-    color: #cbd5e1;
+    color: var(--text-2);
     font-size: .88rem;
     margin-bottom: .5rem;
 }
 .transform-label {
-    font: 700 .72rem var(--font-mono);
+    font: 700 .72rem var(--font-sans);
     color: var(--muted);
-    letter-spacing: .1em;
     margin-bottom: .9rem;
 }
 .transform-label-accent { color: var(--blue); }
 .transform-accent {
-    border-color: rgba(170, 179, 192,.25);
-    background: rgba(170, 179, 192,.06);
+    border-color: rgba(125, 211, 252,.25);
+    background: rgba(125, 211, 252,.06);
 }
-.transform-accent li { color: #f8fafc; }
+.transform-accent li { color: var(--ink); }
 
 /* Flat, restrained surfaces to match the rest of the site. */
 .sys-card {
     background: var(--surface) !important;
     border: 1px solid var(--line) !important;
     border-radius: var(--radius-lg) !important;
-    box-shadow: none !important;
     backdrop-filter: none !important;
 
     transform: none !important;

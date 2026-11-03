@@ -83,7 +83,7 @@ const breadcrumbSchema = {
       <span>{project.data.type}</span>
     </nav>
     <header class="article-header">
-      <h1>{project.data.title}</h1>
+      <h1 class="carried" style={`view-transition-name: p-${entrySlug(project)}`}>{project.data.title}</h1>
       <p class="article-lede">{project.data.excerpt}</p>
       {project.data.homepageFacts.length > 0 && (
         <dl class="project-facts">
@@ -127,8 +127,8 @@ const breadcrumbSchema = {
         <div class="related-grid">
           {notes.map((note) => (
             <a class="card compact" href={`/articles/${entrySlug(note)}/`}>
-              <span class="meta">{note.data.category} · {readingTime(note)}</span>
               <h3>{note.data.title}</h3>
+              <span class="meta">{note.data.category}, {readingTime(note)}</span>
               <p>{note.data.excerpt}</p>
             </a>
           ))}

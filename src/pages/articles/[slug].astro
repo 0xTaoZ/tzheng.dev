@@ -172,8 +172,8 @@ const related = relatedArticles(article, all);
         <div class="related-grid">
           {related.map((rel) => (
             <a class="card compact" href={`/articles/${entrySlug(rel)}/`}>
-              <span class="meta">{rel.data.category} · {readingTime(rel)}</span>
               <h3>{rel.data.title}</h3>
+              <span class="meta">{rel.data.category}, {readingTime(rel)}</span>
               <p>{rel.data.excerpt}</p>
             </a>
           ))}

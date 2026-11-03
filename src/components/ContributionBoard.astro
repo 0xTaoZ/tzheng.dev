@@ -24,10 +24,10 @@ const verifiedLabel = new Date(`${verifiedAt}T00:00:00Z`).toLocaleDateString(
 
     {showTotals && (
     <dl class="stat-row reveal" aria-label="Contribution summary">
-      <div><dt>Merged upstream PRs</dt><dd>{mergedCount}</dd></div>
-      <div><dt>Upstream repositories</dt><dd>{repositoryCount}</dd></div>
-      <div><dt>Combined GitHub stars</dt><dd>{compactNumber(combinedStars)}</dd></div>
-      <div><dt>Open PRs in review</dt><dd>{openCount}</dd></div>
+      <div><dt>Merged upstream PRs</dt><dd data-roll>{mergedCount}</dd></div>
+      <div><dt>Upstream repositories</dt><dd data-roll>{repositoryCount}</dd></div>
+      <div><dt>Combined GitHub stars</dt><dd data-roll>{compactNumber(combinedStars)}</dd></div>
+      <div><dt>Open PRs in review</dt><dd data-roll>{openCount}</dd></div>
     </dl>
     )}
 

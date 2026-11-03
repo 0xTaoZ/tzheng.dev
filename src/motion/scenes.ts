@@ -1,4 +1,4 @@
-import { gsap, lenis, reducedMotion, scene, ScrollTrigger, SplitText } from "./core";
+import { finePointer, gsap, lenis, reducedMotion, scene, ScrollTrigger, SplitText } from "./core";
 
 const all = <T extends Element = HTMLElement>(selector: string, root: ParentNode = document) =>
   [...root.querySelectorAll<T>(selector)] as T[];
@@ -18,6 +18,16 @@ scene(() => {
     if (!section || !rail || !track) return;
     section.classList.add("is-horizontal");
     const distance = () => Math.max(0, track.scrollWidth - rail.clientWidth);
+    const items = all(".project-feature, .project-card", track);
+    const count = section.querySelector<HTMLElement>(".rail-count");
+    let shown = -1;
+    const showCount = (progress: number) => {
+      const edge = progress * distance() + rail.clientWidth / 2;
+      const index = Math.max(0, items.findLastIndex((item) => item.offsetLeft - track.offsetLeft <= edge));
+      if (index === shown || !count) return;
+      shown = index;
+      count.textContent = `${index + 1} of ${items.length}`;
+    };
     const tween = gsap.to(track, {
       x: () => -distance(),
       ease: "none",
@@ -26,11 +36,24 @@ scene(() => {
         start: "top top",
         end: () => `+=${distance()}`,
         pin: true,
-        scrub: 1,
+        // Lenis already smooths the scroll, so the track stays locked to it.
+        scrub: true,
         invalidateOnRefresh: true,
+        onUpdate: (self) => showCount(self.progress),
       },
     });
+    showCount(0);
+    // Keyboard users reach every card: focus scrolls the track to it.
+    const onFocus = (event: FocusEvent) => {
+      const item = (event.target as Element).closest<HTMLElement>(".project-feature, .project-card");
+      const trigger = tween.scrollTrigger;
+      if (!item || !trigger) return;
+      const x = gsap.utils.clamp(0, distance(), item.offsetLeft - track.offsetLeft);
+      window.scrollTo({ top: trigger.start + x, behavior: "instant" });
+    };
+    track.addEventListener("focusin", onFocus);
     return () => {
+      track.removeEventListener("focusin", onFocus);
       tween.scrollTrigger?.kill();
       tween.kill();
       gsap.set(track, { clearProps: "transform" });
@@ -39,18 +62,96 @@ scene(() => {
   });
 });
 
-// ---------- Headings: lines rise out of a mask.
+// ---------- Headings and intros: lines rise out of a mask.
 scene(() => {
   if (reducedMotion) return;
   for (const heading of all(".section h2, .system-band h2, .contact-panel h2")) {
     const split = SplitText.create(heading, { type: "lines,words", mask: "lines", linesClass: "split-line" });
     gsap.from(split.words, {
       yPercent: 110,
-      duration: 1.1,
+      duration: 1,
       ease: "expo.out",
-      stagger: 0.045,
+      stagger: 0.04,
       scrollTrigger: { trigger: heading, start: "top 88%", once: true, pinnedContainer: pinnedIn(heading) },
     });
+  }
+  for (const lede of all(".section-lede")) {
+    const split = SplitText.create(lede, { type: "lines", mask: "lines" });
+    gsap.from(split.lines, {
+      yPercent: 100,
+      duration: 0.9,
+      ease: "expo.out",
+      stagger: 0.09,
+      delay: 0.12,
+      scrollTrigger: { trigger: lede, start: "top 90%", once: true, pinnedContainer: pinnedIn(lede) },
+    });
+  }
+});
+
+// ---------- Figures roll up to their value once; the real number stays in the
+// text for screen readers and search.
+scene(() => {
+  if (reducedMotion) return;
+  for (const element of all("[data-roll]")) {
+    const value = element.textContent?.trim() ?? "";
+    const said = Object.assign(document.createElement("span"), { className: "roll-said", textContent: value });
+    const shown = Object.assign(document.createElement("span"), { className: "roll-digits" });
+    shown.setAttribute("aria-hidden", "true");
+    let column = 0;
+    for (const character of value) {
+      if (!/\d/.test(character)) {
+        shown.append(character);
+        continue;
+      }
+      const col = Object.assign(document.createElement("span"), { className: "roll-col" });
+      const strip = Object.assign(document.createElement("span"), { className: "roll-strip" });
+      strip.style.setProperty("--d", character);
+      strip.style.setProperty("--i", String(column++));
+      for (let n = 0; n < 10; n++) strip.append(Object.assign(document.createElement("span"), { textContent: String(n) }));
+      col.append(strip);
+      shown.append(col);
+    }
+    element.classList.add("roll");
+    element.replaceChildren(said, shown);
+    ScrollTrigger.create({ trigger: element, start: "top 92%", once: true, onEnter: () => element.classList.add("is-in") });
+  }
+});
+
+// ---------- The one statement that fills in as it is read: the CVE credit.
+scene(() => {
+  if (reducedMotion) return;
+  for (const statement of all(".disclosure-text")) {
+    const split = SplitText.create(statement, { type: "words" });
+    gsap.fromTo(
+      split.words,
+      { opacity: 0.45 },
+      {
+        opacity: 1,
+        ease: "none",
+        stagger: 0.1,
+        scrollTrigger: { trigger: statement, start: "top 82%", end: "top 50%", scrub: true },
+      },
+    );
+  }
+});
+
+// ---------- Tables arrive like a ledger being written: row by row, left to right.
+scene(() => {
+  if (reducedMotion) return;
+  for (const table of all(".skill-table, .upstream-list ol")) {
+    const rows = [...table.children].filter((row) => !row.matches(".skill-header"));
+    gsap.fromTo(
+      rows,
+      { clipPath: "inset(0 100% 0 0)" },
+      {
+        clipPath: "inset(0 0% 0 0)",
+        duration: 0.8,
+        ease: "power3.out",
+        stagger: 0.06,
+        clearProps: "clipPath",
+        scrollTrigger: { trigger: table, start: "top 85%", once: true },
+      },
+    );
   }
 });
 
@@ -88,7 +189,7 @@ scene(() => {
     },
   );
   gsap.to(".hero-grid", {
-    yPercent: -10,
+    yPercent: -6,
     opacity: 0.2,
     ease: "none",
     scrollTrigger: { trigger: hero, start: "35% top", end: "bottom top", scrub: true },
@@ -101,8 +202,8 @@ scene(() => {
   for (const board of all(".upstream-board")) {
     const timeline = gsap.timeline({ scrollTrigger: { trigger: board, start: "top 80%", once: true } });
     timeline
-      .from(all(".merge-fill", board), { scaleY: 0, transformOrigin: "bottom", duration: 1.2, ease: "expo.out", stagger: 0.1 })
-      .from(all(".merge-value", board), { opacity: 0, y: 8, duration: 0.6, stagger: 0.1 }, 0.5);
+      .from(all(".merge-fill", board), { scaleY: 0, transformOrigin: "bottom", duration: 0.9, ease: "expo.out", stagger: 0.07 })
+      .from(all(".merge-value", board), { opacity: 0, y: 8, duration: 0.5, stagger: 0.07 }, 0.4);
   }
 });
 
@@ -147,9 +248,38 @@ scene(() => {
   const track = marquee?.querySelector<HTMLElement>(".marquee-track");
   if (!marquee || !track || reducedMotion) return;
   const loop = gsap.to(track, { xPercent: -50, duration: 38, ease: "none", repeat: -1 });
+  const skew = gsap.quickTo(track, "skewX", { duration: 0.5, ease: "power3" });
   lenis?.on("scroll", ({ velocity }: { velocity: number }) => {
     const v = gsap.utils.clamp(-40, 40, velocity);
     loop.timeScale(1 + Math.abs(v) / 6);
+    skew(gsap.utils.clamp(-4, 4, -v / 3));
+  });
+  // The loop rests off screen and while someone is reading or focusing it.
+  let visible = false;
+  let held = false;
+  const sync = () => (visible && !held ? loop.play() : loop.pause());
+  ScrollTrigger.create({ trigger: marquee, start: "top bottom", end: "bottom top", onToggle: (self) => { visible = self.isActive; sync(); } });
+  for (const [event, value] of [["pointerenter", true], ["pointerleave", false], ["focusin", true], ["focusout", false]] as const)
+    marquee.addEventListener(event, () => { held = value; sync(); });
+  loop.pause();
+});
+
+// ---------- Portrait: a slight tilt that follows the pointer and settles back.
+scene(() => {
+  if (!finePointer || reducedMotion) return;
+  const picture = document.querySelector<HTMLElement>(".hero-portrait picture");
+  if (!picture) return;
+  const rotateX = gsap.quickTo(picture, "rotationX", { duration: 0.6, ease: "power3" });
+  const rotateY = gsap.quickTo(picture, "rotationY", { duration: 0.6, ease: "power3" });
+  gsap.set(picture, { transformPerspective: 1200 });
+  picture.addEventListener("pointermove", (event) => {
+    const rect = picture.getBoundingClientRect();
+    rotateY(((event.clientX - rect.left) / rect.width - 0.5) * 6);
+    rotateX((0.5 - (event.clientY - rect.top) / rect.height) * 5);
+  });
+  picture.addEventListener("pointerleave", () => {
+    rotateX(0);
+    rotateY(0);
   });
 });
 

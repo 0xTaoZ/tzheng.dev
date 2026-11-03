@@ -3,14 +3,6 @@
    in the browser: Inter is 6.84% wider than Arial; the monospace widths match.
    ascent/descent = font metric / size-adjust. */
 @font-face {
-  font-family: "Inter Fallback";
-  src: local("Arial"), local("Helvetica"), local("Liberation Sans");
-  size-adjust: 106.84%;
-  ascent-override: 90.67%;
-  descent-override: 22.67%;
-  line-gap-override: 0%;
-}
-@font-face {
   font-family: "JetBrains Mono Fallback";
   src: local("Menlo"), local("Consolas"), local("Courier New"), local("Liberation Mono");
   size-adjust: 100%;
@@ -27,32 +19,35 @@
   line-gap-override: 0%;
 }
 
-/* Shared design tokens for the homepage and the content pages. Neutrals lean
-   toward the night sky in the hero; the one accent is the sodium colour of the
-   city lights in the same photograph. It marks live data and links only. */
+/* Shared design tokens for the homepage and the content pages. One neutral
+   scale, one terminal accent, one link colour; type does most of the work. */
 :root {
   color-scheme: dark;
-  --bg: #090b0f;
-  --surface: #0e1116;
-  --surface-2: #141820;
-  --line: rgba(214, 224, 240, 0.09);
-  --line-strong: rgba(214, 224, 240, 0.18);
-  --text: #e8ebf0;
-  --text-2: #aeb5c1;
-  --text-3: #868f9d;
-  --accent: #f2b661;
-  --accent-dim: rgba(242, 182, 97, 0.14);
-  --link: #f2c78a;
-  --blue: var(--text-3);
+  --bg: #07090c;
+  --surface: #0c0f14;
+  --surface-2: #11151b;
+  --line: rgba(255, 255, 255, 0.075);
+  --line-strong: rgba(255, 255, 255, 0.15);
+  --ink: #f5f7fa;
+  --text: #e9edf2;
+  --text-2: #aab3c0;
+  --text-3: #808b9b;
+  --accent: #39ff88;
+  --accent-dim: rgba(57, 255, 136, 0.14);
+  --link: #9fd2ff;
+  --blue: #7dd3fc;
   --muted: var(--text-2);
   --radius: 6px;
   --radius-lg: 8px;
   --container: 1120px;
   --gutter: clamp(1rem, 4vw, 2rem);
   --font-display: "Schibsted Grotesk Variable", "Schibsted Grotesk Fallback", var(--font-sans);
-  --font-sans: "Inter Variable", "Inter Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-sans: "Schibsted Grotesk Variable", "Schibsted Grotesk Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: "JetBrains Mono Variable", "JetBrains Mono Fallback", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-exit: cubic-bezier(0.55, 0.055, 0.675, 0.19);
 }
 
 html {
@@ -62,7 +57,6 @@ html {
 
 body {
   font-family: var(--font-sans);
-  font-feature-settings: "cv11", "ss01", "ss03";
   font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -73,7 +67,7 @@ h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; }
 
 html { scrollbar-color: #2b303a var(--bg); }
 input, textarea { caret-color: var(--accent); }
-::selection { background: rgba(242, 182, 97, 0.28); color: #fff; }
+::selection { background: rgba(57, 255, 136, 0.25); color: var(--ink); }
 
 :focus-visible {
   outline: 2px solid var(--accent);
@@ -95,22 +89,23 @@ input, textarea { caret-color: var(--accent); }
 }
 .skip-link:focus { transform: none; }
 
-/* Page turns between pages (cross-document view transitions). The navigation
-   bar keeps its place; going back turns the page the other way. */
+/* Page turns between pages (cross-document view transitions). The old page
+   leaves quickly and the new one settles; a project title clicked on the
+   homepage travels into place as the heading of its page. */
 @media (prefers-reduced-motion: no-preference) {
   @view-transition { navigation: auto; }
   .nav, .site-nav { view-transition-name: site-nav; }
-  ::view-transition-group(root) { animation-duration: .55s; }
-  ::view-transition-old(root) { transform-origin: 0 50%; animation: page-turn-out .55s cubic-bezier(.65, 0, .35, 1) both; }
-  ::view-transition-new(root) { transform-origin: 100% 50%; animation: page-turn-in .55s cubic-bezier(.65, 0, .35, 1) both; }
+  ::view-transition-old(root) { transform-origin: 0 50%; animation: page-turn-out .26s var(--ease-exit) both; }
+  ::view-transition-new(root) { transform-origin: 100% 50%; animation: page-turn-in .42s var(--ease) .06s both; }
   html:active-view-transition-type(back)::view-transition-old(root) { transform-origin: 100% 50%; animation-name: page-turn-back-out; }
   html:active-view-transition-type(back)::view-transition-new(root) { transform-origin: 0 50%; animation-name: page-turn-back-in; }
-  ::view-transition-group(site-nav) { animation-duration: .4s; }
+  ::view-transition-group(site-nav) { animation-duration: .3s; }
+  ::view-transition-group(.carried) { animation-duration: .42s; animation-timing-function: var(--ease-in-out); }
 }
-@keyframes page-turn-out { to { transform: perspective(2000px) rotateY(-28deg) translateX(-4%); opacity: 0; filter: brightness(.55); } }
-@keyframes page-turn-in { from { transform: perspective(2000px) rotateY(16deg) translateX(6%); opacity: 0; } }
-@keyframes page-turn-back-out { to { transform: perspective(2000px) rotateY(28deg) translateX(4%); opacity: 0; filter: brightness(.55); } }
-@keyframes page-turn-back-in { from { transform: perspective(2000px) rotateY(-16deg) translateX(-6%); opacity: 0; } }
+@keyframes page-turn-out { to { transform: perspective(2000px) rotateY(-8deg) translateX(-2%); opacity: 0; } }
+@keyframes page-turn-in { from { transform: perspective(2000px) rotateY(5deg) translateX(2%); opacity: 0; } }
+@keyframes page-turn-back-out { to { transform: perspective(2000px) rotateY(8deg) translateX(2%); opacity: 0; } }
+@keyframes page-turn-back-in { from { transform: perspective(2000px) rotateY(-5deg) translateX(-2%); opacity: 0; } }
 
 /* Code shows the characters that were typed: no programming ligatures. */
 code, kbd, pre, samp { font-variant-ligatures: none; font-feature-settings: "calt" 0, "liga" 0; }
@@ -137,9 +132,17 @@ p, li, dd { text-wrap: pretty; }
 /* Buttons and controls compress slightly under the finger or the pointer. */
 .btn, .button, .text-link, .icon-link, .kbd-button, .search-button, .nav-github, .contact-actions a, .start-here a {
   transition-property: color, background-color, border-color, transform, opacity;
-  transition-timing-function: cubic-bezier(.2, .7, .2, 1);
+  transition-duration: .14s;
+  transition-timing-function: var(--ease);
 }
 .btn:active, .button:active, .icon-link:active, .kbd-button:active, .search-button:active, .nav-github:active, .start-here a:active, .contact-actions a:active {
   transform: scale(.97);
-  transition-duration: .08s;
+  transition-duration: .1s;
 }
+
+@media (prefers-reduced-transparency: reduce) {
+  .site-nav.scrolled, .nav, .command-palette { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--bg); }
+}
+
+h1, h2, h3 { overflow-wrap: break-word; min-width: 0; }
+.carried { view-transition-class: carried; }

@@ -26,7 +26,7 @@ const countFor = (url: string) => {
         <p class="case-evidence">{item.evidence}</p>
         <a class="text-link" href={item.url}>Merged patch #{item.number}</a>
         <figure class="code-window inline-code" aria-hidden="true">
-          <figcaption>{caseExcerpts[item.repository].file}</figcaption>
+          <figcaption><code>{caseExcerpts[item.repository].file}</code></figcaption>
           <Code code={caseExcerpts[item.repository].code} lang="python" theme="vitesse-dark" />
         </figure>
       </li>
@@ -37,7 +37,7 @@ const countFor = (url: string) => {
       {cases.map((item, index) => (
         <figure class:list={["code-window", index === 0 && "is-active"]} data-panel={index}>
           <figcaption>
-            {caseExcerpts[item.repository].file}
+            <code>{caseExcerpts[item.repository].file}</code>
             <span class="window-pr">#{item.number}</span>
           </figcaption>
           <Code code={caseExcerpts[item.repository].code} lang="python" theme="vitesse-dark" />
