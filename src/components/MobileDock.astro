@@ -1,5 +1,6 @@
 ---
 import "../styles/mobile.css";
+import LangSwitch from "./LangSwitch.astro";
 interface Props {
   // On the homepage section links stay on the page; elsewhere they go back to it.
   home?: boolean;
@@ -45,6 +46,7 @@ const pages = [
   <div class="sheet-grip" data-sheet-grip>
     <span aria-hidden="true"></span>
     <p>Haitao Zheng</p>
+    <LangSwitch />
     <button type="button" data-sheet-close>Close</button>
   </div>
   <div class="sheet-body" data-lenis-prevent>

@@ -3,6 +3,9 @@
 // viewport; the server-rendered heatmap stays visible as the fallback.
 import { finePointer, touchLayout, gsap, lowPower, reducedMotion, scene, ScrollTrigger, whenNear } from "./core";
 
+const german = document.documentElement.lang === "de";
+const locale = german ? "de" : "en";
+
 type Day = { date: string; count: number };
 
 scene(() => {
@@ -96,7 +99,7 @@ async function mount(host: HTMLElement, days: Day[]) {
     if (!day.date.endsWith("-01") || month++ % every) return;
     const slot = index + offset;
     const element = document.createElement("span");
-    element.textContent = new Date(`${day.date}T00:00:00Z`).toLocaleDateString("en", { month: "short", timeZone: "UTC" });
+    element.textContent = new Date(`${day.date}T00:00:00Z`).toLocaleDateString(locale, { month: "short", timeZone: "UTC" });
     tickLayer.append(element);
     ticks.push({ element, point: new THREE.Vector3(Math.floor(slot / 7) - weeks / 2, 0, 4.4) });
   });
@@ -181,7 +184,7 @@ async function mount(host: HTMLElement, days: Day[]) {
         const reached = Math.floor(p * (days.length - 1));
         const day = days[reached];
         now.querySelector("b")!.textContent = String(running[reached]);
-        now.querySelector("span")!.textContent = `contributions by ${new Date(`${day.date}T00:00:00Z`).toLocaleDateString("en", { month: "short", year: "numeric", timeZone: "UTC" })}`;
+        now.querySelector("span")!.textContent = `${german ? "Beiträge bis" : "contributions by"} ${new Date(`${day.date}T00:00:00Z`).toLocaleDateString(locale, { month: "short", year: "numeric", timeZone: "UTC" })}`;
         view.targetAngle = -0.75 + p * 1.15;
         view.targetTilt = 0.6 - p * 0.32;
         view.zoom = 1 - p * 0.58;
@@ -230,8 +233,8 @@ async function mount(host: HTMLElement, days: Day[]) {
         tooltip.hidden = index < 0;
         if (index >= 0) {
           const day = days[index];
-          const label = new Date(`${day.date}T00:00:00Z`).toLocaleDateString("en", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
-          tooltip.textContent = `${day.count} contribution${day.count === 1 ? "" : "s"} · ${label}`;
+          const label = new Date(`${day.date}T00:00:00Z`).toLocaleDateString(locale, { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+          tooltip.textContent = `${day.count} ${german ? (day.count === 1 ? "Beitrag" : "Beiträge") : `contribution${day.count === 1 ? "" : "s"}`} · ${label}`;
         }
       }
     }

@@ -26,7 +26,7 @@ scene(() => {
       const index = Math.max(0, items.findLastIndex((item) => item.offsetLeft - track.offsetLeft <= edge));
       if (index === shown || !count) return;
       shown = index;
-      count.textContent = `${index + 1} of ${items.length}`;
+      count.textContent = `${index + 1} ${document.documentElement.lang === "de" ? "von" : "of"} ${items.length}`;
     };
     const tween = gsap.to(track, {
       x: () => -distance(),

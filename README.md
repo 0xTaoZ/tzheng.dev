@@ -52,6 +52,19 @@ it, run `npm run build && npm run resume:pdf && npm run build` to refresh
 A4 page.
 `npm test` fails when a page points at a missing share card.
 
+## German pages
+
+`/de/`, `/de/resume/` and `/de/about/` are generated from the built English
+pages by `scripts/localize.mjs`, so the markup, styles and motion stay the same.
+After changing English text, run `npm run translate` and commit
+`src/i18n/de.json`. Only text that changed goes to DeepL; the key is read from
+`DEEPL_API_KEY` or the macOS keychain item `deepl-api-key`. The Pages build needs
+no key, and text without a translation stays English with a build warning.
+
+Edit a `de` value in `src/i18n/de.json` to correct a translation; the edit lasts
+until its English source changes. Add names that must stay as written to
+`src/i18n/glossary.json`. After changing the résumé, refresh both PDFs as above.
+
 ## Publishing
 
 A push to `main` uses `.github/workflows/deploy.yml` to check, build and deploy

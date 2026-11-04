@@ -22,7 +22,7 @@ for (const collection of ["articles", "projects"]) {
 const { verifiedAt } = JSON.parse(
   readFileSync("./src/data/contributions.json", "utf8"),
 );
-for (const path of ["/", "/contributions/", "/about/"])
+for (const path of ["/", "/contributions/", "/about/", "/de/", "/de/about/"])
   lastModified.set(`${site}${path}`, verifiedAt);
 
 export default defineConfig({
@@ -36,6 +36,8 @@ export default defineConfig({
   vite: { build: { assetsInlineLimit: 0, chunkSizeWarningLimit: 800 } },
   integrations: [
     sitemap({
+      // scripts/localize.mjs writes these after the build.
+      customPages: ["/de/", "/de/resume/", "/de/about/"].map((path) => `${site}${path}`),
       filter: (page) => !page.includes("/404"),
       serialize(item) {
         const date = lastModified.get(item.url);

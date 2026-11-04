@@ -18,7 +18,9 @@ export { gsap, ScrollTrigger, SplitText };
 // the same as reduced motion. WebGL scenes check `lowPower` separately.
 const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
 const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8;
-export const lowPower = Boolean(connection?.saveData) || memory <= 2 || (navigator.hardwareConcurrency ?? 8) <= 2;
+// WebKit under-reports the core count on iPhone and iPad, so it says nothing there.
+const appleTouch = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+export const lowPower = Boolean(connection?.saveData) || memory <= 2 || (!appleTouch && (navigator.hardwareConcurrency ?? 8) <= 2);
 export const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches || Boolean(connection?.saveData);
 export const finePointer = matchMedia("(pointer: fine)").matches;
 // Phones and touch tablets in portrait share the touch layout (see mobile.css).

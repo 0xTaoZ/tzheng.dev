@@ -117,7 +117,7 @@ export const skills = [
   { label: "Languages", text: "Python, Java, C, TypeScript, SQL" },
   { label: "Security", text: "AWS CloudTrail, IAM, CloudFormation, Kubernetes, OpenSSH, IOC triage" },
   { label: "Tools", text: "Linux, Git, GitHub Actions, pytest/unittest, Cloudflare Workers, React, Astro" },
-  { label: "Spoken", text: "English C2, German C1, Mandarin (native), Hokkien, Japanese A2" },
+  { label: "Spoken", text: "English C1, German C1, Mandarin (native), Hokkien, Japanese A2" },
 ];
 
 // Plain Markdown version for job portals and ATS parsers.

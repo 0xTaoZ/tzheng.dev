@@ -40,7 +40,7 @@ function swipe(row: HTMLElement) {
 
   const slides = [...row.children].filter((child) => !child.matches(".skill-header")) as HTMLElement[];
   const embla = EmblaCarousel(root, { align: "start", containScroll: "trimSnaps", dragFree: false, slides, duration: 24 });
-  const showCount = () => (count.textContent = `${embla.selectedScrollSnap() + 1} of ${embla.scrollSnapList().length}`);
+  const showCount = () => (count.textContent = `${embla.selectedScrollSnap() + 1} ${document.documentElement.lang === "de" ? "von" : "of"} ${embla.scrollSnapList().length}`);
   const tween = () => {
     if (reducedMotion) return;
     const progress = embla.scrollProgress();

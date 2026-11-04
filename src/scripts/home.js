@@ -95,7 +95,7 @@ document.querySelector("[data-email-contact]")?.addEventListener("click", async 
     tooltip = document.createElement("span");
     tooltip.className = "email-tooltip";
     tooltip.setAttribute("role", "status");
-    tooltip.textContent = "Copied h@tzheng.dev";
+    tooltip.textContent = document.documentElement.lang === "de" ? "h@tzheng.dev kopiert" : "Copied h@tzheng.dev";
     link.append(tooltip);
   }
   tooltip.classList.add("visible");

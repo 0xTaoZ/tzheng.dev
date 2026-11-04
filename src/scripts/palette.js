@@ -8,6 +8,7 @@ let index = null;
 let results = [];
 let selected = 0;
 let previousFocus = null;
+const german = document.documentElement.lang === "de";
 
 const weights = [["title", 8], ["tags", 5], ["meta", 3], ["text", 1]];
 const escapeHtml = (text) =>
@@ -49,7 +50,7 @@ const render = () => {
   const query = input.value.trim();
   const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
   results = index ? search(query) : [];
-  const archive = query ? [{ title: `Search all articles for “${query}”`, url: `/articles/?q=${encodeURIComponent(query)}`, kind: "Archive", meta: "full-text search" }] : [];
+  const archive = query ? [{ title: german ? `Alle Artikel nach „${query}“ durchsuchen` : `Search all articles for “${query}”`, url: `/articles/?q=${encodeURIComponent(query)}`, kind: "Archive", meta: german ? "Volltextsuche" : "full-text search" }] : [];
   const items = [...results, ...archive];
   selected = Math.min(selected, Math.max(0, items.length - 1));
   list.innerHTML = items.length
@@ -61,7 +62,7 @@ const render = () => {
             <span class="command-meta">${escapeHtml(item.meta || item.url)}</span></a></li>`,
         )
         .join("")
-    : `<li class="command-empty">${index ? "No results." : "Loading…"}</li>`;
+    : `<li class="command-empty">${index ? (german ? "Keine Treffer." : "No results.") : german ? "Wird geladen…" : "Loading…"}</li>`;
   input.setAttribute("aria-activedescendant", items.length ? `command-option-${selected}` : "");
   list.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: "nearest" });
 };

@@ -192,6 +192,21 @@ const securityTxt = await readFile(path.join(root, ".well-known/security.txt"), 
 const expires = new Date(securityTxt.match(/^Expires: (.+)$/m)?.[1] ?? "");
 assert(/^Contact: /m.test(securityTxt), "security.txt needs a Contact field.");
 assert(expires > new Date(Date.now() + 30 * 864e5), "security.txt expires within 30 days; renew it.");
+// German pages: same structure as the English source, in the right language.
+for (const route of ["", "resume/", "about/"]) {
+  const german = pages.get(path.join(root, "de", route, "index.html"));
+  const english = pages.get(path.join(root, route, "index.html"));
+  assert(german, `Missing German page /de/${route}`);
+  assert(german.includes('<html lang="de"'), `/de/${route} must declare lang="de"`);
+  assert(german.includes(`<link rel="canonical" href="https://tzheng.dev/de/${route}"`), `/de/${route} has the wrong canonical URL`);
+  for (const page of [english, german])
+    assert(page.includes(`hreflang="de" href="https://tzheng.dev/de/${route}"`) && page.includes(`hreflang="en" href="https://tzheng.dev/${route}"`), `/${route} is missing hreflang links`);
+  const count = (html, tag) => (html.match(new RegExp(`<${tag}[\\s>]`, "g")) ?? []).length;
+  for (const tag of ["section", "h2", "h3", "img", "a", "li"]) {
+    const removed = route === "about/" ? { section: 1, h2: 1, a: 1 }[tag] ?? 0 : 0;
+    assert.equal(count(german, tag), count(english, tag) - removed, `/de/${route} changed the number of <${tag}> elements`);
+  }
+}
 const sitemapIndex = await readFile(
   path.join(root, "sitemap-index.xml"),
   "utf8",

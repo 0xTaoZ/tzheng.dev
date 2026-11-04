@@ -1,0 +1,13 @@
+---
+// Pages with a German version switch to it; the others lead to the German homepage.
+// scripts/localize.mjs moves aria-current on the pages it writes.
+const translated = ["/", "/resume/", "/about/"];
+const path = Astro.url.pathname;
+const english = path.includes("404") ? "/" : path;
+const german = translated.includes(english) ? `/de${english}` : "/de/";
+---
+
+<span class="lang-switch" translate="no">
+  <a href={english} data-lang="en" hreflang="en" lang="en" aria-label="English" aria-current="true">EN</a>
+  <a href={german} data-lang="de" hreflang="de" lang="de" aria-label="Deutsch">DE</a>
+</span>
