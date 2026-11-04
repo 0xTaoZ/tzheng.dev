@@ -1,6 +1,7 @@
 // Contribution skyline: a year of public GitHub contributions as instanced
 // 3D bars. Three.js is imported only when the section approaches the
-// viewport; the server-rendered heatmap stays visible as the fallback.
+// viewport. The server-rendered drawing stays visible until the canvas has
+// proved it can paint, so a browser without working WebGL still shows the year.
 import { finePointer, touchLayout, gsap, lowPower, reducedMotion, scene, ScrollTrigger, whenNear } from "./core";
 
 const german = document.documentElement.lang === "de";
@@ -12,10 +13,34 @@ scene(() => {
   const host = document.querySelector<HTMLElement>("[data-skyline]");
   if (!host) return;
   const days: Day[] = JSON.parse(host.dataset.days ?? "[]");
-  if (!days.length || lowPower) return;
+  if (!days.length || lowPower || !webgl2()) return;
   if (!reducedMotion && touchLayout) host.classList.add("is-flight");
-  whenNear(host, () => void mount(host, days).catch((error) => console.warn("skyline", error)));
+  whenNear(host, () =>
+    void mount(host, days).catch((error) => {
+      console.warn("skyline", error);
+      fallBack(host);
+    }),
+  );
 });
+
+function webgl2() {
+  try {
+    const gl = document.createElement("canvas").getContext("webgl2");
+    gl?.getExtension("WEBGL_lose_context")?.loseContext();
+    return Boolean(gl);
+  } catch {
+    return false;
+  }
+}
+
+// The flight holds an empty stage on screen, so it goes when the canvas does.
+function fallBack(host: HTMLElement) {
+  host.classList.remove("has-webgl", "is-flight");
+  host.querySelector(".skyline-stage canvas")?.remove();
+  host.querySelector(".skyline-ticks")?.remove();
+  host.querySelector(".skyline-now")?.remove();
+  ScrollTrigger.refresh();
+}
 
 async function mount(host: HTMLElement, days: Day[]) {
   const THREE = await import("three");
@@ -126,7 +151,6 @@ async function mount(host: HTMLElement, days: Day[]) {
   resize();
   addEventListener("resize", resize, { passive: true });
   stage.append(canvas, tickLayer);
-  host.classList.add("has-webgl");
 
   let dragging = false;
   let lastX = 0;
@@ -193,6 +217,35 @@ async function mount(host: HTMLElement, days: Day[]) {
     });
   }
 
+  // A web view under memory pressure can drop the context at any time.
+  canvas.addEventListener("webglcontextlost", (event) => {
+    event.preventDefault();
+    renderer.setAnimationLoop(null);
+    host.classList.remove("has-webgl");
+  });
+  canvas.addEventListener("webglcontextrestored", () => {
+    if (proven) host.classList.add("has-webgl");
+    if (visible) renderer.setAnimationLoop(render);
+  });
+
+  // The floor covers the centre of the stage, so a transparent centre after a
+  // render means this browser accepted the calls and drew nothing.
+  let proven = false;
+  let frames = 0;
+  const pixel = new Uint8Array(4);
+  const checkPainted = () => {
+    if (proven) return;
+    const gl = renderer.getContext();
+    gl.readPixels(gl.drawingBufferWidth >> 1, gl.drawingBufferHeight >> 1, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel);
+    if (pixel[3] > 0) {
+      proven = true;
+      host.classList.add("has-webgl");
+    } else if (++frames > 30) {
+      renderer.setAnimationLoop(null);
+      fallBack(host);
+    }
+  };
+
   let visible = true;
   new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
@@ -239,6 +292,7 @@ async function mount(host: HTMLElement, days: Day[]) {
       }
     }
     renderer.render(scene3d, camera);
+    checkPainted();
   }
   renderer.setAnimationLoop(render);
 }

@@ -8,6 +8,34 @@ const label = (date: string) =>
 const max = Math.max(1, busiest.count);
 const level = (count: number) => (count === 0 ? 0 : Math.min(4, Math.ceil((count / max) * 4)));
 const offset = new Date(`${calendar[0].date}T00:00:00Z`).getUTCDay();
+
+// The same skyline drawn at build time as an isometric picture, so a browser
+// without working WebGL still shows the year in depth. Far bars paint first.
+const weeks = Math.ceil((calendar.length + offset) / 7);
+const project = (x: number, z: number, y = 0) => [(x - z) * 6.4, (x + z) * 2.5 - y * 4.2] as const;
+const point = ([x, y]: readonly [number, number]) => `${x.toFixed(1)} ${y.toFixed(1)}`;
+const shape = (...points: (readonly [number, number])[]) => `M${points.map(point).join("L")}Z`;
+const cells = calendar.map((day, index) => {
+  const slot = index + offset;
+  return { x: Math.floor(slot / 7), z: slot % 7, count: day.count };
+});
+const top = (x: number, z: number, y = 0) => shape(project(x, z, y), project(x + 0.82, z, y), project(x + 0.82, z + 0.82, y), project(x, z + 0.82, y));
+const floor = cells.filter((cell) => !cell.count).map((cell) => top(cell.x, cell.z)).join("");
+const bars = cells
+  .filter((cell) => cell.count)
+  .sort((a, b) => a.x + a.z - (b.x + b.z))
+  .map(({ x, z, count }) => {
+    const y = (0.4 + Math.log2(count + 1) * 1.15) * 1.7;
+    return {
+      level: level(count),
+      top: top(x, z, y),
+      left: shape(project(x, z + 0.82, y), project(x + 0.82, z + 0.82, y), project(x + 0.82, z + 0.82), project(x, z + 0.82)),
+      right: shape(project(x + 0.82, z, y), project(x + 0.82, z + 0.82, y), project(x + 0.82, z + 0.82), project(x + 0.82, z)),
+    };
+  });
+const maxY = (0.4 + Math.log2(max + 1) * 1.15) * 1.7 * 4.2;
+const [minX, maxX] = [project(0, 7)[0], project(weeks, 0)[0]];
+const viewBox = `${(minX - 4).toFixed(0)} ${(-maxY - 4).toFixed(0)} ${(maxX - minX + 8).toFixed(0)} ${(project(weeks, 7)[1] + maxY + 8).toFixed(0)}`;
 ---
 
 <figure class="skyline reveal" data-skyline data-days={JSON.stringify(calendar)}>
@@ -20,9 +48,16 @@ const offset = new Date(`${calendar[0].date}T00:00:00Z`).getUTCDay();
     </p>
   </div>
   <div class="skyline-stage">
-    <div class="skyline-heatmap" style={`--offset:${offset}`} role="img" aria-label={`${total} public GitHub contributions on ${activeDays} days over the past year`}>
-      {calendar.map((day) => <i data-level={level(day.count)} title={`${day.count} · ${day.date}`}></i>)}
-    </div>
+    <svg class="skyline-picture" viewBox={viewBox} role="img" aria-label={`${total} public GitHub contributions on ${activeDays} days over the past year`}>
+      <path class="skyline-floor" d={floor} />
+      {bars.map((bar) => (
+        <g data-level={bar.level}>
+          <path class="side-l" d={bar.left} />
+          <path class="side-r" d={bar.right} />
+          <path d={bar.top} />
+        </g>
+      ))}
+    </svg>
     <p class="skyline-tip" hidden></p>
   </div>
   <figcaption>Public contribution calendar from github.com/0xTaoZ. <span class="no-flight">Drag to turn it.<span class="fine-only"> Hover a bar for the day.</span></span></figcaption>

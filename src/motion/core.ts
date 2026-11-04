@@ -19,7 +19,8 @@ export { gsap, ScrollTrigger, SplitText };
 const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
 const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8;
 // WebKit under-reports the core count on iPhone and iPad, so it says nothing there.
-const appleTouch = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+// Apps can replace the user agent, so the platform is checked as well.
+const appleTouch = /iP(hone|ad|od)/.test(`${navigator.userAgent} ${navigator.platform}`) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 export const lowPower = Boolean(connection?.saveData) || memory <= 2 || (!appleTouch && (navigator.hardwareConcurrency ?? 8) <= 2);
 export const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches || Boolean(connection?.saveData);
 export const finePointer = matchMedia("(pointer: fine)").matches;
@@ -62,14 +63,17 @@ const scenes: Scene[] = [];
 export const scene = (setup: Scene) => scenes.push(setup);
 
 export async function runScenes() {
-  for (const setup of scenes) {
-    try {
-      await setup();
-    } catch (error) {
-      // A failed effect must never take the page down with it.
-      console.warn("motion scene failed", error);
-    }
-  }
+  // Scenes start together: one waiting on an image or a chunk must not hold back
+  // the others, and a failed effect must never take the page down with it.
+  await Promise.all(
+    scenes.map(async (setup) => {
+      try {
+        await setup();
+      } catch (error) {
+        console.warn("motion scene failed", error);
+      }
+    }),
+  );
   ScrollTrigger.refresh();
 }
 
